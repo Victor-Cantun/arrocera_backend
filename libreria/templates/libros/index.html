@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block titulo %} LIBROS {% endblock %}
+        
+{% block contenido %} 
+<h1>LISTA DE LIBROS</h1> 
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Titulo</th>
+            <th>Imagen</th>
+            <th>Descripción</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%for libro in libros %}
+        <tr>
+            <td scope="row">{{ libro.id }}</td>
+            <td>{{ libro.titulo }}</td>
+            <td><img src="{{ libro.imagen.url }}" height="40px" width="40px" /></td>
+            <td>{{ libro.descripcion }}</td>
+            <td>
+                <a name="" id="" class="btn btn-info" href="{% url 'editar' libro.id %}" role="button">Editar</a> |
+                <a name="" id="" class="btn btn-danger" href="{% url 'eliminar' libro.id %}" role="button">Elimnar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

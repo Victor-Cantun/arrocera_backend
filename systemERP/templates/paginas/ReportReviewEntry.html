@@ -1,0 +1,59 @@
+<style type="text/css"> 
+    @page {
+      size: letter landscape;
+      margin: 2cm;
+    } 
+    .demo {
+      border:1px solid #C0C0C0;
+      border-collapse:collapse;
+      padding:5px;
+    }
+    .demo th {
+      border:1px solid #C0C0C0;
+      padding:5px;
+      background:#F0F0F0;
+    }
+    .demo td {
+      border:1px solid #C0C0C0;
+      padding:3px;
+    }
+    .encabezado{
+      border:0;
+      border-collapse:colapse;
+      padding:5px;
+    }
+    </style>
+    <table class="encabezado">
+        <tr>
+          <td rowspan="2" width="10%" align="center"><img src="http://127.0.0.1:8000/files/imagenes/logo_empresa.png" width="80px" height="100px" /></td>
+          <td  width="90%" align="center"><h1>CAMPESINOS PRODUCTORES CAMPECHANOS</h1></td>
+        </tr>
+        <tr>
+          <td align="center"><h1>SPR DE RL DE CV</h1></td>
+        </tr> 
+        <tr><td align="center"><h1>ARROZ TOLLOCAN S.A. DE C.V.</h1></td></tr>
+        <tr><td align="center">R.F.C. ATO-040909-CG2</td></tr>
+        <tr><td align="center"><h1>REPORTE DE REPASO</h1></td></tr>
+    </table>
+    <div><strong>FECHA:</strong> {{ data }}</div>
+    <div><strong>VAIREDAD:</strong> {{ variety }}</div>
+    <table class="demo">
+      <thead>
+        <tr>
+          <th colspan="6"><h1>PRODUCCION DEL PRODUCTO REPASADO INGRESADO A ALMACEN</h1></th>
+        </tr>
+        <tr>
+          <th style="width:2%">ID</th>
+          <th>PRODUCTO</th>    
+          <th>BIG BAGS</th>
+          <th>KGS. X BIG BAGS</th>
+          <th>BULTOS</th>
+          <th>KGS. X BULTOS</th>
+          <th>SUBTOTAL</th>
+        </tr>  
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+    

@@ -1,0 +1,62 @@
+<style type="text/css">  
+  @page {
+    size: letter landscape;
+    margin: 2cm;
+  } 
+  .demo {
+    border:1px solid #C0C0C0;
+    border-collapse:collapse;
+    padding:5px;
+  }
+  .demo th {
+    border:1px solid #C0C0C0;
+    padding:5px;
+    background:#F0F0F0;
+  }
+  .demo td {
+    border:1px solid #C0C0C0;
+    padding:3px;
+  }
+  .encabezado{
+    border:0;
+    border-collapse:colapse;
+    padding:5px;
+  }
+</style>
+<table class="encabezado">
+  <tr>
+    <td rowspan="2" width="10%" align="center"><img src="http://127.0.0.1:8000/files/imagenes/logo_empresa.png" width="80px" height="100px" /></td>
+    <td  width="90%" align="center"><h1>CAMPESINOS PRODUCTORES CAMPECHANOS<br>SPR DE RL DE CV</h1></td>
+  </tr>
+  <tr>
+    <td align="center"><h1></h1></td>
+  </tr>  
+</table>
+<table class="demo">
+  <thead>
+    <tr>
+      <th colspan="5"><h1>Lista de Productores</h1></th>
+    </tr>
+    <tr>
+      <th style="width:2%">ID</th>
+      <th>Nombre</th>    
+      <th>RFC</th>
+      <th>Teléfono</th>
+      <th>Correo electrónico</th>
+      
+    </tr>  
+  </thead>
+  <tbody>
+    {% for item in producers %}
+    <tr>
+      <td>{{ item.id }}</td>
+      <td>{{ item.name }}</td>
+      <td>{{ item.rfc }}</td>
+      <td>{{ item.phone }}</td>
+      <td>{{ item.email }}</td>
+      
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+    
