@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-d+pq(r8+bw83muuo(6ax8aq!*@nr)4=ct*2nfvm+g*j4an=^_@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['209.97.145.213','localhost']
+ALLOWED_HOSTS = ['198.211.99.88','localhost','127.0.0.1']
 
 
 # Application definition
@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'xhtml2pdf',
-    'openpyxl', 
+    'openpyxl',
+    "corsheaders", 
     'libreria',  
     'systemERP'
 
@@ -53,6 +54,22 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "http://localhost:4200",
+]
+
+CORS_ALLOW_METHODS = [
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
 ]
 
 ROOT_URLCONF = 'arrocera.urls'
