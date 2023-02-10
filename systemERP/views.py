@@ -4,13 +4,13 @@ from ipaddress import summarize_address_range
 from django.views.generic import ListView, View, TemplateView
 from urllib import request
 from django.shortcuts import render, redirect
-from .models import BankAccountsCustomer, BankAccountsEmployee, BankAccountsProvider, BillOfLading, BilledIncome, BillsPaidPlugins, ChargerSalary, Company, ConceptPayment, CreditNote, Customer, Department, DepositControl, DoubleDays, DriverSalary, ExtraHours, FileProducer, FileQuotation, FileUnit, FuelType, Fueling, Gasoline, LandRent, Loans, LoansChargers, LoansDrivers, Location, MainProduct, Output, OutputProduct, Outputreview, PaidPlugins, Parcel, PaymentOrderProducer, PaymentProducer, PaymentSchedule, PaymentsChargers, PaymentsDrivers, Payroll, PettyCash, Presentation, Producer, Product, ProductCN, ProductQuotation, ProductRequisition, ProductShopping, ProductW, Props, Provider, Category, Employee, Quotation, Requisition, Rowoutputreview, SegalmexParcel, SegalmexReception, Shopping, Society, User, Bank, BankAccount, UploadImage, Unit, Variety, VehicleType, Warehouse, Ticketreview, Rowticketreview, Binnacle
+from .models import BankAccountsCustomer, BankAccountsEmployee, BankAccountsProvider, BillOfLading, BilledIncome, BillsPaidPlugins, ChargerSalary, Company, ConceptPayment, CreditNote, Customer, Department, DepositControl, DoubleDays, DriverSalary, ExtraHours, FileProducer, FileQuotation, FileUnit, FuelDump, FuelType, Fueling, Gasoline, LandRent, Loans, LoansChargers, LoansDrivers, Location, MainProduct, Output, OutputProduct, Outputreview, PaidPlugins, Parcel, PaymentOrderProducer, PaymentProducer, PaymentSchedule, PaymentsChargers, PaymentsDrivers, Payroll, PettyCash, Presentation, Producer, Product, ProductCN, ProductQuotation, ProductRequisition, ProductShopping, ProductW, Props, Provider, Category, Employee, Quotation, Requisition, Rowoutputreview, SegalmexParcel, SegalmexReception, Shopping, Society, User, Bank, BankAccount, UploadImage, Unit, Variety, VehicleType, Warehouse, Ticketreview, Rowticketreview, Binnacle
 #RestFramework
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import viewsets
-from .serializers import BankAccountsCustomerSerializer, BankAccountsEmployeeSerializer, BankAccountsProviderSerializer, BillOfLadingSerializer, BilledIncomeSerializer, BinnacleSerializer, ChargerSalarySerializer, CompanySerializer, CreditNoteListSerializer, CustomerSerializer, DepositControlSerializer, DieselSerializer, DoubleDaysSerializer, DriverSalarySerializer, ExtraHoursSerializer, FileProducerSerializer, FileQuotationSerializer, FileUnitSerializer, FuelTypeSerializer, FuelingListSerializer, FuelingListSerializer, FuelingSerializer, LandRentSerializer, ListBankAccountsCustomerSerializer, ListBankAccountsEmployeeSerializer, ListBankAccountsProviderSerializer, ListBillOfLadingSerializer, ListBilledIncomeSerializer, ListChargerSalarySerializer, ListDepositControlSerializer, ListDoubleDaysSerializer, ListDriverSalarySerializer, ListExtraHoursSerializer, ListLandRentSerializer, ListLoansChargersSerializer, ListLoansDriversSerializer, ListLoansSerializer, ListPaymentOrderProducerSerializer, ListPaymentProducerSerializer, ListPaymentScheduleSerializer, ListPaymentsChargersSerializer, ListPaymentsDriversSerializer, ListPayrollSerializer, ListPettyCashSerializer, ListPropsSerializer, ListQuotationSerializer, ListSegalmexParcelSerializer, ListSegalmexReceptionSerializer, ListTotalDepositControlSerializer, LoansChargersSerializer, LoansDriversSerializer, LoansSerializer, LocationSerializer, MainProductSerializer, OutputListSerializer, OutputreviewListSerializer, PaidPluginsSerializer, ParcelListSerializer, ParcelSerializer, PaymentOrderProducerSerializer, PaymentProducerSerializer, PaymentsChargersSerializer, PaymentsDriversSerializer, PayrollSerializer, PettyCashSerializer, PresentationSerializer, ProductSerializer, PropsSerializer, RequisitionListSerializer, RequisitionSerializer, SegalmexParcelSerializer, SegalmexReceptionSerializer, ShoppingListSerializer, SocietyListSerializer, SocietySerializer, UnitListSerializer, UserSerializer, DepartmentSerializer, BankSerializer,BankAccountSerializer, EmployeeSerializer, EmployeeListSerializer, ProducerSerializer, ProviderSerializer, CategorySerializer, BankAccountListSerializer, UploadImageSerializer, UnitSerializer, VarietySerializer, VehicleTypeSerializer, WarehouseListSerializer, WarehouseSerializer, TicketreviewListSerializer
+from .serializers import BankAccountsCustomerSerializer, BankAccountsEmployeeSerializer, BankAccountsProviderSerializer, BillOfLadingSerializer, BilledIncomeSerializer, BinnacleSerializer, ChargerSalarySerializer, CompanySerializer, CreditNoteListSerializer, CustomerSerializer, DepositControlSerializer, DieselSerializer, DoubleDaysSerializer, DriverSalarySerializer, ExtraHoursSerializer, FileProducerSerializer, FileQuotationSerializer, FileUnitSerializer, FuelDumpListSerializer, FuelDumpSerializer, FuelTypeSerializer, FuelingListSerializer, FuelingListSerializer, FuelingSerializer, LandRentSerializer, ListBankAccountsCustomerSerializer, ListBankAccountsEmployeeSerializer, ListBankAccountsProviderSerializer, ListBillOfLadingSerializer, ListBilledIncomeSerializer, ListChargerSalarySerializer, ListDepositControlSerializer, ListDoubleDaysSerializer, ListDriverSalarySerializer, ListExtraHoursSerializer, ListLandRentSerializer, ListLoansChargersSerializer, ListLoansDriversSerializer, ListLoansSerializer, ListPaymentOrderProducerSerializer, ListPaymentProducerSerializer, ListPaymentScheduleSerializer, ListPaymentsChargersSerializer, ListPaymentsDriversSerializer, ListPayrollSerializer, ListPettyCashSerializer, ListPropsSerializer, ListQuotationSerializer, ListSegalmexParcelSerializer, ListSegalmexReceptionSerializer, ListTotalDepositControlSerializer, LoansChargersSerializer, LoansDriversSerializer, LoansSerializer, LocationSerializer, MainProductSerializer, OutputListSerializer, OutputreviewListSerializer, PaidPluginsSerializer, ParcelListSerializer, ParcelSerializer, PaymentOrderProducerSerializer, PaymentProducerSerializer, PaymentsChargersSerializer, PaymentsDriversSerializer, PayrollSerializer, PettyCashSerializer, PresentationSerializer, ProductSerializer, PropsSerializer, RequisitionListSerializer, RequisitionSerializer, SegalmexParcelSerializer, SegalmexReceptionSerializer, ShoppingListSerializer, SocietyListSerializer, SocietySerializer, UnitListSerializer, UserSerializer, DepartmentSerializer, BankSerializer,BankAccountSerializer, EmployeeSerializer, EmployeeListSerializer, ProducerSerializer, ProviderSerializer, CategorySerializer, BankAccountListSerializer, UploadImageSerializer, UnitSerializer, VarietySerializer, VehicleTypeSerializer, WarehouseListSerializer, WarehouseSerializer, TicketreviewListSerializer
 #FORMS
 from .forms import EmployeeForm
 from django.http import HttpResponse, JsonResponse
@@ -142,11 +142,9 @@ def UpdateUser(request, pk):
 
 @api_view(['DELETE'])
 def DeleteUser(request, pk):
-
-	user = User.objects.get(id=pk)
-	serializer = UserSerializer(user, many=False)
-	user.delete()
-	return Response(serializer.data)
+	row = User.objects.filter(id=pk)
+	row.delete()   
+	return Response({"message":"Registro eliminado satisfactoriamente!","status":200}) 
 
 #*? COMPAÑIAS
 @api_view(['GET'])
@@ -1007,11 +1005,16 @@ def ListFuelType(request):
 	serializer = FuelTypeSerializer(fuel, many=True)
 	return Response(serializer.data)
 
-@api_view(['GET'])
+@api_view(['POST'])
 def ListFueling(request):
-	fueling = Fueling.objects.all()
-	serializer = FuelingListSerializer(fueling, many=True)
-	return Response(serializer.data)
+	data = request.data
+	fecha1 = data['start_date']
+	fecha2 = data['end_date']
+	fuel_type = data['fuel_type']
+	rows = Fueling.objects.filter(date__range=[fecha1, fecha2]).filter(fuel_type_id=fuel_type)
+	#rows = FuelDump.objects.all()
+	serializer = FuelDumpListSerializer(rows, many=True)
+
 
 @api_view(['POST'])
 def CreateFueling(request):
@@ -1043,6 +1046,29 @@ def UpdateFueling(request, pk):
 		serializer.save()
 		return Response({"message":"Registro actualizado satisfactoriamente!","status":200})  
 	return Response({"message":"No se realizó el Registro!","errors":serializer.errors,"status":400})
+
+#*? DESCARGA DE COMBUSTIBLE
+
+@api_view(['POST'])
+def CreateFuelDump(request):
+	serializer = FuelDumpSerializer(data = request.data)
+	data=request.data
+	#unit = Unit.objects.filter(id=data["unit"]).update(current_mileage = data["mileage"])
+	if serializer.is_valid():
+		serializer.save()
+		return Response({"message":"Registro agregado satisfactoriamente!","status":200})  
+	return Response({"message":"No se realizó el Registro!","errors":serializer.errors,"status":400})
+
+@api_view(['POST'])
+def ListFuelDump(request):
+	data = request.data
+	fecha1 = data['start_date']
+	fecha2 = data['end_date']
+	fuel_type = data['fuel_type']
+	rows = FuelDump.objects.filter(date__range=[fecha1, fecha2]).filter(fuel_type_id=fuel_type)
+	#rows = FuelDump.objects.all()
+	serializer = FuelDumpListSerializer(rows, many=True)
+	return Response(serializer.data)
 
 # *? Requisición
 @api_view(['GET'])
@@ -1996,7 +2022,7 @@ def ListDiscount(request):
 	data = request.data
 	fecha1 = data['start_date']
 	fecha2 = data['end_date']
-	discount = PettyCash.objects.filter(date__range=[fecha1, fecha2]).filter(discount=1).aggregate(Sum('cash'))
+	discount = PettyCash.objects.filter(date__range=[fecha1, fecha2]).aggregate(Sum('cash'))
 	return Response(discount)
 
 

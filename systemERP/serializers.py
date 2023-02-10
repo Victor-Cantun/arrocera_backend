@@ -1,6 +1,6 @@
 from dataclasses import fields
 from rest_framework import serializers
-from systemERP.models import BankAccountsCustomer, BankAccountsEmployee, BankAccountsProvider, BillOfLading, BilledIncome, Binnacle, Category, ChargerSalary, Company, CreditNote, Customer, Department, DepositControl, Diesel, DoubleDays, DriverSalary, Employee, ExtraHours, FileProducer, FileQuotation, FileUnit, FuelType, Fueling, Gasoline, LandRent, Loans, LoansChargers, LoansDrivers, Location, MainProduct, Output, OutputProduct, Outputreview, PaidPlugins, Parcel, PaymentOrderProducer, PaymentProducer, PaymentsChargers, PaymentsDrivers, Payroll, PettyCash, Presentation, Producer, Product, ProductCN, ProductQuotation, ProductRequisition, ProductShopping, ProductW, Props, Provider, Quotation, Requisition, Rowoutputreview, Rowticketreview, SegalmexParcel, SegalmexReception, Shopping, Society, Ticketreview, Unit, User, Bank, BankAccount, UploadImage, Variety, VehicleType, Warehouse, Payroll
+from systemERP.models import BankAccountsCustomer, BankAccountsEmployee, BankAccountsProvider, BillOfLading, BilledIncome, Binnacle, Category, ChargerSalary, Company, CreditNote, Customer, Department, DepositControl, Diesel, DoubleDays, DriverSalary, Employee, ExtraHours, FileProducer, FileQuotation, FileUnit, FuelDump, FuelType, Fueling, Gasoline, LandRent, Loans, LoansChargers, LoansDrivers, Location, MainProduct, Output, OutputProduct, Outputreview, PaidPlugins, Parcel, PaymentOrderProducer, PaymentProducer, PaymentsChargers, PaymentsDrivers, Payroll, PettyCash, Presentation, Producer, Product, ProductCN, ProductQuotation, ProductRequisition, ProductShopping, ProductW, Props, Provider, Quotation, Requisition, Rowoutputreview, Rowticketreview, SegalmexParcel, SegalmexReception, Shopping, Society, Ticketreview, Unit, User, Bank, BankAccount, UploadImage, Variety, VehicleType, Warehouse, Payroll
 
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,8 +16,7 @@ class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
         fields = '__all__'
-        #fields = '__all__'
-
+              
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
@@ -63,9 +62,7 @@ class EmployeeListSerializer(serializers.ModelSerializer):
         model = Employee
         fields = '__all__'
 
-
     def to_representation(self, instance):
-
         response = super().to_representation(instance)
         response['department'] = instance.department.name if instance.department != None else '',
         response['category'] = instance.category.name if instance.department != None else '',       
@@ -113,6 +110,24 @@ class FuelingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fueling
         fields = '__all__'        
+
+class FuelDumpSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FuelDump
+        fields = '__all__'
+
+class FuelDumpListSerializer(serializers.ModelSerializer):
+    unit = UnitSerializer(many=False, read_only=True)
+    class Meta:
+        model = FuelDump
+        fields = '__all__'
+
+    def to_representation(self, instance):
+
+        response = super().to_representation(instance)
+        response['unit'] = instance.unit.unit if instance.unit != None else '',
+        return response
+
 
 class DieselListSerializer(serializers.ModelSerializer):
     unit = UnitSerializer(many=False, read_only=True)
@@ -174,18 +189,6 @@ class ListCustomerSerializer(serializers.ModelSerializer):
         model = Customer
         fields = '__all__'
 
-"""    def to_representation(self, instance):
-
-        response = super().to_representation(instance)
-        response['company'] = instance.company.name
-        response['bank_account'] = instance.bank_account.number
-        response['customer'] = instance.customer.name
-        response['rfc'] = instance.customer.rfc
-        response['description'] = instance.description
-        response['total'] = instance.total
-        
-        return response
-"""
 class MainProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = MainProduct
@@ -303,12 +306,12 @@ class OutputListSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
 
         response = super().to_representation(instance)
-        response['company'] = instance.company.name
-        response['customer'] = instance.customer.name
-        response['driver'] = instance.driver.name
+        response['company'] = instance.company.name if instance.company != None else '',
+        response['customer'] = instance.customer.name if instance.customer != None else '',
+        response['driver'] = instance.driver.name if instance.driver != None else '',
         response['plate'] = instance.plate.plate_no if instance.plate != None else '',
-        response['bank_account'] = instance.bank_account.number
-        response['delivered'] = instance.delivered.name
+        response['bank_account'] = instance.bank_account.number if instance.bank_account != None else '',
+        response['delivered'] = instance.delivered.name if instance.delivered != None else ''
         
         return response
 
@@ -328,7 +331,6 @@ class ParcelListSerializer(serializers.ModelSerializer):
         model = Parcel
         fields = '__all__'
 
-
 class ListLandRentSerializer(serializers.ModelSerializer):
     parcel = ParcelSerializer(many=False, read_only=True)
     bank_account = BankAccountListSerializer(many=False, read_only=True)
@@ -341,12 +343,12 @@ class ListLandRentSerializer(serializers.ModelSerializer):
             'id':instance.id,
             'rent_year':instance.rent_year,
             'reason_rent':instance.reason_rent,
-            'lessor':instance.parcel.owner,
-            'location':instance.parcel.location,
-            'parcel_no':instance.parcel.no_parcel,
-            'hectares':instance.parcel.hectares,
-            'price_hectare':instance.parcel.price_hectare,
-            'rental_value':instance.parcel.rental_value,
+            'lessor':instance.parcel.owner if instance.parcel != None else '',
+            'location':instance.parcel.location if instance.parcel != None else '',
+            'parcel_no':instance.parcel.no_parcel if instance.parcel != None else '',
+            'hectares':instance.parcel.hectares if instance.parcel != None else '',
+            'price_hectare':instance.parcel.price_hectare if instance.parcel != None else '',
+            'rental_value':instance.parcel.rental_value if instance.parcel != None else '',
             'advances':instance.advances,
             'amount':instance.amount,
             'payment':instance.payment,
@@ -354,7 +356,7 @@ class ListLandRentSerializer(serializers.ModelSerializer):
             'payment_method':instance.payment_method if instance.payment_method != None else '',
             'payment_date':instance.payment_date if instance.payment_date != None else '',
             'bank_account':instance.bank_account.number if instance.bank_account != None else '',
-            'parcel_id':instance.parcel.id,
+            'parcel_id':instance.parcel.id if instance.parcel != None else '',
             'bank_account_id':instance.bank_account.id  if instance.bank_account_id != None else '',     
         }   
 
@@ -439,8 +441,6 @@ class SegalmexReceptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = SegalmexReception
         fields = '__all__'
-
-
 
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -534,7 +534,7 @@ class ListChargerSalarySerializer(serializers.ModelSerializer):
             'id':instance.id,
             'date':instance.date,
             'product':instance.product,
-            'customer':instance.customer.name,
+            'customer':instance.customer.name if instance.custumer != None else '',
             'invoice':instance.invoice,
             'tonnage':instance.tonnage,
             'packaging':instance.packaging,
@@ -559,7 +559,7 @@ class ListPayrollSerializer(serializers.ModelSerializer):
             'id':instance.id,
             'start_date':instance.start_date,
             'end_date':instance.end_date,
-            'employee':instance.employee.name+" "+instance.employee.surname,
+            'employee':instance.employee.name+" "+instance.employee.surname if instance.employee != None else '',
             'worked_days':instance.worked_days,
             'sr':instance.sr,
             'payroll':instance.payroll,
@@ -585,7 +585,7 @@ class ListExtraHoursSerializer(serializers.ModelSerializer):
         return {
             'id':instance.id,
             'date':instance.date,
-            'employee':instance.employee.name+" "+instance.employee.surname,
+            'employee':instance.employee.name+" "+instance.employee.surname if instance.employee != None else '',
             'hours':instance.hours,
             'comment':instance.comment
         } 
@@ -605,7 +605,7 @@ class ListDoubleDaysSerializer(serializers.ModelSerializer):
         return {
             'id':instance.id,
             'date':instance.date,
-            'employee':instance.employee.name+" "+instance.employee.surname,
+            'employee':instance.employee.name+" "+instance.employee.surname if instance.employee != None else '',
             'days':instance.days,
             'comment':instance.comment
         } 
@@ -625,7 +625,7 @@ class ListPropsSerializer(serializers.ModelSerializer):
         return {
             'id':instance.id,
             'date':instance.date,
-            'employee':instance.employee.name+" "+instance.employee.surname,
+            'employee':instance.employee.name+" "+instance.employee.surname if instance.employee != None else '',
             'amount':instance.amount,
             'comment':instance.comment
         } 
@@ -645,7 +645,7 @@ class ListLoansSerializer(serializers.ModelSerializer):
         return {
             'id':instance.id,
             'date':instance.date,
-            'employee':instance.employee.name+" "+instance.employee.surname,
+            'employee':instance.employee.name+" "+instance.employee.surname if instance.employee != None else '',
             'loan':instance.loan,
             'weeks':instance.weeks,
             'payment':instance.payment,
@@ -672,7 +672,6 @@ class PaymentsDriversSerializer(serializers.ModelSerializer):
         model = PaymentsDrivers
         fields = '__all__'
 
-
 class ListLoansChargersSerializer(serializers.ModelSerializer):
     employee = EmployeeSerializer(many=False, read_only=True)
     class Meta:
@@ -683,7 +682,7 @@ class ListLoansChargersSerializer(serializers.ModelSerializer):
         return {
             'id':instance.id,
             'date':instance.date,
-            'employee':instance.employee.name+" "+instance.employee.surname,
+            'employee':instance.employee.name+" "+instance.employee.surname if instance.employee != None else '',
             'loan':instance.loan,
             'comment':instance.comment
         } 
@@ -697,7 +696,7 @@ class ListPaymentsChargersSerializer(serializers.ModelSerializer):
         return {
             'id':instance.id,
             'date':instance.date,
-            'employee':instance.employee.name+" "+instance.employee.surname,
+            'employee':instance.employee.name+" "+instance.employee.surname if instance.employee != None else '',
             'payment':instance.payment,
             'comment':instance.comment
         } 
@@ -712,7 +711,7 @@ class ListLoansDriversSerializer(serializers.ModelSerializer):
         return {
             'id':instance.id,
             'date':instance.date,
-            'employee':instance.employee.name+" "+instance.employee.surname,
+            'employee':instance.employee.name+" "+instance.employee.surname if instance.employee != None else '',
             'loan':instance.loan,
             'comment':instance.comment
         } 
@@ -725,7 +724,7 @@ class ListPaymentsDriversSerializer(serializers.ModelSerializer):
         return {
             'id':instance.id,
             'date':instance.date,
-            'employee':instance.employee.name+" "+instance.employee.surname,
+            'employee':instance.employee.name+" "+instance.employee.surname if instance.employee != None else '',
             'payment':instance.payment,
             'comment':instance.comment
         } 
@@ -747,7 +746,7 @@ class ListBillOfLadingSerializer(serializers.ModelSerializer):
             'id':instance.id,
             'date':instance.date,
             'invoice':instance.invoice,
-            'customer':instance.customer.name,
+            'customer':instance.customer.name if instance.customer != None else '',
             'code':instance.code,
             'destination':instance.destination,
             'km':instance.km,
@@ -756,7 +755,7 @@ class ListBillOfLadingSerializer(serializers.ModelSerializer):
             'kg':instance.kg,
             'unit_price_1':instance.unit_price_1,
             'total_value':instance.total_value,
-            'driver':instance.driver.name+" "+instance.driver.surname,
+            'driver':instance.driver.name+" "+instance.driver.surname if instance.driver != None else '',
             'tract':instance.tract,
             'cage':instance.cage,
             'amount':instance.amount,
@@ -778,10 +777,10 @@ class ListPaymentScheduleSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
 
         response = super().to_representation(instance)
-        response['company'] = instance.company.name
-        response['bank_account'] = instance.bank_account.number
-        response['customer'] = instance.customer.name
-        response['rfc'] = instance.customer.rfc
+        response['company'] = instance.company.name if instance.company != None else '',
+        response['bank_account'] = instance.bank_account.number if instance.bank_account != None else '',
+        response['customer'] = instance.customer.name if instance.customer != None else '',
+        response['rfc'] = instance.customer.rfc if instance.customer != None else '',
         response['description'] = instance.description
         response['total'] = instance.total
         
@@ -802,8 +801,8 @@ class ListBankAccountsCustomerSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         return {
             'id':instance.id,
-            'customer':instance.customer.name,
-            'bank':instance.bank.name,
+            'customer':instance.customer.name if instance.customer != None else '',
+            'bank':instance.bank.name if instance.bank != None else '',
             'account_number':instance.account_number,
             'interbank_key':instance.interbank_key,
             'owner':instance.owner
@@ -824,8 +823,8 @@ class ListBankAccountsProviderSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         return {
             'id':instance.id,
-            'provider':instance.provider.name,
-            'bank':instance.bank.name,
+            'provider':instance.provider.name if instance.provider != None else '',
+            'bank':instance.bank.name if instance.bank != None else '',
             'account_number':instance.account_number,
             'interbank_key':instance.interbank_key,
             'owner':instance.owner
@@ -847,8 +846,8 @@ class ListBankAccountsEmployeeSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         return {
             'id':instance.id,
-            'employee':instance.employee.name,
-            'bank':instance.bank.name,
+            'employee':instance.employee.name if instance.employee != None else '',
+            'bank':instance.bank.name if instance.bank != None else '',
             'account_number':instance.account_number,
             'interbank_key':instance.interbank_key,
         }         
@@ -869,9 +868,9 @@ class ListBilledIncomeSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
 
         response = super().to_representation(instance)
-        response['company'] = instance.company.name
-        response['product'] = instance.product.name
-        response['customer'] = instance.customer.name
+        response['company'] = instance.company.name if instance.company != None else '',
+        response['product'] = instance.product.name if instance.product != None else '',
+        response['customer'] = instance.customer.name if instance.customer != None else '',
         
         return response
 

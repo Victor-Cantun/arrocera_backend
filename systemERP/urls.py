@@ -103,6 +103,9 @@ urlpatterns = [
     path('CreateFueling',views.CreateFueling, name="CreateFueling"),
     path('UpdateFueling/<str:pk>',views.UpdateFueling, name="UpdateFueling"),
     path('DeleteFueling/<str:pk>',views.DeleteFueling, name="DeleteFueling"),
+#*? DESCARGA DE COMBUSTIBLE
+    path('CreateFuelDump',views.CreateFuelDump, name="CreateFuelDump"),
+    path('ListFuelDump', views.ListFuelDump, name="ListFuelDump"),
 
 #*? REQUISITION   
     path('ListRequisition', views.ListRequisition, name="ListRequisition"),
