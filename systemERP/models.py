@@ -154,8 +154,8 @@ class Producer(models.Model):
 	creation = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
-		fila = "Nombre: "+self.name
-		return fila
+		#fila = "Nombre: "+self.name
+		return self.name
 
 class FileProducer(models.Model):
 	id = models.AutoField(primary_key=True)
@@ -532,6 +532,39 @@ class Warehouse(models.Model):
 		fila = "Producto: "+self.product
 		return fila
 
+class ProductPO(models.Model):
+	amount = models.IntegerField(verbose_name='Cantidad',null=True)
+	unit = models.CharField(max_length=50, verbose_name='Unidad',null=True)
+	product = models.ForeignKey(Product, on_delete = models.CASCADE)
+	presentation = models.ForeignKey(Presentation, on_delete = models.CASCADE)
+	price = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Precio',blank=True,null=True)
+	subtotal = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Subtotal',blank=True,null=True)
+	code = models.CharField(max_length=20, verbose_name='Codigo',default='',blank=True, null=True)
+	user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+	creation = models.DateTimeField(auto_now=True)
+
+class PurchaseOrder(models.Model):
+	id = models.AutoField(primary_key=True)
+	date = models.DateField(max_length=50, verbose_name = 'Fecha', null=True)
+	purchase_order = models.IntegerField(verbose_name= 'Orden de pedido', null=True)
+	date_delivery = models.DateField(max_length=50, verbose_name = 'Fecha de entrega', null=True)
+	business_name = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
+	order_number = models.IntegerField(verbose_name= 'Orden de pedido', null=True)
+	place_delivery = models.CharField(max_length=100, verbose_name='Lugar de entrega', default='',blank=True, null=True)
+	sale_condition = models.CharField(max_length=100, verbose_name='Condición de venta', default='',blank=True, null=True)
+	invoice = models.IntegerField(verbose_name= 'No. de Factura', null=True)
+	iva=models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Iva',blank=True,null=True)
+	subtotal=models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Subtotal',blank=True,null=True)
+	total=models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Total',blank=True,null=True)	
+	observation = models.CharField(max_length=200, verbose_name='Observación', default='',blank=True, null=True)
+	auxiliary_sales = models.ForeignKey(Employee, verbose_name='Auxiliar de ventas', related_name = 'POauxiliary',  on_delete=models.CASCADE, null=True)
+	storekeeper = models.ForeignKey(Employee, verbose_name='Almacenista', related_name = 'POstorekeeper',  on_delete=models.CASCADE, null=True)
+	qa = models.ForeignKey(Employee, verbose_name='Control de calidad', related_name = 'POQA',  on_delete=models.CASCADE, null=True)
+	POproducts = models.ManyToManyField(ProductPO,blank=True)
+	user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+	creation = models.DateTimeField(auto_now=True)
+
+
 class ProductCN(models.Model):
 	amount = models.IntegerField(verbose_name='Cantidad',null=True)
 	unit = models.CharField(max_length=50, verbose_name='Unidad',null=True)
@@ -676,7 +709,7 @@ class Binnacle(models.Model):
 	id = models.AutoField(primary_key=True)
 	fecha = models.DateField(max_length=50, verbose_name = 'Fecha')
 	labores = models.CharField(max_length=1000, verbose_name = 'Labores')
-	lotes = models.IntegerField(verbose_name= 'Lotes', null=True)
+	lotes = models.CharField(max_length=500, verbose_name= 'Lotes', null=True)
 	ha = models.IntegerField(verbose_name= 'Ha', null=True)
 	faena = models.IntegerField(verbose_name= 'Faena',default='',blank=True, null=True)
 	ta_ha_faena = models.IntegerField(verbose_name= 'Total aplicado',default='',blank=True, null=True)
@@ -765,7 +798,7 @@ class Society(models.Model):
 
 class Parcel(models.Model):
 	id = models.AutoField(primary_key=True)
-	no_parcel = models.IntegerField(verbose_name='Número de parcela', null=True, unique=True)
+	no_parcel = models.CharField(max_length=100,verbose_name='Número de parcela', null=True, unique=True)
 	georeferences = models.CharField(max_length=200, verbose_name='Georeferencias', null=True)
 	hectares = models.CharField(max_length=200, verbose_name='Hectareas', null=True)
 	certificate = models.CharField(max_length=200, verbose_name='Certificado', null=True)
@@ -828,7 +861,7 @@ class SegalmexReception(models.Model):
 	checkout_time = models.TimeField(max_length=50, verbose_name = 'Hora de salida', null=True)
 	ticket = models.IntegerField(verbose_name='No. de Boleta', unique=True)
 	producer = models.ForeignKey(Producer, on_delete=models.CASCADE, verbose_name = 'Productor', null=True)
-	location = models.ForeignKey(Location, on_delete=models.CASCADE, verbose_name = 'Localidad', null=True)
+	location = models.CharField(max_length=200, verbose_name = 'Localidad', null=True)
 	driver = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name = 'Chofer', null=True)
 	plate = models.ForeignKey(Unit, on_delete=models.CASCADE, verbose_name = 'Unidad', null=True)
 	lot = models.IntegerField(null=True, verbose_name = 'Lote')
@@ -879,6 +912,22 @@ class PettyCash(models.Model):
 	area = models.ForeignKey(Department, on_delete=models.CASCADE, null=True)
 	cash = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Importe', null=True)
 	discount = models.BooleanField(null=True,verbose_name="Descuento")
+	user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+	creation = models.DateTimeField(auto_now=True)
+
+class Driver(models.Model):
+	id = models.AutoField(primary_key=True)
+	name = models.CharField(max_length=100, verbose_name='Nombre')
+	surname = models.CharField(max_length=100, verbose_name='Apellido Paterno')
+	second_surname = models.CharField(max_length=100, verbose_name='Apellido Materno', null=True )	
+	user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+	creation = models.DateTimeField(auto_now=True)
+
+class Charger(models.Model):
+	id = models.AutoField(primary_key=True)
+	name = models.CharField(max_length=100, verbose_name='Nombre')
+	surname = models.CharField(max_length=100, verbose_name='Apellido Paterno')
+	second_surname = models.CharField(max_length=100, verbose_name='Apellido Materno', null=True )	
 	user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 	creation = models.DateTimeField(auto_now=True)
 

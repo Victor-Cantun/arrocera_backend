@@ -1,6 +1,6 @@
 from dataclasses import fields
 from rest_framework import serializers
-from systemERP.models import BankAccountsCustomer, BankAccountsEmployee, BankAccountsProvider, BillOfLading, BilledIncome, Binnacle, Category, ChargerSalary, Company, CreditNote, Customer, Department, DepositControl, Diesel, DoubleDays, DriverSalary, Employee, ExtraHours, FileProducer, FileQuotation, FileUnit, FuelDump, FuelType, Fueling, Gasoline, LandRent, Loans, LoansChargers, LoansDrivers, Location, MainProduct, Output, OutputProduct, Outputreview, PaidPlugins, Parcel, PaymentOrderProducer, PaymentProducer, PaymentsChargers, PaymentsDrivers, Payroll, PettyCash, Presentation, Producer, Product, ProductCN, ProductQuotation, ProductRequisition, ProductShopping, ProductW, Props, Provider, Quotation, Requisition, Rowoutputreview, Rowticketreview, SegalmexParcel, SegalmexReception, Shopping, Society, Ticketreview, Unit, User, Bank, BankAccount, UploadImage, Variety, VehicleType, Warehouse, Payroll
+from systemERP.models import BankAccountsCustomer, BankAccountsEmployee, BankAccountsProvider, BillOfLading, BilledIncome, Binnacle, Category, ChargerSalary, Company, CreditNote, Customer, Department, DepositControl, Diesel, DoubleDays, DriverSalary, Employee, ExtraHours, FileProducer, FileQuotation, FileUnit, FuelDump, FuelType, Fueling, Gasoline, LandRent, Loans, LoansChargers, LoansDrivers, Location, MainProduct, Output, OutputProduct, Outputreview, PaidPlugins, Parcel, PaymentOrderProducer, PaymentProducer, PaymentsChargers, PaymentsDrivers, Payroll, PettyCash, Presentation, Producer, Product, ProductCN, ProductPO, ProductQuotation, ProductRequisition, ProductShopping, ProductW, Props, Provider, PurchaseOrder, Quotation, Requisition, Rowoutputreview, Rowticketreview, SegalmexParcel, SegalmexReception, Shopping, Society, Ticketreview, Unit, User, Bank, BankAccount, UploadImage, Variety, VehicleType, Warehouse, Payroll
 
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
@@ -65,7 +65,9 @@ class EmployeeListSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         response = super().to_representation(instance)
         response['department'] = instance.department.name if instance.department != None else '',
-        response['category'] = instance.category.name if instance.department != None else '',       
+        response['category'] = instance.category.name if instance.department != None else '', 
+        response['department_id'] = instance.department.id if instance.department != None else '',
+        response['category_id'] = instance.category.id if instance.department != None else '', 
         return response        
 
 class UploadImageSerializer(serializers.ModelSerializer):
@@ -215,6 +217,37 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = '__all__'
 
+class ProductsPOSerializer(serializers.ModelSerializer):
+    presentation = PresentationSerializer(many=False, read_only=True)
+    product = ProductSerializer(many=False, read_only=True)
+    class Meta:
+        model = ProductPO
+        fields = '__all__'
+
+class PurchaseOrderListSerializer(serializers.ModelSerializer):
+
+    POproducts = ProductsPOSerializer(many=True, read_only=True)
+    business_name = CustomerSerializer(many=False, read_only=True)
+    auxiliary_sales = EmployeeSerializer(many=False, read_only=True)
+    storekeeper =  EmployeeSerializer(many=False, read_only=True)
+    qa = EmployeeSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = PurchaseOrder
+        fields = '__all__'
+
+    def to_representation(self, instance):
+
+        response = super().to_representation(instance)
+        
+        response['business_name'] = instance.business_name.name if instance.business_name != None else '',
+        response['auxiliary_sales'] = instance.auxiliary_sales.name if instance.auxiliary_sales != None else '',
+        response['storekeeper'] = instance.storekeeper.name if instance.storekeeper != None else '',
+        response['qa'] = instance.qa.name if instance.qa != None else '',
+        
+        return response
+
+
 class ProductsCNSerializer(serializers.ModelSerializer):
     presentation = PresentationSerializer(many=False, read_only=True)
     product = ProductSerializer(many=False, read_only=True)
@@ -233,6 +266,17 @@ class CreditNoteListSerializer(serializers.ModelSerializer):
     class Meta:
         model = CreditNote
         fields = '__all__'
+
+    def to_representation(self, instance):
+
+        response = super().to_representation(instance)
+        
+        response['business_name'] = instance.business_name.name if instance.business_name != None else '',
+        response['auxiliary_sales'] = instance.auxiliary_sales.name if instance.auxiliary_sales != None else '',
+        response['storekeeper'] = instance.storekeeper.name if instance.storekeeper != None else '',
+        response['qa'] = instance.qa.name if instance.qa != None else '',
+        
+        return response
 
 class ProductsQuotationSerializer(serializers.ModelSerializer):
     presentation = PresentationSerializer(many=False, read_only=True)

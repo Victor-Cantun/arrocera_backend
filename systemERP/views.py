@@ -4,13 +4,13 @@ from ipaddress import summarize_address_range
 from django.views.generic import ListView, View, TemplateView
 from urllib import request
 from django.shortcuts import render, redirect
-from .models import BankAccountsCustomer, BankAccountsEmployee, BankAccountsProvider, BillOfLading, BilledIncome, BillsPaidPlugins, ChargerSalary, Company, ConceptPayment, CreditNote, Customer, Department, DepositControl, DoubleDays, DriverSalary, ExtraHours, FileProducer, FileQuotation, FileUnit, FuelDump, FuelType, Fueling, Gasoline, LandRent, Loans, LoansChargers, LoansDrivers, Location, MainProduct, Output, OutputProduct, Outputreview, PaidPlugins, Parcel, PaymentOrderProducer, PaymentProducer, PaymentSchedule, PaymentsChargers, PaymentsDrivers, Payroll, PettyCash, Presentation, Producer, Product, ProductCN, ProductQuotation, ProductRequisition, ProductShopping, ProductW, Props, Provider, Category, Employee, Quotation, Requisition, Rowoutputreview, SegalmexParcel, SegalmexReception, Shopping, Society, User, Bank, BankAccount, UploadImage, Unit, Variety, VehicleType, Warehouse, Ticketreview, Rowticketreview, Binnacle
+from .models import BankAccountsCustomer, BankAccountsEmployee, BankAccountsProvider, BillOfLading, BilledIncome, BillsPaidPlugins, ChargerSalary, Company, ConceptPayment, CreditNote, Customer, Department, DepositControl, DoubleDays, DriverSalary, ExtraHours, FileProducer, FileQuotation, FileUnit, FuelDump, FuelType, Fueling, Gasoline, LandRent, Loans, LoansChargers, LoansDrivers, Location, MainProduct, Output, OutputProduct, Outputreview, PaidPlugins, Parcel, PaymentOrderProducer, PaymentProducer, PaymentSchedule, PaymentsChargers, PaymentsDrivers, Payroll, PettyCash, Presentation, Producer, Product, ProductCN, ProductPO, ProductQuotation, ProductRequisition, ProductShopping, ProductW, Props, Provider, Category, Employee, PurchaseOrder, Quotation, Requisition, Rowoutputreview, SegalmexParcel, SegalmexReception, Shopping, Society, User, Bank, BankAccount, UploadImage, Unit, Variety, VehicleType, Warehouse, Ticketreview, Rowticketreview, Binnacle
 #RestFramework
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import viewsets
-from .serializers import BankAccountsCustomerSerializer, BankAccountsEmployeeSerializer, BankAccountsProviderSerializer, BillOfLadingSerializer, BilledIncomeSerializer, BinnacleSerializer, ChargerSalarySerializer, CompanySerializer, CreditNoteListSerializer, CustomerSerializer, DepositControlSerializer, DieselSerializer, DoubleDaysSerializer, DriverSalarySerializer, ExtraHoursSerializer, FileProducerSerializer, FileQuotationSerializer, FileUnitSerializer, FuelDumpListSerializer, FuelDumpSerializer, FuelTypeSerializer, FuelingListSerializer, FuelingListSerializer, FuelingSerializer, LandRentSerializer, ListBankAccountsCustomerSerializer, ListBankAccountsEmployeeSerializer, ListBankAccountsProviderSerializer, ListBillOfLadingSerializer, ListBilledIncomeSerializer, ListChargerSalarySerializer, ListDepositControlSerializer, ListDoubleDaysSerializer, ListDriverSalarySerializer, ListExtraHoursSerializer, ListLandRentSerializer, ListLoansChargersSerializer, ListLoansDriversSerializer, ListLoansSerializer, ListPaymentOrderProducerSerializer, ListPaymentProducerSerializer, ListPaymentScheduleSerializer, ListPaymentsChargersSerializer, ListPaymentsDriversSerializer, ListPayrollSerializer, ListPettyCashSerializer, ListPropsSerializer, ListQuotationSerializer, ListSegalmexParcelSerializer, ListSegalmexReceptionSerializer, ListTotalDepositControlSerializer, LoansChargersSerializer, LoansDriversSerializer, LoansSerializer, LocationSerializer, MainProductSerializer, OutputListSerializer, OutputreviewListSerializer, PaidPluginsSerializer, ParcelListSerializer, ParcelSerializer, PaymentOrderProducerSerializer, PaymentProducerSerializer, PaymentsChargersSerializer, PaymentsDriversSerializer, PayrollSerializer, PettyCashSerializer, PresentationSerializer, ProductSerializer, PropsSerializer, RequisitionListSerializer, RequisitionSerializer, SegalmexParcelSerializer, SegalmexReceptionSerializer, ShoppingListSerializer, SocietyListSerializer, SocietySerializer, UnitListSerializer, UserSerializer, DepartmentSerializer, BankSerializer,BankAccountSerializer, EmployeeSerializer, EmployeeListSerializer, ProducerSerializer, ProviderSerializer, CategorySerializer, BankAccountListSerializer, UploadImageSerializer, UnitSerializer, VarietySerializer, VehicleTypeSerializer, WarehouseListSerializer, WarehouseSerializer, TicketreviewListSerializer
+from .serializers import BankAccountsCustomerSerializer, BankAccountsEmployeeSerializer, BankAccountsProviderSerializer, BillOfLadingSerializer, BilledIncomeSerializer, BinnacleSerializer, ChargerSalarySerializer, CompanySerializer, CreditNoteListSerializer, CustomerSerializer, DepositControlSerializer, DieselSerializer, DoubleDaysSerializer, DriverSalarySerializer, ExtraHoursSerializer, FileProducerSerializer, FileQuotationSerializer, FileUnitSerializer, FuelDumpListSerializer, FuelDumpSerializer, FuelTypeSerializer, FuelingListSerializer, FuelingListSerializer, FuelingSerializer, LandRentSerializer, ListBankAccountsCustomerSerializer, ListBankAccountsEmployeeSerializer, ListBankAccountsProviderSerializer, ListBillOfLadingSerializer, ListBilledIncomeSerializer, ListChargerSalarySerializer, ListDepositControlSerializer, ListDoubleDaysSerializer, ListDriverSalarySerializer, ListExtraHoursSerializer, ListLandRentSerializer, ListLoansChargersSerializer, ListLoansDriversSerializer, ListLoansSerializer, ListPaymentOrderProducerSerializer, ListPaymentProducerSerializer, ListPaymentScheduleSerializer, ListPaymentsChargersSerializer, ListPaymentsDriversSerializer, ListPayrollSerializer, ListPettyCashSerializer, ListPropsSerializer, ListQuotationSerializer, ListSegalmexParcelSerializer, ListSegalmexReceptionSerializer, ListTotalDepositControlSerializer, LoansChargersSerializer, LoansDriversSerializer, LoansSerializer, LocationSerializer, MainProductSerializer, OutputListSerializer, OutputreviewListSerializer, PaidPluginsSerializer, ParcelListSerializer, ParcelSerializer, PaymentOrderProducerSerializer, PaymentProducerSerializer, PaymentsChargersSerializer, PaymentsDriversSerializer, PayrollSerializer, PettyCashSerializer, PresentationSerializer, ProductSerializer, PropsSerializer, PurchaseOrderListSerializer, RequisitionListSerializer, RequisitionSerializer, SegalmexParcelSerializer, SegalmexReceptionSerializer, ShoppingListSerializer, SocietyListSerializer, SocietySerializer, UnitListSerializer, UserSerializer, DepartmentSerializer, BankSerializer,BankAccountSerializer, EmployeeSerializer, EmployeeListSerializer, ProducerSerializer, ProviderSerializer, CategorySerializer, BankAccountListSerializer, UploadImageSerializer, UnitSerializer, VarietySerializer, VehicleTypeSerializer, WarehouseListSerializer, WarehouseSerializer, TicketreviewListSerializer
 #FORMS
 from .forms import EmployeeForm
 from django.http import HttpResponse, JsonResponse
@@ -496,6 +496,25 @@ class ReportBankAccountsXLSX(TemplateView):
 		return response
 
 # *? PRODUCTORES
+@api_view(['POST'])
+def Producers(request):
+	if 'user' in request.data:
+		
+		user = int(request.data['user'])
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if  user == 0:
+			rows = Producer.objects.all()
+
+		#*? Empleado				
+		if user != 0:
+			rows = Producer.objects.filter(user_id=user)
+
+		serializer = ProducerSerializer(rows, many=True)
+		return Response(serializer.data)
+		
+	else:
+		return Response({"mensaje":"sin variables"})
 
 @api_view(['GET'])
 def ProducerList(request):
@@ -533,20 +552,41 @@ def DeleteProducer(request, pk):
 	return Response('Registro eliminado satisfactoriamente!')
 
 # *? PDF PRODUCTORES
-class ReportProducersPDF(View):
-	def get(self, request, *args, **kwargs):
-		producers = Producer.objects.all()
-		
-		data = {
-			'producers': producers
-		}
-		pdf = render_to_pdf('paginas/ReportProducer.html', data)
-		return HttpResponse(pdf, content_type = 'application/pdf')
+#class ReportProducersPDF(View):
+@api_view(['GET'])
+def ReportProducersPDF(request, user):
+	user = int(user)
+	#return Response({"department->":department,"user->":user})
+	#*? administrador
+	if  user == 0:
+		rows = Producer.objects.all()
+
+	#*? Empleado				
+	if user != 0:
+		rows = Producer.objects.filter(user_id=user)
+
+	#producers = Producer.objects.all()
+	
+	data = {
+		'producers': rows
+	}
+	pdf = render_to_pdf('paginas/ReportProducer.html', data)
+	return HttpResponse(pdf, content_type = 'application/pdf')
 
 # *? XLSX PRODUCTORES
 class ReportProducersXLSX(TemplateView):
-	def get(self, request, *args, **kwargs):
-		producers = Producer.objects.all()
+	def get(self, request, user):
+		user = int(user)
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if  user == 0:
+			rows = Producer.objects.all()
+
+		#*? Empleado				
+		if user != 0:
+			rows = Producer.objects.filter(user_id=user)
+
+		producers = rows
 		wb = Workbook()
 		ws = wb.active
 		imag = openpyxl.drawing.image.Image('imagenes/logo_empresa_chica.png')
@@ -604,6 +644,25 @@ class ReportProducersXLSX(TemplateView):
 		return response
 
 # *? PROVEEDORES
+@api_view(['POST'])
+def Providers(request):
+	if 'user' in request.data:
+		
+		user = int(request.data['user'])
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if  user == 0:
+			rows = Provider.objects.all()
+
+		#*? Empleado				
+		if user != 0:
+			rows = Provider.objects.filter(user_id=user)
+
+		serializer = ProviderSerializer(rows, many=True)
+		return Response(serializer.data)
+		
+	else:
+		return Response({"mensaje":"sin variables"})
 
 @api_view(['GET'])
 def ProviderList(request):
@@ -646,19 +705,34 @@ def DeleteProvider(request, pk):
 	provider.delete()
 	return Response('Registro eliminado satisfactoriamente!')
 
-class ReportProvidersPDF(View):
-	def get(self, request, *args, **kwargs):
-		providers = Provider.objects.all()
-		
-		data = {
-			'providers': providers
-		}
-		pdf = render_to_pdf('paginas/ReportProviders.html', data)
-		return HttpResponse(pdf, content_type = 'application/pdf')
+#class ReportProvidersPDF(View):
+@api_view(['GET'])
+def ReportProvidersPDF(request, user):
+	user = int(user)
+	#*? administrador
+	if  user == 0:
+		rows = Provider.objects.all()
+	#*? Empleado				
+	if user != 0:
+		rows = Provider.objects.filter(user_id=user)
+	data = {
+		'providers': rows
+	}
+	pdf = render_to_pdf('paginas/ReportProviders.html', data)
+	return HttpResponse(pdf, content_type = 'application/pdf')
 
 class  ReportProvidersXLSX(TemplateView):
-	def get(self, request, *args, **kwargs):
-		providers = Provider.objects.all()
+	def get(self, request, user):
+		user = int(user)
+		#*? administrador
+		if  user == 0:
+			rows = Provider.objects.all()
+		#*? Empleado				
+		if user != 0:
+			rows = Provider.objects.filter(user_id=user)
+		#providers = Provider.objects.all()
+		providers = rows
+
 		wb = Workbook()
 		ws = wb.active
 		imag = openpyxl.drawing.image.Image('imagenes/logo_empresa_chica.png')
@@ -716,6 +790,31 @@ class  ReportProvidersXLSX(TemplateView):
 		return response
 
 # *? EMPLEADOS
+@api_view(['POST'])
+def Employees(request):
+	if ('department' in request.data) and ('user' in request.data):
+		department = int(request.data['department'])
+		user = int(request.data['user'])
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if (department == 0) and (user == 0):
+			employee = Employee.objects.all()
+
+		if (department != 0) and (user == 0):
+			employee = Employee.objects.filter(department_id=department)
+
+		#*? Empleado				
+		if (department == 0) and (user != 0):
+			employee = Employee.objects.filter(user_id=user)
+
+		if (department != 0) and (user != 0):
+			employee = Employee.objects.filter(user_id=user).filter(department_id=department)			
+			
+		serializer = EmployeeListSerializer(employee, many=True)
+		return Response(serializer.data)
+		
+	else:
+		return Response({"mensaje":"sin variables"})
 
 @api_view(['GET'])
 def ListEmployee(request):
@@ -783,19 +882,44 @@ class ReportEmployee(ListView):
 	template_name = "paginas/ReportEmployee.html"
 	context_object_name = 'employees'
 
-class ReportEmployeesPDF(View):
-	def get(self, request, *args, **kwargs):
-		employees = Employee.objects.all()
-		
-		data = {
-			'employees': employees
-		}
-		pdf = render_to_pdf('paginas/ReportEmployees.html', data)
-		return HttpResponse(pdf, content_type = 'application/pdf')
+#class ReportEmployeesPDF(View):
+@api_view(['GET'])
+def ReportEmployeesPDF(request, department, user):
+	department = int(department)
+	user = int(user)	
+	#*? administrador
+	if (department == 0) and (user == 0):
+		rows = Employee.objects.all()
+	if (department != 0) and (user == 0):
+		rows = Employee.objects.filter(department_id=department)
+	#*? Empleado				
+	if (department == 0) and (user != 0):
+		rows = Employee.objects.filter(user_id=user)
+	if (department != 0) and (user != 0):
+		rows = Employee.objects.filter(user_id=user).filter(department_id=department)			
+	employees = rows
+	data = {
+		'employees': employees
+	}
+	pdf = render_to_pdf('paginas/ReportEmployees.html', data)
+	return HttpResponse(pdf, content_type = 'application/pdf')
 
 class ReportEmployeesXLSX(TemplateView):
-	def get(self, request, *args, **kwargs):
-		employees = Employee.objects.all()
+	def get(self,request, department, user):
+		department = int(department)
+		user = int(user)	
+		#*? administrador
+		if (department == 0) and (user == 0):
+			rows = Employee.objects.all()
+		if (department != 0) and (user == 0):
+			rows = Employee.objects.filter(department_id=department)
+		#*? Empleado				
+		if (department == 0) and (user != 0):
+			rows = Employee.objects.filter(user_id=user)
+		if (department != 0) and (user != 0):
+			rows = Employee.objects.filter(user_id=user).filter(department_id=department)			
+		employees = rows
+
 		wb = Workbook()
 		ws = wb.active
 		imag = openpyxl.drawing.image.Image('imagenes/logo_empresa_chica.png')
@@ -839,6 +963,26 @@ class ReportEmployeesXLSX(TemplateView):
 		return response
 
 # *? UNIDADES
+@api_view(['POST'])
+def Units(request):
+	if 'user' in request.data:
+		
+		user = int(request.data['user'])
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if  user == 0:
+			rows = Unit.objects.all()
+
+		#*? Empleado				
+		if user != 0:
+			rows = Unit.objects.filter(user_id=user)
+
+		serializer = UnitListSerializer(rows, many=True)
+		return Response(serializer.data)
+		
+	else:
+		return Response({"mensaje":"sin variables"})
+
 @api_view(['GET'])
 def VehicleTypeList(request):
 	vehicles = VehicleType.objects.all()
@@ -917,19 +1061,33 @@ def DetailFileUnit(request, pk):
 	serializer = FileUnitSerializer(documents, many=True)
 	return Response(serializer.data)
 
-class ReportUnitsPDF(View):
-	def get(self, request, *args, **kwargs):
-		units = Unit.objects.all()
-		#serializer = EmployeeListSerializer(employees, many=True)
-		data = {
-			'units': units
-		}
-		pdf = render_to_pdf('paginas/ReportUnit.html', data)
-		return HttpResponse(pdf, content_type = 'application/pdf')
+#class ReportUnitsPDF(View):
+def ReportUnitsPDF(request,user):
+	user = int(user)
+	#*? administrador
+	if  user == 0:
+		rows = Unit.objects.all()
+	#*? Empleado				
+	if user != 0:
+		rows = Unit.objects.filter(user_id=user)
+	units = rows
+	data = {
+		'units': units
+	}
+	pdf = render_to_pdf('paginas/ReportUnit.html', data)
+	return HttpResponse(pdf, content_type = 'application/pdf')
 
 class ReportUnitsXLSX(TemplateView):
-	def get(self, request, *args, **kwargs):
-		units = Unit.objects.all()
+	def get(self, request, user):
+		user = int(user)
+		#*? administrador
+		if  user == 0:
+			rows = Unit.objects.all()
+		#*? Empleado				
+		if user != 0:
+			rows = Unit.objects.filter(user_id=user)
+
+		units = rows
 		wb = Workbook()
 		ws = wb.active
 		imag = openpyxl.drawing.image.Image('imagenes/logo_empresa_chica.png')
@@ -1007,14 +1165,26 @@ def ListFuelType(request):
 
 @api_view(['POST'])
 def ListFueling(request):
-	data = request.data
-	fecha1 = data['start_date']
-	fecha2 = data['end_date']
-	fuel_type = data['fuel_type']
-	rows = Fueling.objects.filter(date__range=[fecha1, fecha2]).filter(fuel_type_id=fuel_type)
-	#rows = FuelDump.objects.all()
-	serializer = FuelDumpListSerializer(rows, many=True)
+	if ('start_date' in  request.data) and ('end_date' in request.data) and ('fuel_type' in request.data) and ('user' in request.data):
+		
+		fecha1 = request.data['start_date']
+		fecha2 = request.data['end_date']
+		fuel_type = int(request.data['fuel_type'])
+		user = int(request.data['user'])
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if user == 0:
+			rows = Fueling.objects.filter(date__range=[fecha1, fecha2]).filter(fuel_type_id=fuel_type)
 
+		#*? Empleado				
+		if user != 0:
+			rows = Fueling.objects.filter(user_id=user).filter(date__range=[fecha1, fecha2]).filter(fuel_type_id=fuel_type)
+
+		serializer = FuelingListSerializer(rows, many=True)
+		return Response(serializer.data)
+		
+	else:
+		return Response({"mensaje":"sin variables"})
 
 @api_view(['POST'])
 def CreateFueling(request):
@@ -1061,16 +1231,52 @@ def CreateFuelDump(request):
 
 @api_view(['POST'])
 def ListFuelDump(request):
-	data = request.data
-	fecha1 = data['start_date']
-	fecha2 = data['end_date']
-	fuel_type = data['fuel_type']
-	rows = FuelDump.objects.filter(date__range=[fecha1, fecha2]).filter(fuel_type_id=fuel_type)
-	#rows = FuelDump.objects.all()
-	serializer = FuelDumpListSerializer(rows, many=True)
-	return Response(serializer.data)
+	if ('start_date' in  request.data) and ('end_date' in request.data) and ('fuel_type' in request.data) and ('user' in request.data):
+		
+		fecha1 = request.data['start_date']
+		fecha2 = request.data['end_date']
+		fuel_type = int(request.data['fuel_type'])
+		user = int(request.data['user'])
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if user == 0:
+			rows = FuelDump.objects.filter(date__range=[fecha1, fecha2]).filter(fuel_type_id=fuel_type)
+
+		#*? Empleado				
+		if user != 0:
+			rows = FuelDump.objects.filter(user_id=user).filter(date__range=[fecha1, fecha2]).filter(fuel_type_id=fuel_type)
+
+		serializer = FuelDumpListSerializer(rows, many=True)
+		return Response(serializer.data)
+		
+	else:
+		return Response({"mensaje":"sin variables"})
+
 
 # *? Requisición
+@api_view(['POST'])
+def Requisitions(request):
+	if ('start_date' in  request.data) and ('end_date' in request.data) and ('user' in request.data):
+		
+		fecha1 = request.data['start_date']
+		fecha2 = request.data['end_date']
+		
+		user = int(request.data['user'])
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if user == 0:
+			rows = Requisition.objects.filter(date__range=[fecha1, fecha2])
+
+		#*? Empleado				
+		if user != 0:
+			rows = Requisition.objects.filter(user_id=user).filter(date__range=[fecha1, fecha2])
+
+		serializer = RequisitionListSerializer(rows, many=True)
+		return Response(serializer.data)
+		
+	else:
+		return Response({"mensaje":"sin variables"})
+
 @api_view(['GET'])
 def ListRequisition(request):
 	requisition = Requisition.objects.all()
@@ -1149,6 +1355,26 @@ def DetailFileQuotation(request, pk):
 
 
 # *? CLIENTES
+@api_view(['POST'])
+def Customers(request):
+	if 'user' in request.data:
+		
+		user = int(request.data['user'])
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if  user == 0:
+			rows = Customer.objects.all()
+
+		#*? Empleado				
+		if user != 0:
+			rows = Customer.objects.filter(user_id=user)
+
+		serializer = CustomerSerializer(rows, many=True)
+		return Response(serializer.data)
+		
+	else:
+		return Response({"mensaje":"sin variables"})
+
 @api_view(['GET'])
 def ListCustomer(request):
 	customer = Customer.objects.all()
@@ -1198,15 +1424,27 @@ def UpdatePhotoCustomer(request, pk):
 	return Response({"message":"Registro actualizado satisfactoriamente!","status":200}) 
 
 
-class ReportCustomersPDF(View):
-	def get(self, request, *args, **kwargs):
-		customers = Customer.objects.all()
-		#serializer = EmployeeListSerializer(employees, many=True)
-		data = {
-			'customers': customers
-		}
-		pdf = render_to_pdf('paginas/ReportCustomers.html', data)
-		return HttpResponse(pdf, content_type = 'application/pdf')
+#class ReportCustomersPDF(View):
+@api_view(['GET'])
+def ReportCustomersPDF(request,user):
+	user = int(user)
+	#return Response({"department->":department,"user->":user})
+	#*? administrador
+	if  user == 0:
+		rows = Customer.objects.all()
+
+	#*? Empleado				
+	if user != 0:
+		rows = Customer.objects.filter(user_id=user)
+
+	customers = rows
+	#customers = Customer.objects.all()
+	#serializer = EmployeeListSerializer(employees, many=True)
+	data = {
+		'customers': customers
+	}
+	pdf = render_to_pdf('paginas/ReportCustomers.html', data)
+	return HttpResponse(pdf, content_type = 'application/pdf')
 
 class ReportCustomersXLSX(TemplateView):
 	def get(self, request, *args, **kwargs):
@@ -1268,7 +1506,113 @@ class ReportCustomersXLSX(TemplateView):
 		wb.save(response)
 		return response
 
+#*? ORDEN DE PEDIDO
+@api_view(['POST'])
+def PurchaseOrders(request):
+	if ('start_date' in  request.data) and ('end_date' in request.data) and ('customer' in request.data) and ('user' in request.data):
+		
+		fecha1 = request.data['start_date']
+		fecha2 = request.data['end_date']
+		customer = int(request.data['customer'])
+		user = int(request.data['user'])
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if (customer == 0) and (user == 0):
+			rows = PurchaseOrder.objects.filter(date__range=[fecha1, fecha2])
+
+		if (customer != 0) and (user == 0):
+			rows = PurchaseOrder.objects.filter(business_name_id=customer).filter(date__range=[fecha1, fecha2])
+
+		#*? Empleado				
+		if (customer == 0) and (user != 0):
+			rows = PurchaseOrder.objects.filter(user_id=user).filter(date__range=[fecha1, fecha2])
+			
+		if (customer != 0) and (user != 0):
+			rows = PurchaseOrder.objects.filter(user_id=user).filter(business_name_id=customer).filter(date__range=[fecha1, fecha2])
+		
+		serializer = PurchaseOrderListSerializer(rows, many=True)
+		return Response(serializer.data)
+		
+	else:
+		return Response({"mensaje":"sin variables"})
+
+@api_view(['POST'])
+def CreatePurchaseOrder(request):
+	data = request.data
+	new_creditnote = PurchaseOrder.objects.create(
+		date=data["date"], 
+		purchase_order=data["purchase_order"],
+		date_delivery=data["date_delivery"],
+		business_name_id=data["business_name"],
+		order_number=data ["order_number"],
+		place_delivery=data["place_delivery"],
+		sale_condition = data["sale_condition"],
+		invoice = data["invoice"],
+		observation = data["observation"],
+		auxiliary_sales_id = data["auxiliary_sales"],
+		storekeeper_id = data["storekeeper"],
+		qa_id = data["qa"],
+		iva=data['iva'],
+		subtotal=data['subtotal'],
+		total=data['total'],
+		user_id=data['user']
+		)
+	new_creditnote.save()
+
+	for product in data["products"]:
+		new_product = ProductPO.objects.create(amount=product["amount"], unit=product["unit"], presentation_id=product["presentation"], product_id=product["product"], price=product["price"], subtotal = product["subtotal"], code=data["code"])
+		new_product.save()
+		
+		product_obj = ProductPO.objects.filter(amount=product["amount"], unit=product["unit"], presentation_id=product["presentation"], product_id=product["product"], price=product["price"], subtotal = product["subtotal"], code=data["code"]).get(code=data["code"])
+		new_creditnote.POproducts.add(product_obj)
+
+	return Response({"message":"Registro agregado satisfactoriamente!","status":200})  
+
+
+@api_view(['DELETE'])
+def DeletePurchaseOrder(request, pk):
+	rows = PurchaseOrder.objects.get(id=pk)
+	rows.delete()
+	return Response('Registro eliminado satisfactoriamente!')
+
+@api_view(['GET'])
+def DetailPurchaseOrder(request, pk):
+	row = PurchaseOrder.objects.get(id=pk)
+	serializer = PurchaseOrderListSerializer(row, many=False)
+	return Response(serializer.data)
+
 # *? NOTAS DE CREDITO
+@api_view(['POST'])
+def CreditNotes(request):
+	if ('start_date' in  request.data) and ('end_date' in request.data) and ('customer' in request.data) and ('user' in request.data):
+		
+		fecha1 = request.data['start_date']
+		fecha2 = request.data['end_date']
+		customer = int(request.data['customer'])
+		user = int(request.data['user'])
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if (customer == 0) and (user == 0):
+			rows = CreditNote.objects.filter(date__range=[fecha1, fecha2])
+
+		if (customer != 0) and (user == 0):
+			rows = CreditNote.objects.filter(business_name_id=customer).filter(date__range=[fecha1, fecha2])
+
+		#*? Empleado				
+		if (customer == 0) and (user != 0):
+			rows = CreditNote.objects.filter(user_id=user).filter(date__range=[fecha1, fecha2])
+			
+		if (customer != 0) and (user != 0):
+			rows = CreditNote.objects.filter(user_id=user).filter(business_name_id=customer).filter(date__range=[fecha1, fecha2])
+		
+		serializer = CreditNoteListSerializer(rows, many=True)
+		return Response(serializer.data)
+		
+	else:
+		return Response({"mensaje":"sin variables"})
+
+
+
 @api_view(['GET'])
 def CreditNoteList(request):
 	creditnote = CreditNote.objects.all()
@@ -1321,7 +1665,38 @@ def CreateCreditNote(request):
 	#return Response(serializer.data)
 	return Response({"message":"Registro agregado satisfactoriamente!","status":200})  
 	#return Response({"message":"No se realizó el Registro!","errors":serializer.errors,"status":400})
+
+
 #*? COTIZACIONES
+@api_view(['POST'])
+def Quotes(request):
+	if ('start_date' in  request.data) and ('end_date' in request.data) and ('customer' in request.data) and ('user' in request.data):
+		
+		fecha1 = request.data['start_date']
+		fecha2 = request.data['end_date']
+		customer = int(request.data['customer'])
+		user = int(request.data['user'])
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if (customer == 0) and (user == 0):
+			rows = Quotation.objects.filter(date__range=[fecha1, fecha2])
+
+		if (customer != 0) and (user == 0):
+			rows = Quotation.objects.filter(customer_id=customer).filter(date__range=[fecha1, fecha2])
+
+		#*? Empleado				
+		if (customer == 0) and (user != 0):
+			rows = Quotation.objects.filter(user_id=user).filter(date__range=[fecha1, fecha2])
+
+		if (customer != 0) and (user != 0):
+			rows = Quotation.objects.filter(user_id=user).filter(customer_id=customer).filter(date__range=[fecha1, fecha2])
+		
+		serializer = ListQuotationSerializer(rows, many=True)
+		return Response(serializer.data)
+		
+	else:
+		return Response({"mensaje":"sin variables"})
+
 @api_view(['GET'])
 def ListQuotation(request):
 	quotation = Quotation.objects.all()
@@ -1612,6 +1987,34 @@ def DeleteTicketReview(request, pk):
 	return Response('Registro eliminado satisfactoriamente!')
 
 #*? SALIDAS
+@api_view(['POST'])
+def Outputs(request):
+	if ('start_date' in  request.data) and ('end_date' in request.data) and ('customer' in request.data) and ('user' in request.data):
+		
+		fecha1 = request.data['start_date']
+		fecha2 = request.data['end_date']
+		customer = int(request.data['customer'])
+		user = int(request.data['user'])
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if (customer == 0) and (user == 0):
+			rows = Output.objects.filter(date__range=[fecha1, fecha2])
+
+		if (customer != 0) and (user == 0):
+			rows = Output.objects.filter(customer_id=customer).filter(date__range=[fecha1, fecha2])
+
+		#*? Empleado				
+		if (customer == 0) and (user != 0):
+			rows = Output.objects.filter(user_id=user).filter(date__range=[fecha1, fecha2])
+			
+		if (customer != 0) and (user != 0):
+			rows = Output.objects.filter(user_id=user).filter(customer_id=customer).filter(date__range=[fecha1, fecha2])
+		
+		serializer = OutputListSerializer(rows, many=True)
+		return Response(serializer.data)
+		
+	else:
+		return Response({"mensaje":"sin variables"})
 
 @api_view(['POST'])
 def CreateOutput(request):
@@ -1673,6 +2076,28 @@ def DeleteOutput(request, pk):
 
 
 #? BITACORA
+@api_view(['POST'])
+def Binnacles(request):
+	if ('start_date' in  request.data) and ('end_date' in request.data) and ('user' in request.data):
+		
+		fecha1 = request.data['start_date']
+		fecha2 = request.data['end_date']
+		user = int(request.data['user'])
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if user == 0:
+			rows = Binnacle.objects.filter(fecha__range=[fecha1, fecha2])
+
+		#*? Empleado				
+		if user != 0:
+			rows = Binnacle.objects.filter(user_id=user).filter(fecha__range=[fecha1, fecha2])
+			
+		serializer = BinnacleSerializer(rows, many=True)
+		return Response(serializer.data)
+		
+	else:
+		return Response({"mensaje":"sin variables"})
+
 @api_view(['GET'])
 def ListBinnacle(request,pk):
 	binnacle = Binnacle.objects.filter(user_id=pk)
@@ -1708,16 +2133,38 @@ def UpdateBinnacle(request, pk):
 		return Response({"message":"Registro actualizado satisfactoriamente!","status":200})  
 	return Response({"message":"No se realizó el Registro!","errors":serializer.errors,"status":400})
 
-class ReportBinnaclesPDF(View):
-	def get(self, request, *args, **kwargs):
-		binnacles = Binnacle.objects.all()
-		data = {'binnacles': binnacles}
-		pdf = render_to_pdf('paginas/ReportBinnacles.html', data)
-		return HttpResponse(pdf, content_type = 'application/pdf')
+@api_view(['GET'])
+def ReportBinnaclesPDF(request, start_date, end_date, user):
+	fecha1 = start_date
+	fecha2 = end_date
+	user = int(user)
+	#return Response({"department->":department,"user->":user})
+	#*? administrador
+	if user == 0:
+		rows = Binnacle.objects.filter(fecha__range=[fecha1, fecha2])
+
+	#*? Empleado				
+	if user != 0:
+		rows = Binnacle.objects.filter(user_id=user).filter(fecha__range=[fecha1, fecha2])
+		
+	data = {'binnacles': rows}
+	pdf = render_to_pdf('paginas/ReportBinnacles.html', data)
+	return HttpResponse(pdf, content_type = 'application/pdf')
 
 class ReportBinnaclesXLSX(TemplateView):
-	def get(self, request, *args, **kwargs):
-		binnacles = Binnacle.objects.all()
+	def get(self, request, start_date, end_date, user):
+		fecha1 = start_date
+		fecha2 = end_date
+		user = int(user)
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if user == 0:
+			rows = Binnacle.objects.filter(fecha__range=[fecha1, fecha2])
+		#*? Empleado				
+		if user != 0:
+			rows = Binnacle.objects.filter(user_id=user).filter(fecha__range=[fecha1, fecha2])
+		#binnacles = Binnacle.objects.all()
+		binnacles = rows
 		wb = Workbook()
 		ws = wb.active
 		imag = openpyxl.drawing.image.Image('imagenes/logo_empresa_chica.png')
@@ -1834,6 +2281,25 @@ class ReportBinnaclesXLSX(TemplateView):
 		return response
 
 #? PARCELAS
+@api_view(['POST'])
+def Parcels(request):
+	if 'user' in request.data:
+		
+		user = int(request.data['user'])
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if  user == 0:
+			rows = Parcel.objects.all()
+
+		#*? Empleado				
+		if user != 0:
+			rows = Parcel.objects.filter(user_id=user)
+
+		serializer = ParcelListSerializer(rows, many=True)
+		return Response(serializer.data)
+		
+	else:
+		return Response({"mensaje":"sin variables"})
 
 @api_view(['GET'])
 def ListParcel(request):
@@ -1870,19 +2336,35 @@ def UpdateParcel(request, pk):
 		return Response({"message":"Registro actualizado satisfactoriamente!","status":200})  
 	return Response({"message":"No se realizó el Registro!","errors":serializer.errors,"status":400})
 
-class ReportParcelsPDF(View):
-	def get(self, request, *args, **kwargs):
-		parcels = Parcel.objects.all()
-		#serializer = EmployeeListSerializer(employees, many=True)
-		data = {
-			'parcels': parcels
-		}
-		pdf = render_to_pdf('paginas/ReportParcel.html', data)
-		return HttpResponse(pdf, content_type = 'application/pdf')
+#class ReportParcelsPDF(View):
+@api_view(['GET'])
+def ReportParcelsPDF(request, user):
+	user = int(user)
+	#*? administrador
+	if  user == 0:
+		rows = Parcel.objects.all()
+	#*? Empleado				
+	if user != 0:
+		rows = Parcel.objects.filter(user_id=user)	
+	#parcels = Parcel.objects.all()
+	#serializer = EmployeeListSerializer(employees, many=True)
+	data = {
+		'parcels': rows
+	}
+	pdf = render_to_pdf('paginas/ReportParcel.html', data)
+	return HttpResponse(pdf, content_type = 'application/pdf')
 
 class ReportParcelsXLSX(TemplateView):
-	def get(self, request, *args, **kwargs):
-		parcels = Parcel.objects.all()
+	def get(self, request, user):
+		user = int(user)
+		#*? administrador
+		if  user == 0:
+			rows = Parcel.objects.all()
+		#*? Empleado				
+		if user != 0:
+			rows = Parcel.objects.filter(user_id=user)
+
+		parcels = rows
 		wb = Workbook()
 		ws = wb.active
 		imag = openpyxl.drawing.image.Image('imagenes/logo_empresa_chica.png')
@@ -1930,15 +2412,28 @@ class ReportParcelsXLSX(TemplateView):
 		return response
 
 #? RENTA DE PREDIOS
-
 @api_view(['POST'])
 def ListLandRent(request):
-	data = request.data
-	rent_year = data['rent_year']
-	reason_rent = data['reason_rent']
-	landrent = LandRent.objects.filter(rent_year=rent_year).filter(reason_rent=reason_rent)
-	serializer = ListLandRentSerializer(landrent, many=True)
-	return Response(serializer.data)
+	if ('rent_year' in  request.data) and ('reason_rent' in request.data)  and ('user' in request.data):
+		
+		rent_year = request.data['rent_year']
+		reason_rent = request.data['reason_rent']
+		user = int(request.data['user'])
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if user == 0:
+			rows = LandRent.objects.filter(rent_year=rent_year).filter(reason_rent=reason_rent)
+
+		#*? Empleado				
+
+		if user != 0:
+			rows = LandRent.objects.filter(rent_year=rent_year).filter(reason_rent=reason_rent).filter(user_id=user)
+		
+		serializer = ListLandRentSerializer(rows, many=True)
+		return Response(serializer.data)
+		
+	else:
+		return Response({"mensaje":"sin variables"})
 
 @api_view(['POST'])
 def CreateLandRent(request):
@@ -2028,6 +2523,30 @@ def ListDiscount(request):
 
 
 # *? COMPRAS
+@api_view(['POST'])
+def Shoppings(request):
+	if ('start_date' in  request.data) and ('end_date' in request.data) and ('user' in request.data):
+		
+		fecha1 = request.data['start_date']
+		fecha2 = request.data['end_date']
+		
+		user = int(request.data['user'])
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if user == 0:
+			rows = Shopping.objects.filter(date__range=[fecha1, fecha2])
+
+		#*? Empleado				
+		if user != 0:
+			rows = Shopping.objects.filter(user_id=user).filter(date__range=[fecha1, fecha2])
+
+		serializer = ShoppingListSerializer(rows, many=True)
+		return Response(serializer.data)
+		
+	else:
+		return Response({"mensaje":"sin variables"})
+
+
 @api_view(['GET'])
 def ListShopping(request):
 	shopping = Shopping.objects.all()
@@ -2105,6 +2624,27 @@ def CreateSociety(request):
 	return Response({"message":"Registro agregado satisfactoriamente!","status":200})  
 	#return Response({"message":"No se realizó el Registro!","errors":serializer.errors,"status":400})
 
+@api_view(['POST'])
+def Societies(request):
+	if 'user' in request.data:
+		
+		user = int(request.data['user'])
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if  user == 0:
+			rows = Society.objects.all()
+
+		#*? Empleado				
+		if user != 0:
+			rows = Society.objects.filter(user_id=user)
+
+		serializer = SocietySerializer(rows, many=True)
+		return Response(serializer.data)
+		
+	else:
+		return Response({"mensaje":"sin variables"})
+
+
 @api_view(['GET'])
 def ListSociety(request):
 	society = Society.objects.all()
@@ -2123,19 +2663,33 @@ def DetailSociety(request, pk):
 	serializer = SocietyListSerializer(society, many=False)
 	return Response(serializer.data)
 
-class ReportSocietiesPDF(View):
-	def get(self, request, *args, **kwargs):
-		societies = Society.objects.all()
-		#serializer = EmployeeListSerializer(employees, many=True)
-		data = {
-			'societies': societies
-		}
-		pdf = render_to_pdf('paginas/ReportSocieties.html', data)
-		return HttpResponse(pdf, content_type = 'application/pdf')
+#class ReportSocietiesPDF(View):
+def ReportSocietiesPDF(request,user):
+	user = int(user)
+	#*? administrador
+	if  user == 0:
+		rows = Society.objects.all()
+	#*? Empleado				
+	if user != 0:
+		rows = Society.objects.filter(user_id=user)
+
+	data = {
+		'societies': rows
+	}
+	pdf = render_to_pdf('paginas/ReportSocieties.html', data)
+	return HttpResponse(pdf, content_type = 'application/pdf')
 
 class ReportSocietiesXLSX(TemplateView):
-	def get(self, request, *args, **kwargs):
-		societies = Society.objects.all()
+	def get(self, request, user):
+		user = int(user)
+		#*? administrador
+		if  user == 0:
+			rows = Society.objects.all()
+		#*? Empleado				
+		if user != 0:
+			rows = Society.objects.filter(user_id=user)
+		societies = rows
+		#societies = Society.objects.all()
 		wb = Workbook()
 		ws = wb.active
 		imag = openpyxl.drawing.image.Image('imagenes/logo_empresa_chica.png')
@@ -2149,9 +2703,10 @@ class ReportSocietiesXLSX(TemplateView):
 		ws.merge_cells('C5:I5')
 
 		ws['C6'] = 'ID'
-		ws['D6'] = 'Nombre'
+		ws['D6'] = 'Sociedad'
 		ws['E6'] = 'Ciclo'
 		ws['F6'] = 'Año'
+		ws['G6'] = 'Productores'
 
 		cont = 7
 		pos = 1
@@ -2161,9 +2716,17 @@ class ReportSocietiesXLSX(TemplateView):
 			ws.cell(row = cont, column = 4).value=item.name
 			ws.cell(row = cont, column = 5).value=item.cycle
 			ws.cell(row = cont, column = 6).value=item.year
+			
 
 			cont+=1
+
+			ws.cell(row = cont, column = 3).value='PRODUCTORES'
+			cont+=1
+			for row in item.producers.all():
+				ws.cell(row = cont, column = 3).value=row.name
+				cont+=1
 			pos+=1
+		
 
 		nombre_archivo = "Reporte_Sociedades.xlsx"
 		response = HttpResponse(content_type = "application/ms-excel")
@@ -2279,19 +2842,32 @@ def DetailFileProducer(request, pk):
 #*? SEGALMEX RECEPCIÓN
 @api_view(['POST'])
 def SearchReception(request):
-	try:
-		data = request.data
-		fecha1 = data['start_date']
-		fecha2 = data['end_date']
-		productor = data['producer']
-		reception = SegalmexReception.objects.filter(checkin_date__range=[fecha1, fecha2]).filter(producer_id=productor)
-		serializer = ListSegalmexReceptionSerializer(reception, many=True)
-		return Response(serializer.data)
+	if ('start_date' in  request.data) and ('end_date' in request.data) and ('producer' in request.data) and ('user' in request.data):
+		fecha1 = request.data['start_date']
+		fecha2 = request.data['end_date']
+		producer = int(request.data['producer'])
+		user = int(request.data['user'])
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if (producer == 0) and (user == 0):
+			rows = SegalmexReception.objects.filter(checkin_date__range=[fecha1, fecha2])
 
-	except KeyError:
-		reception = SegalmexReception.objects.filter(checkin_date__range=[fecha1, fecha2])
-		serializer = ListSegalmexReceptionSerializer(reception, many=True)
-		return Response(serializer.data)	
+		if (producer != 0) and (user == 0):
+			rows = SegalmexReception.objects.filter(producer_id=producer).filter(checkin_date__range=[fecha1, fecha2])
+
+		#*? Empleado				
+		if (producer == 0) and (user != 0):
+			rows = SegalmexReception.objects.filter(user_id=user).filter(checkin_date__range=[fecha1, fecha2])
+
+		if (producer != 0) and (user != 0):
+			rows = SegalmexReception.objects.filter(user_id=user).filter(producer_id=producer).filter(checkin_date__range=[fecha1, fecha2])			
+			
+		serializer = ListSegalmexReceptionSerializer(rows, many=True)
+		return Response(serializer.data)
+		
+	else:
+		return Response({"mensaje":"sin variables"})
+
 		
 @api_view(['GET'])
 def ListSegalmexReception(request):
@@ -2457,14 +3033,32 @@ def UpdatePaymentProducer(request, pk):
 #*? SALARIO DE CHOFERES
 @api_view(['POST'])
 def ListDriverSalary(request):
-	data = request.data
-	fecha1 = data['start_date']
-	fecha2 = data['end_date']
-	driver = data['driver']
-	driver = DriverSalary.objects.filter(date__range=[fecha1, fecha2]).filter(driver_id = driver)
-	serializer = ListDriverSalarySerializer(driver, many=True)
-	return Response(serializer.data)
+	if ('start_date' in  request.data) and ('end_date' in request.data) and ('driver' in request.data) and ('user' in request.data):
+		
+		fecha1 = request.data['start_date']
+		fecha2 = request.data['end_date']
+		driver = int(request.data['driver'])
+		user = int(request.data['user'])
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if (driver == 0) and (user == 0):
+			rows = DriverSalary.objects.filter(date__range=[fecha1, fecha2])
 
+		if (driver != 0) and (user == 0):
+			rows = DriverSalary.objects.filter(driver_id=driver).filter(date__range=[fecha1, fecha2])
+
+		#*? Empleado				
+		if (driver == 0) and (user != 0):
+			rows = DriverSalary.objects.filter(user_id=user).filter(date__range=[fecha1, fecha2])
+			
+		if (driver != 0) and (user != 0):
+			rows = DriverSalary.objects.filter(user_id=user).filter(driver_id=driver).filter(date__range=[fecha1, fecha2])
+		
+		serializer = ListDriverSalarySerializer(rows, many=True)
+		return Response(serializer.data)
+		
+	else:
+		return Response({"mensaje":"sin variables"})
 
 @api_view(['POST'])
 def CreateDriverSalary(request):
@@ -2497,13 +3091,32 @@ def UpdateDriverSalary(request, pk):
 #*? SALARIO DE CARGADORES
 @api_view(['POST'])
 def ListChargerSalary(request):
-	data = request.data
-	fecha1 = data['start_date']
-	fecha2 = data['end_date']
-	#charger = data['charger']
-	salaries = ChargerSalary.objects.filter(date__range=[fecha1, fecha2])
-	serializer = ListChargerSalarySerializer(salaries, many=True)
-	return Response(serializer.data)
+	if ('start_date' in  request.data) and ('end_date' in request.data) and ('charger' in request.data) and ('user' in request.data):
+		
+		fecha1 = request.data['start_date']
+		fecha2 = request.data['end_date']
+		charger = int(request.data['charger'])
+		user = int(request.data['user'])
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if (charger == 0) and (user == 0):
+			rows = ChargerSalary.objects.filter(date__range=[fecha1, fecha2])
+
+		if (charger != 0) and (user == 0):
+			rows = ChargerSalary.objects.filter(charger_id=charger).filter(date__range=[fecha1, fecha2])
+
+		#*? Empleado				
+		if (charger == 0) and (user != 0):
+			rows = ChargerSalary.objects.filter(user_id=user).filter(date__range=[fecha1, fecha2])
+			
+		if (charger != 0) and (user != 0):
+			rows = ChargerSalary.objects.filter(user_id=user).filter(charger_id=charger).filter(date__range=[fecha1, fecha2])
+		
+		serializer = ListChargerSalarySerializer(rows, many=True)
+		return Response(serializer.data)
+		
+	else:
+		return Response({"mensaje":"sin variables"})
 
 
 @api_view(['POST'])
@@ -2755,6 +3368,35 @@ def DeletePaymentsDrivers(request, pk):
 
 #*? CARTA PORTE
 @api_view(['POST'])
+def BillOfLadings(request):
+	if ('start_date' in  request.data) and ('end_date' in request.data) and ('customer' in request.data) and ('user' in request.data):
+		
+		fecha1 = request.data['start_date']
+		fecha2 = request.data['end_date']
+		customer = int(request.data['customer'])
+		user = int(request.data['user'])
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if (customer == 0) and (user == 0):
+			rows = BillOfLading.objects.filter(date__range=[fecha1, fecha2])
+
+		if (customer != 0) and (user == 0):
+			rows = BillOfLading.objects.filter(customer_id=customer).filter(date__range=[fecha1, fecha2])
+
+		#*? Empleado				
+		if (customer == 0) and (user != 0):
+			rows = BillOfLading.objects.filter(user_id=user).filter(date__range=[fecha1, fecha2])
+			
+		if (customer != 0) and (user != 0):
+			rows = BillOfLading.objects.filter(user_id=user).filter(customer_id=customer).filter(date__range=[fecha1, fecha2])
+		
+		serializer = ListBillOfLadingSerializer(rows, many=True)
+		return Response(serializer.data)
+		
+	else:
+		return Response({"mensaje":"sin variables"})
+
+@api_view(['POST'])
 def CreateBillOfLading(request):
 	serializer = BillOfLadingSerializer(data = request.data)
 	if serializer.is_valid():
@@ -2778,12 +3420,44 @@ def DeleteBillOfLading(request, pk):
 	bill.delete()
 	return Response('Registro eliminado satisfactoriamente!')
 
+#*? PROGRAMACIÓN DE PAGOS
+@api_view(['POST'])
+def PaymentsSchedule(request):
+	if ('start_date' in  request.data) and ('end_date' in request.data) and ('customer' in request.data) and ('user' in request.data):
+		
+		fecha1 = request.data['start_date']
+		fecha2 = request.data['end_date']
+		customer = int(request.data['customer'])
+		user = int(request.data['user'])
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if (customer == 0) and (user == 0):
+			rows = PaymentSchedule.objects.filter(date__range=[fecha1, fecha2])
+
+		if (customer != 0) and (user == 0):
+			rows = PaymentSchedule.objects.filter(customer_id=customer).filter(date__range=[fecha1, fecha2])
+
+		#*? Empleado				
+		if (customer == 0) and (user != 0):
+			rows = PaymentSchedule.objects.filter(user_id=user).filter(date__range=[fecha1, fecha2])
+			
+		if (customer != 0) and (user != 0):
+			rows = PaymentSchedule.objects.filter(user_id=user).filter(customer_id=customer).filter(date__range=[fecha1, fecha2])
+		
+		serializer = ListPaymentScheduleSerializer(rows, many=True)
+		return Response(serializer.data)
+		
+	else:
+		return Response({"mensaje":"sin variables"})
+
+
 @api_view(['POST'])
 def CreatePaymentSchedule(request):
 	data = request.data
 	new_payment = PaymentSchedule.objects.create(
 		date=data["date"], 
 		company_id=data["company"],
+		customer_id=data["customer"],
 		bank_account_id=data["bank_account"],
 		description=data["description"],
 		total=data["total"],
@@ -2869,6 +3543,34 @@ def ListBankAccountsProvider(request, pk):
 
 
 #*? INGRESOS FACTURADOS
+@api_view(['POST'])
+def ListBilledIncome(request):
+	if ('start_date' in  request.data) and ('end_date' in request.data) and ('customer' in request.data) and ('user' in request.data):
+		
+		fecha1 = request.data['start_date']
+		fecha2 = request.data['end_date']
+		customer = int(request.data['customer'])
+		user = int(request.data['user'])
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if (customer == 0) and (user == 0):
+			rows = BilledIncome.objects.filter(date__range=[fecha1, fecha2])
+
+		if (customer != 0) and (user == 0):
+			rows = BilledIncome.objects.filter(customer_id=customer).filter(date__range=[fecha1, fecha2])
+
+		#*? Empleado				
+		if (customer == 0) and (user != 0):
+			rows = BilledIncome.objects.filter(user_id=user).filter(date__range=[fecha1, fecha2])
+			
+		if (customer != 0) and (user != 0):
+			rows = BilledIncome.objects.filter(user_id=user).filter(customer_id=customer).filter(date__range=[fecha1, fecha2])
+		
+		serializer = ListBilledIncomeSerializer(rows, many=True)
+		return Response(serializer.data)
+		
+	else:
+		return Response({"mensaje":"sin variables"})
 
 @api_view(['POST'])
 def CreateBilledIncome(request):
@@ -2878,15 +3580,6 @@ def CreateBilledIncome(request):
 		return Response({"message":"Registro agregado satisfactoriamente!","status":200})  
 	return Response({"message":"No se realizó el Registro!","errors":serializer.errors,"status":400})
 
-@api_view(['POST'])
-def ListBilledIncome(request):
-	data = request.data
-	fecha1 = data['start_date']
-	fecha2 = data['end_date']
-	company = data['company']
-	list = BilledIncome.objects.filter(date__range=[fecha1, fecha2]).filter(company_id = company)
-	serializer = ListBilledIncomeSerializer(list, many=True)
-	return Response(serializer.data)	
 
 @api_view(['GET'])
 def ListBills(request):

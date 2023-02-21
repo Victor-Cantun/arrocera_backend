@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-d+pq(r8+bw83muuo(6ax8aq!*@nr)4=ct*2nfvm+g*j4an=^_@
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['198.211.99.88','localhost','127.0.0.1']
+ALLOWED_HOSTS = ['198.211.99.88','localhost','127.0.0.1','django.arroztollocan.com','django.arroztollocan.com:8000','admin.arroztollocan.com']
 
 
 # Application definition
@@ -61,6 +61,10 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:8000",
     "http://localhost:4200",
+    "http://198.211.99.88",
+    'https://django.arroztollocan.com',
+    'https://django.arroztollocan.com:8000',
+    'https://admin.arroztollocan.com',
 ]
 
 CORS_ALLOW_METHODS = [
@@ -142,14 +146,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 
 
-MEDIA_ROOT = os.path.join(BASE_DIR,'')
+MEDIA_ROOT = os.path.join(BASE_DIR,'static/')
 MEDIA_URL = '/files/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

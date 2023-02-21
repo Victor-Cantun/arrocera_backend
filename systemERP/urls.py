@@ -52,6 +52,7 @@ urlpatterns = [
     path('ReportBankAccountsPDF', views.ReportBankAccountsPDF.as_view(), name='ReportBankAccountsPDF'),
     path('ReportBankAccountsXLSX', views.ReportBankAccountsXLSX.as_view(), name='ReportBankAccountsXLSX'),     
 #*? PRODUCTORES   
+    path('Producers',views.Producers, name="Producers"),
     path('ProducerList',views.ProducerList, name="ProducerList"),
     path('ProducerDetail/<str:pk>',views.ProducerDetail, name="ProducerDetail"),
     path('CreateProducer',views.CreateProducer, name="CreateProducer"),
@@ -59,20 +60,22 @@ urlpatterns = [
     path('DeleteProducer/<str:pk>',views.DeleteProducer, name="DeleteProducer"),  
     path('UploadDocProducer',views.UploadDocProducer, name="UploadDocProducer"), 
     path('DetailFileProducer/<str:pk>',views.DetailFileProducer, name="DetailFileProducer"),   
-    path('ReportProducersPDF', views.ReportProducersPDF.as_view(), name='ReportProducersPDF'),  
-    path('ReportProducersXLSX', views.ReportProducersXLSX.as_view(), name='ReportProducersXLSX'),       
+    path('ReportProducersPDF/<str:user>', views.ReportProducersPDF, name='ReportProducersPDF'),  
+    path('ReportProducersXLSX/<str:user>', views.ReportProducersXLSX.as_view(), name='ReportProducersXLSX'),       
 #*? PROVEEDORES
+    path('Providers',views.Providers, name="Providers"),
     path('ProviderList',views.ProviderList, name="ProviderList"),
     path('ProviderListForUser/<str:pk>',views.ProviderListForUser, name="ProviderList"),
     path('ProviderDetail/<str:pk>',views.ProviderDetail, name="ProviderDetail"),
     path('CreateProvider',views.CreateProvider, name="CreateProvider"),
     path('UpdateProvider/<str:pk>',views.UpdateProvider, name="UpdateProvider"),
     path('DeleteProvider/<str:pk>',views.DeleteProvider, name="DeleteProvider"),
-    path('ReportProvidersPDF', views.ReportProvidersPDF.as_view(), name='ReportProvidersPDF'),  
-    path('ReportProvidersXLSX', views.ReportProvidersXLSX.as_view(), name='ReportProvidersXLSX'),  
+    path('ReportProvidersPDF/<str:user>', views.ReportProvidersPDF, name='ReportProvidersPDF'),  
+    path('ReportProvidersXLSX/<str:user>', views.ReportProvidersXLSX.as_view(), name='ReportProvidersXLSX'),  
 #*? EMPLEADOS
     path('Empleado',views.EmpleadoList.as_view(), name="Empleado"),
-    path('ListEmployee',views.ListEmployee, name="ListEmployee"),
+    path('Employees',views.Employees, name="Employees"), 
+    path('ListEmployee',views.ListEmployee, name="ListEmployee"), 
     path('EmployeeListForUser/<str:pk>',views.EmployeeListForUser, name="EmployeeList"),
     path('EmployeeDetail/<str:pk>',views.EmployeeDetail, name="EmployeeDetail"),
     path('CreateEmployee',views.CreateEmployee, name="CreateEmployee"),
@@ -80,9 +83,10 @@ urlpatterns = [
     path('UpdateEmployee/<str:pk>',views.UpdateEmployee, name="UpdateEmployee"),
     path('UpdatePhotoEmployee/<str:pk>',views.UpdatePhotoEmployee, name="UpdatePhotoEmployee"),
     path('DeleteEmployee/<str:pk>',views.DeleteEmployee, name="DeleteEmployee"), 
-    path('ReportEmployeesPDF', views.ReportEmployeesPDF.as_view(), name='ReportEmployeesPDF'),
-    path('ReportEmployeesXLSX', views.ReportEmployeesXLSX.as_view(), name='ReportEmployeesXLSX'),   
+    path('ReportEmployeesPDF/<str:department>/<str:user>', views.ReportEmployeesPDF, name='ReportEmployeesPDF'),
+    path('ReportEmployeesXLSX/<str:department>/<str:user>', views.ReportEmployeesXLSX.as_view(), name='ReportEmployeesXLSX'),   
 #*? UNIDADES
+    path('Units', views.Units, name="Units"),
     path('VehicleTypeList', views.VehicleTypeList, name="VehicleTypeList"),
     path('CreateVehicleType',views.CreateVehicleType, name="CreateVehicleType"), 
     path('UnitList', views.UnitList, name="UnitList"),  
@@ -92,8 +96,8 @@ urlpatterns = [
     path('UpdateUnit/<str:pk>',views.UpdateUnit, name="UpdateUnit"),
     path('DeleteUnit/<str:pk>',views.DeleteUnit, name="DeleteUnit"), 
     path('UpdatePhotoUnit/<str:pk>',views.UpdatePhotoUnit, name="UpdatePhotoUnit"),
-    path('ReportUnitsPDF', views.ReportUnitsPDF.as_view(), name='ReportUnitsPDF'),
-    path('ReportUnitsXLSX', views.ReportUnitsXLSX.as_view(), name='ReportUnitsXLSX'),  
+    path('ReportUnitsPDF/<str:user>', views.ReportUnitsPDF, name='ReportUnitsPDF'),
+    path('ReportUnitsXLSX/<str:user>', views.ReportUnitsXLSX.as_view(), name='ReportUnitsXLSX'),  
     path('UploadFileUnit',views.UploadFileUnit, name="UploadFileUnit"), 
     path('DetailFileUnit/<str:pk>',views.DetailFileUnit, name="DetailFileUnit"),      
 #*? COMBUSTIBLE
@@ -108,6 +112,7 @@ urlpatterns = [
     path('ListFuelDump', views.ListFuelDump, name="ListFuelDump"),
 
 #*? REQUISITION   
+    path('Requisitions', views.Requisitions, name="Requisitions"),
     path('ListRequisition', views.ListRequisition, name="ListRequisition"),
     path('ListAuthorizedRequisitions', views.ListAuthorizedRequisitions, name="ListAuthorizedRequisitions"),
     path('CreateRequisition',views.CreateRequisition, name="CreateRequisition"),
@@ -117,21 +122,30 @@ urlpatterns = [
     path('DetailFileQuotation/<str:pk>',views.DetailFileQuotation, name="DetailFileQuotation"),  
     path('UpdateStatusRequisition/<str:pk>',views.UpdateStatusRequisition, name="UpdateStatusRequisition"),
 #*? CLIENTES
+    path('Customers',views.Customers, name="Customers"),
     path('ListCustomer',views.ListCustomer, name="ListCustomer"),
     path('CustomerList/<str:pk>',views.CustomerList, name="CustomerList"),
     path('CustomerDetail/<str:pk>',views.CustomerDetail, name="CustomerDetail"),
     path('CreateCustomer',views.CreateCustomer, name="CreateCustomer"),
     path('UpdateCustomer/<str:pk>',views.UpdateCustomer, name="UpdateCustomer"),
     path('DeleteCustomer/<str:pk>',views.DeleteCustomer, name="DeleteCustomer"),
-    path('ReportCustomersPDF', views.ReportCustomersPDF.as_view(), name='ReportCustomersPDF'),  
+    path('ReportCustomersPDF/<str:user>', views.ReportCustomersPDF, name='ReportCustomersPDF'),  
     path('ReportCustomersXLSX', views.ReportCustomersXLSX.as_view(), name='ReportCustomersXLSX'),
-    path('UpdatePhotoCustomer/<str:pk>',views.UpdatePhotoCustomer, name="UpdatePhotoCustomer"),  
+    path('UpdatePhotoCustomer/<str:pk>',views.UpdatePhotoCustomer, name="UpdatePhotoCustomer"), 
+#*? ORDEN DE PEDIDO
+    path('PurchaseOrders', views.PurchaseOrders, name="PurchaseOrders"),
+    path('CreatePurchaseOrder',views.CreatePurchaseOrder, name="CreatePurchaseOrder"),
+    path('DeletePurchaseOrder/<str:pk>',views.DeletePurchaseOrder, name="DeletePurchaseOrder"),
+    path('DetailPurchaseOrder/<str:pk>',views.DetailPurchaseOrder, name="DetailPurchaseOrder"),      
+
 #*? NOTAS DE CREDITO   
+    path('CreditNotes', views.CreditNotes, name="CreditNotes"),    
     path('CreditNoteList', views.CreditNoteList, name="CreditNoteList"),
     path('CreateCreditNote',views.CreateCreditNote, name="CreateCreditNote"),
     path('DeleteCreditNote/<str:pk>',views.DeleteCreditNote, name="DeleteCreditNote"),
     path('CreditNoteDetail/<str:pk>',views.CreditNoteDetail, name="CreditNoteDetail"),
 #*? COTIZACIONES 
+    path('Quotes',views.Quotes, name="Quotes"), 
     path('ListQuotation', views.ListQuotation, name="ListQuotation"),
     path('CreateQuotation',views.CreateQuotation, name="CreateQuotation"),
     path('DeleteQuotation/<str:pk>',views.DeleteQuotation, name="DeleteQuotation"),
@@ -167,26 +181,29 @@ urlpatterns = [
     path('TicketReviewList', views.TicketReviewList, name="TicketReviewList"),
     path('TicketReviewDetail/<str:pk>',views.TicketReviewDetail, name="TicketReviewDetail"),  
 #*? SALIDAS REPASO
+    path('Outputs', views.Outputs, name="Outputs"),
     path('CreateOutput',views.CreateOutput, name="CreateOutput"),
     path('OutputList', views.OutputList, name="OutputList"),
     path('OutputDetail/<str:pk>',views.OutputDetail, name="OutputDetail"),
     path('DeleteOutput/<str:pk>',views.DeleteOutput, name="DeleteOutput"),
 #*? BITACORA
+    path('Binnacles',views.Binnacles, name="Binnacles"),
     path('ListBinnacle/<str:pk>',views.ListBinnacle, name="ListBinnacle"),
     path('DetailBinnacle/<str:pk>',views.DetailBinnacle, name="DetailBinnacle"),
     path('CreateBinnacle',views.CreateBinnacle, name="CreateBinnacle"),
     path('UpdateBinnacle/<str:pk>',views.UpdateBinnacle, name="UpdateBinnacle"),
     path('DeleteBinnacle/<str:pk>',views.DeleteBinnacle, name="DeleteBinnacle"),
-    path('ReportBinnaclesPDF', views.ReportBinnaclesPDF.as_view(), name='ReportBinnaclesPDF'),  
-    path('ReportBinnaclesXLSX', views.ReportBinnaclesXLSX.as_view(), name='ReportBinnaclesXLSX'),     
+    path('ReportBinnaclesPDF/<str:start_date>/<str:end_date>/<str:user>', views.ReportBinnaclesPDF, name='ReportBinnaclesPDF'),  
+    path('ReportBinnaclesXLSX/<str:start_date>/<str:end_date>/<str:user>', views.ReportBinnaclesXLSX.as_view(), name='ReportBinnaclesXLSX'),     
 #*? PARCELAS
+    path('Parcels',views.Parcels, name="Parcels"),
     path('ListParcel',views.ListParcel, name="ListParcel"),
     path('DetailParcel/<str:pk>',views.DetailParcel, name="DetailParcel"),
     path('CreateParcel',views.CreateParcel, name="CreateParcel"),
     path('UpdateParcel/<str:pk>',views.UpdateParcel, name="UpdateParcel"),
     path('DeleteParcel/<str:pk>',views.DeleteParcel, name="DeleteParcel"),   
-    path('ReportParcelsPDF', views.ReportParcelsPDF.as_view(), name='ReportParcelsPDF'),  
-    path('ReportParcelsXLSX', views.ReportParcelsXLSX.as_view(), name='ReportParcelsXLSX'), 
+    path('ReportParcelsPDF/<str:user>', views.ReportParcelsPDF, name='ReportParcelsPDF'),  
+    path('ReportParcelsXLSX/<str:user>', views.ReportParcelsXLSX.as_view(), name='ReportParcelsXLSX'), 
 #*? RENTA DE TIERRAS
     path('ListLandRent',views.ListLandRent, name="ListLandRent"),
     path('CreateLandRent',views.CreateLandRent, name="CreateLandRent"),
@@ -203,6 +220,7 @@ urlpatterns = [
     path('ListDiscount',views.ListDiscount, name="ListDiscount"),
 
 #*? COMPRAS
+    path('Shoppings',views.Shoppings, name="Shoppings"),
     path('ListShopping',views.ListShopping, name="ListShopping"),
     path('DetailShopping/<str:pk>',views.DetailShopping, name="DetailShopping"),
     path('CreateShopping',views.CreateShopping, name="CreateShopping"),
@@ -210,12 +228,13 @@ urlpatterns = [
     path('DeleteShopping/<str:pk>',views.DeleteShopping, name="DeleteShopping"), 
 
 #*? SOCIEDADES
+    path('Societies',views.Societies, name="Societies"),
     path('CreateSociety',views.CreateSociety, name="CreateSociety"),
     path('ListSociety',views.ListSociety, name="ListSociety"),
     path('DeleteSociety/<str:pk>',views.DeleteSociety, name="DeleteSociety"),
     path('DetailSociety/<str:pk>',views.DetailSociety, name="DetailSociety"),
-    path('ReportSocietiesPDF', views.ReportSocietiesPDF.as_view(), name='ReportSocietiesPDF'),  
-    path('ReportSocietiesXLSX', views.ReportSocietiesXLSX.as_view(), name='ReportSocietiesXLSX'),  
+    path('ReportSocietiesPDF/<str:user>', views.ReportSocietiesPDF, name='ReportSocietiesPDF'),  
+    path('ReportSocietiesXLSX/<str:user>', views.ReportSocietiesXLSX.as_view(), name='ReportSocietiesXLSX'),  
 
 #*? SEGALMEX parcelas
 
@@ -300,6 +319,11 @@ urlpatterns = [
     path('CreatePaymentsChargers',views.CreatePaymentsChargers, name="CreatePaymentsChargers"),
     path('DeletePaymentsChargers/<str:pk>',views.DeletePaymentsChargers, name="DeletePaymentsChargers"),
 
+#*? Drivers/ CHOFERES
+
+#*? Chargers/ Cargadores
+
+
 #*? Prestamos Choferes
     path('ListLoansDrivers',views.ListLoansDrivers, name="ListLoansDrivers"),
     path('CreateLoansDrivers',views.CreateLoansDrivers, name="CreateLoansDrivers"),
@@ -310,10 +334,12 @@ urlpatterns = [
     path('DeletePaymentsDrivers/<str:pk>',views.DeletePaymentsDrivers, name="DeletePaymentsDrivers"),
 
 #*? Carta PORTE
+    path('BillOfLadings',views.BillOfLadings, name="BillOfLadings"),
     path('ListBillOfLading',views.ListBillOfLading, name="ListBillOfLading"),
     path('CreateBillOfLading',views.CreateBillOfLading, name="CreateBillOfLading"),
     path('DeleteBillOfLading/<str:pk>',views.DeleteBillOfLading, name="DeleteBillOfLading"),  
 #*? Progración de pagos
+    path('PaymentsSchedule',views.PaymentsSchedule, name="PaymentsSchedule"),
     path('ListPaymentSchedule',views.ListPaymentSchedule, name="ListPaymentSchedule"),
     path('CreatePaymentSchedule',views.CreatePaymentSchedule, name="CreatePaymentSchedule"),
     path('DeletePaymentSchedule/<str:pk>',views.DeletePaymentSchedule, name="DeletePaymentSchedule"),
