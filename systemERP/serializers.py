@@ -497,8 +497,7 @@ class VarietySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ListSegalmexReceptionSerializer(serializers.ModelSerializer):
-    producer = ProducerSerializer(many=False, read_only=True)
-    location = LocationSerializer(many=False, read_only=True)
+    producer = ProducerSerializer(many=False, read_only=True)    
     driver = EmployeeSerializer(many=False, read_only=True)
     plate = UnitSerializer(many=False, read_only=True)
     variety = VarietySerializer(many=False, read_only=True)
@@ -506,6 +505,27 @@ class ListSegalmexReceptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = SegalmexReception
         fields = '__all__'
+
+    def to_representation(self, instance):
+
+        response = super().to_representation(instance)
+        response['company'] = instance.company.name if instance.company != None else '';
+        response['producer'] = instance.producer.name if instance.producer != None else '';
+        response['driver'] = instance.driver.name if instance.driver != None else '';
+        response['brand'] = instance.plate.brand if instance.plate != None else '';
+        response['model'] = instance.plate.model if instance.plate != None else '';
+        response['plate'] = instance.plate.plate_no if instance.plate != None else '';
+        response['variety'] = instance.variety.name if instance.variety != None else '';
+        response['receive'] = instance.receive.name if instance.receive != None else '';
+        
+        response['company_id'] = instance.company.id if instance.company != None else '';
+        response['producer_id'] = instance.producer.id if instance.producer != None else '';
+        response['driver_id'] = instance.driver.id if instance.driver != None else '';
+        response['plate_id'] = instance.plate.id if instance.plate != None else '';
+        response['variety_id'] = instance.variety.id if instance.variety != None else '';
+        response['receive_id'] = instance.receive.id if instance.receive != None else '';        
+    
+        return response
 
 class PaymentOrderProducerSerializer(serializers.ModelSerializer):
     class Meta:

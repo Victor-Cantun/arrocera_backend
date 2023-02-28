@@ -107,6 +107,8 @@ urlpatterns = [
     path('CreateFueling',views.CreateFueling, name="CreateFueling"),
     path('UpdateFueling/<str:pk>',views.UpdateFueling, name="UpdateFueling"),
     path('DeleteFueling/<str:pk>',views.DeleteFueling, name="DeleteFueling"),
+    path('ReportFuelLoadPDF/<str:start_date>/<str:end_date>/<str:fuel_type>/<str:user>', views.ReportFuelLoadPDF, name='ReportFuelLoadPDF'),  
+    path('ReportFuelLoadXLSX/<str:start_date>/<str:end_date>/<str:fuel_type>/<str:user>', views.ReportFuelLoadXLSX.as_view(), name='ReportFuelLoadXLSX'), 
 #*? DESCARGA DE COMBUSTIBLE
     path('CreateFuelDump',views.CreateFuelDump, name="CreateFuelDump"),
     path('ListFuelDump', views.ListFuelDump, name="ListFuelDump"),
@@ -253,8 +255,9 @@ urlpatterns = [
     path('DeleteSegalmexReception/<str:pk>',views.DeleteSegalmexReception, name="DeleteSegalmexReception"),
     path('DetailSegalmexReception/<str:pk>',views.DetailSegalmexReception, name="DetailSegalmexReception"),
     path('UpdateSegalmexReception/<str:pk>',views.UpdateSegalmexReception, name="UpdateSegalmexReception"),
-    path('BoletaPDF/<str:pk>', views.PDF_Boleta.as_view(), name='BoletaPDF'),
+    #path('BoletaPDF/<str:pk>', views.PDF_Boleta.as_view(), name='BoletaPDF'),
     path('SearchReception',views.SearchReception, name="SearchReception"),
+    path('ReportReceptionsXLSX/<str:start_date>/<str:end_date>/<str:producer>/<str:user>', views.ReportReceptionsXLSX.as_view(), name='ReportReceptionsXLSX'),     
 
 #*? Locatidades
     path('ListLocation',views.ListLocation, name="ListLocation"),

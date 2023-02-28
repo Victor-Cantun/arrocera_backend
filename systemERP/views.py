@@ -21,6 +21,8 @@ from openpyxl.drawing.image import Image
 from werkzeug.security import generate_password_hash, check_password_hash
 from django.db.models import Sum
 # Create your views here.
+from io import BytesIO
+from xhtml2pdf import pisa
 def home(request):
 	return render(request, 'home.html')
 
@@ -948,8 +950,8 @@ class ReportEmployeesXLSX(TemplateView):
 			ws.cell(row = cont, column = 4).value=empleado.name
 			ws.cell(row = cont, column = 5).value=empleado.surname
 			ws.cell(row = cont, column = 6).value=empleado.second_surname
-			ws.cell(row = cont, column = 7).value=empleado.department.name
-			ws.cell(row = cont, column = 8).value=empleado.category.name
+			ws.cell(row = cont, column = 7).value=empleado.department.name if empleado.department != None else ''
+			ws.cell(row = cont, column = 8).value=empleado.category.name if empleado.category != None else ''
 			ws.cell(row = cont, column = 9).value=empleado.personal_email
 			ws.cell(row = cont, column = 10).value=empleado.cell_phone
 			cont+=1
@@ -1217,6 +1219,76 @@ def UpdateFueling(request, pk):
 		return Response({"message":"Registro actualizado satisfactoriamente!","status":200})  
 	return Response({"message":"No se realizó el Registro!","errors":serializer.errors,"status":400})
 
+@api_view(['GET'])
+def ReportFuelLoadPDF(request,start_date,end_date,fuel_type,user):
+	fecha1 = start_date
+	fecha2 = end_date
+	fuel_type = int(fuel_type)
+	user = int(user)
+	#*? administrador
+	if  user == 0:
+		rows = Fueling.objects.filter(date__range=[fecha1, fecha2]).filter(fuel_type=fuel_type)
+	#*? Empleado				
+	if user != 0:
+		rows = Fueling.objects.filter(date__range=[fecha1, fecha2]).filter(fuel_type=fuel_type).filter(user_id=user)	
+
+	data = {'fuels': rows}
+	pdf = render_to_pdf('paginas/ReportFuelLoad.html', data)
+	return HttpResponse(pdf, content_type = 'application/pdf')
+
+class ReportFuelLoadXLSX(TemplateView):
+	def get(self,request,start_date,end_date,fuel_type,user):
+		fecha1 = start_date
+		fecha2 = end_date
+		fuel_type = int(fuel_type)
+		user = int(user)
+		#*? administrador
+		if  user == 0:
+			rows = Fueling.objects.filter(date__range=[fecha1, fecha2]).filter(fuel_type=fuel_type)
+		#*? Empleado				
+		if user != 0:
+			rows = Fueling.objects.filter(date__range=[fecha1, fecha2]).filter(fuel_type=fuel_type).filter(user_id=user)	
+
+		fuels = rows
+		wb = Workbook()
+		ws = wb.active
+		imag = openpyxl.drawing.image.Image('imagenes/logo_empresa_chica.png')
+		ws.add_image(imag, 'A1')
+		ws['C2'] = 'CAMPESINOS PRODUCTORES CAMPECHANOS'
+		ws.merge_cells('C2:J2')
+		ws['C3'] = 'SPR DE RL DE CV'
+		ws.merge_cells('C3:J3')
+		ws['C5'] = 'Reporte de Cargas de Combustibles'
+		ws.merge_cells('C5:J5')
+
+		ws['C6'] = 'ID'
+		ws['D6'] = 'Fecha'
+		ws['E6'] = 'Unidad'
+		ws['F6'] = 'Horas'
+		ws['G6'] = 'Litros'
+		ws['H6'] = 'Km/Lt'
+
+		cont = 7
+		pos = 1
+
+		for item in fuels:
+			ws.cell(row = cont, column = 3).value=pos
+			ws.cell(row = cont, column = 4).value=item.date
+			ws.cell(row = cont, column = 5).value=item.unit.unit
+			ws.cell(row = cont, column = 6).value=item.hours
+			ws.cell(row = cont, column = 7).value=item.liters
+			ws.cell(row = cont, column = 8).value=item.km_liters
+
+			pos+=1
+			cont+=1
+
+		nombre_archivo = "Reporte_combustibles.xlsx"
+		response = HttpResponse(content_type = "application/ms-excel")
+		content = "attachment; filename = {0}".format(nombre_archivo)
+		response['Content-Disposition'] = content
+		wb.save(response)
+		return response
+	
 #*? DESCARGA DE COMBUSTIBLE
 
 @api_view(['POST'])
@@ -2736,7 +2808,6 @@ class ReportSocietiesXLSX(TemplateView):
 		return response
 
 #*? SEGALMEX PARCELAS
-
 @api_view(['GET'])
 def ListSegalmexParcel(request):
 	parcel = SegalmexParcel.objects.all()
@@ -2867,7 +2938,6 @@ def SearchReception(request):
 		
 	else:
 		return Response({"mensaje":"sin variables"})
-
 		
 @api_view(['GET'])
 def ListSegalmexReception(request):
@@ -2916,17 +2986,101 @@ def ListVariety(request):
 	serializer = VarietySerializer(variety, many=True)
 	return Response(serializer.data)
 
+class ReportReceptionsXLSX(TemplateView):
+	def get(self, request, start_date, end_date, producer ,user):
+		fecha1 = start_date
+		fecha2 = end_date
+		producer = int(producer)
+		user = int(user)
+		#*? administrador
+		if (producer == 0) and (user == 0):
+			rows = SegalmexReception.objects.filter(checkin_date__range=[fecha1, fecha2])
+
+		if (producer != 0) and (user == 0):
+			rows = SegalmexReception.objects.filter(producer_id=producer).filter(checkin_date__range=[fecha1, fecha2])
+
+		#*? Empleado				
+		if (producer == 0) and (user != 0):
+			rows = SegalmexReception.objects.filter(user_id=user).filter(checkin_date__range=[fecha1, fecha2])
+
+		if (producer != 0) and (user != 0):
+			rows = SegalmexReception.objects.filter(user_id=user).filter(producer_id=producer).filter(checkin_date__range=[fecha1, fecha2])			
+			
+		receptions = rows
+		wb = Workbook()
+		ws = wb.active
+		imag = openpyxl.drawing.image.Image('imagenes/logo_empresa_chica.png')
+		ws.add_image(imag, 'A1')
+		ws['C2'] = 'CAMPESINOS PRODUCTORES CAMPECHANOS'
+		ws.merge_cells('C2:J2')
+		ws['C3'] = 'SPR DE RL DE CV'
+		ws.merge_cells('C3:J3')
+		ws['C5'] = 'Reporte de SEGALMEX '
+		ws.merge_cells('C5:J5')
+
+		ws['C6'] = 'ID'
+		ws['D6'] = 'FOLIO'
+		ws['E6'] = 'HORA DE ENTRADA'
+		ws['F6'] = 'FECHA DE ENTRADA'
+		ws['G6'] = 'HORA DE SALIDA'
+		ws['H6'] = 'FECHA DE SALIDA'
+		ws['I6'] = 'VARIEDAD'
+		ws['J6'] = 'PRODUCTOR'
+		ws['K6'] = 'POBLACION'
+		ws['L6'] = 'CHOFER'
+		ws['M6'] = 'PLACAS'
+		ws['N6'] = 'CAMION'
+		ws['O6'] = 'PESO(ENTRADA)BRUTO'
+		ws['P6'] = 'PESO TARA'
+		ws['Q6'] = 'PESO CAMPO'
+		ws['R6'] = '% DESCUENTO'
+		ws['S6'] = 'PESO DE VARIEDAD'
+		ws['T6'] = 'PRECIO'
+		ws['U6'] = 'TOTAL POR BOLETA'
+
+		cont = 7
+		pos = 1
+		for item in receptions:
+			ws.cell(row = cont, column = 3).value=pos
+			ws.cell(row = cont, column = 4).value=item.ticket
+			ws.cell(row = cont, column = 5).value=item.checkin_time
+			ws.cell(row = cont, column = 6).value=item.checkin_date
+			ws.cell(row = cont, column = 7).value=item.checkout_time
+			ws.cell(row = cont, column = 8).value=item.checkout_date
+			ws.cell(row = cont, column = 9).value=item.variety.name if item.variety != None else ''
+			ws.cell(row = cont, column = 10).value=item.producer.name if item.producer != None else ''
+			ws.cell(row = cont, column = 11).value=item.location
+			ws.cell(row = cont, column = 12).value=item.driver.name if item.driver != None else ''
+			ws.cell(row = cont, column = 13).value=item.plate.plate_no if item.plate != None else ''
+			ws.cell(row = cont, column = 14).value=item.plate.unit if item.plate != None else ''
+			ws.cell(row = cont, column = 15).value=item.gross_weight
+			ws.cell(row = cont, column = 16).value=item.tare_weight
+			ws.cell(row = cont, column = 17).value=item.field_weight
+			ws.cell(row = cont, column = 18).value=item.discount
+			ws.cell(row = cont, column = 19).value=item.discounted_weight
+			ws.cell(row = cont, column = 20).value=item.price
+			ws.cell(row = cont, column = 21).value=item.balance
+			
+			pos+=1
+			cont+=1
+
+		nombre_archivo = "Reporte_seglamex.xlsx"
+		response = HttpResponse(content_type = "application/ms-excel")
+		content = "attachment; filename = {0}".format(nombre_archivo)
+		response['Content-Disposition'] = content
+		wb.save(response)
+		return response
+
+
 # *? PDF CLIENTES
 class PDF_Boleta(View):
-	#@api_view(['GET'])
 	def get(self, request, pk):
 		boleta = SegalmexReception.objects.get(id=pk)
-		#serializer = ListSegalmexReceptionSerializer(boleta, many=False)
-		data = {
-			'boleta': boleta.id
-		}
+		data = {'boleta': boleta.id}
 		pdf = render_to_pdf('paginas/Boleta.html', data)
 		return HttpResponse(pdf, content_type = 'application/pdf')
+
+
 
 #*? orden de pago de productores
 
