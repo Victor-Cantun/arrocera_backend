@@ -64,8 +64,8 @@ class EmployeeListSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         response = super().to_representation(instance)
-        response['department'] = instance.department.name if instance.department != None else '';
-        response['category'] = instance.category.name if instance.department != None else ''; 
+        response['department'] = instance.department.name if instance.department.name != None else '';
+        response['category'] = instance.category.name if instance.department.name != None else ''; 
         response['department_id'] = instance.department.id if instance.department != None else '';
         response['category_id'] = instance.category.id if instance.department != None else '';
         return response        
