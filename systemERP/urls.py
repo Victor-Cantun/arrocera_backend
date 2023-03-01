@@ -220,6 +220,8 @@ urlpatterns = [
     path('UpdatePettyCash/<str:pk>',views.UpdatePettyCash, name="UpdatePettyCash"),    
     path('ListCash',views.ListCash, name="ListCash"),
     path('ListDiscount',views.ListDiscount, name="ListDiscount"),
+    path('UpdateInitialCash',views.UpdateInitialCash, name="UpdateInitialCash"),
+    path('ListInitialCash',views.ListInitialCash, name="ListInitialCash"),
 
 #*? COMPRAS
     path('Shoppings',views.Shoppings, name="Shoppings"),

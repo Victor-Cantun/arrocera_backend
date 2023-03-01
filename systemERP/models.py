@@ -935,6 +935,10 @@ class PaymentProducer(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 	creation = models.DateTimeField(auto_now=True)
 
+class InitialCash(models.Model):
+	id=models.AutoField(primary_key=True)
+	cash = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Importe', null=True)
+
 class PettyCash(models.Model):
 	id = models.AutoField(primary_key=True)
 	date = models.DateField(max_length=50, verbose_name = 'Fecha', null=True)

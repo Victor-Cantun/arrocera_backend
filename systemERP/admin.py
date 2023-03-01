@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Binnacle, Category, Company, CreditNote, Customer, Department, Diesel, Employee, FileProducer, FuelType, Fueling, Gasoline, Location, MainProduct, Parcel, Presentation, Producer, Product, ProductCN, ProductW, Provider, Requisition, SegalmexParcel, SegalmexReception, Shopping, Unit, User, Bank, BankAccount, Variety, VehicleType, Warehouse
+from .models import Binnacle, Category, Company, CreditNote, Customer, Department, Diesel, Employee, FileProducer, FuelType, Fueling, Gasoline, InitialCash, Location, MainProduct, Parcel, Presentation, Producer, Product, ProductCN, ProductW, Provider, Requisition, SegalmexParcel, SegalmexReception, Shopping, Unit, User, Bank, BankAccount, Variety, VehicleType, Warehouse
 # Register your models here.
 admin.site.register(User)
 admin.site.register(Department)
@@ -33,6 +33,7 @@ admin.site.register(SegalmexReception)
 admin.site.register(SegalmexParcel)
 admin.site.register(Company)
 admin.site.register(MainProduct)
+admin.site.register(InitialCash)
 
 
 
