@@ -252,9 +252,11 @@ class Employee(models.Model):
 	civil_status = models.CharField(max_length=20, verbose_name='Estado civil', choices=maritalstatus, null=True)
 	lives_with = models.CharField(max_length=20, verbose_name= 'Vive con', choices=liveswith, null=True)
 	depends_him = models.CharField(max_length=20, verbose_name= 'Dependen de el', choices=peoplewhodepend, null=True)
+	date_admission = models.DateField(verbose_name='Fecha de ingreso', null=True)
 	employee_no = models.CharField(max_length=50, verbose_name='Número de empleado', null=True)
 	department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True)
 	category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+	sr = models.DecimalField(verbose_name = 'Estatura', decimal_places= 2, max_digits=20, null=True)
 	bank = models.ForeignKey(Bank,on_delete=models.CASCADE, verbose_name = 'Banco', null=True)
 	bank_account = models.BigIntegerField(verbose_name = 'Numero de cuenta bancaria', null=True)
 	interbank_key = models.BigIntegerField(verbose_name = 'Clave interbancaria',  null=True)
@@ -671,6 +673,7 @@ class Outputreview(models.Model):
 	creation = models.DateTimeField(auto_now=True)
 
 class OutputProduct(models.Model):	
+	
 	amount = models.IntegerField(verbose_name='Cantidad',null=True)
 	unit = models.CharField(max_length=50, verbose_name='Unidad',null=True)
 	presentation = models.ForeignKey(Presentation, on_delete = models.CASCADE, default='', null=True)
@@ -678,6 +681,7 @@ class OutputProduct(models.Model):
 	price = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Precio',blank=True,null=True)
 	subtotal = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Subtotal',blank=True,null=True)
 	code = models.CharField(max_length=20, verbose_name='Codigo',default='',blank=True, null=True)
+	no = models.IntegerField(verbose_name='No', null=True, default = 0)
 	user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 	creation = models.DateTimeField(auto_now=True)
 
@@ -1052,9 +1056,15 @@ class Loans(models.Model):
 	loan = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Prestamo', null=True)
 	weeks = models.IntegerField(null=True, verbose_name = 'Semanas')
 	payment = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Abonos', null=True)
+	status = models.CharField(max_length=500, verbose_name = 'Estado', null=True)
 	comment = models.CharField(max_length=500, verbose_name = 'Comentario', null=True)
 	user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='LoansUser')
-	creation = models.DateTimeField(auto_now=True)		
+	creation = models.DateTimeField(auto_now=True)	
+
+class Payments(models.Model):
+	id=models.AutoField(primary_key=True)
+	loan = models.ForeignKey(Loans, on_delete=models.CASCADE, null=True, verbose_name = 'Prestamo')	
+	payment = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Abono', null=True)
 
 class LoansChargers(models.Model):
 	id=models.AutoField(primary_key=True)

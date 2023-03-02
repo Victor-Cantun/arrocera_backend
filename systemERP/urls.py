@@ -315,6 +315,7 @@ urlpatterns = [
     path('ListLoans',views.ListLoans, name="ListLoans"),
     path('CreateLoans',views.CreateLoans, name="CreateLoans"),
     path('DeleteLoans/<str:pk>',views.DeleteLoans, name="DeleteLoans"),
+    path('AddPaymentLoan',views.AddPaymentLoan, name="AddPaymentLoan"),
 #*? Prestamos Cargadores
     path('ListLoansChargers',views.ListLoansChargers, name="ListLoansChargers"),
     path('CreateLoansChargers',views.CreateLoansChargers, name="CreateLoansChargers"),

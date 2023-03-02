@@ -10,7 +10,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import viewsets
-from .serializers import BankAccountsCustomerSerializer, BankAccountsEmployeeSerializer, BankAccountsProviderSerializer, BillOfLadingSerializer, BilledIncomeSerializer, BinnacleSerializer, ChargerSalarySerializer, CompanySerializer, CreditNoteListSerializer, CustomerSerializer, DepositControlSerializer, DieselSerializer, DoubleDaysSerializer, DriverSalarySerializer, ExtraHoursSerializer, FileProducerSerializer, FileQuotationSerializer, FileUnitSerializer, FuelDumpListSerializer, FuelDumpSerializer, FuelTypeSerializer, FuelingListSerializer, FuelingListSerializer, FuelingSerializer, InitialCashSerializer, LandRentSerializer, ListBankAccountsCustomerSerializer, ListBankAccountsEmployeeSerializer, ListBankAccountsProviderSerializer, ListBillOfLadingSerializer, ListBilledIncomeSerializer, ListChargerSalarySerializer, ListDepositControlSerializer, ListDoubleDaysSerializer, ListDriverSalarySerializer, ListExtraHoursSerializer, ListLandRentSerializer, ListLoansChargersSerializer, ListLoansDriversSerializer, ListLoansSerializer, ListPaymentOrderProducerSerializer, ListPaymentProducerSerializer, ListPaymentScheduleSerializer, ListPaymentsChargersSerializer, ListPaymentsDriversSerializer, ListPayrollSerializer, ListPettyCashSerializer, ListPropsSerializer, ListQuotationSerializer, ListSegalmexParcelSerializer, ListSegalmexReceptionSerializer, ListTotalDepositControlSerializer, LoansChargersSerializer, LoansDriversSerializer, LoansSerializer, LocationSerializer, MainProductSerializer, OutputListSerializer, OutputreviewListSerializer, PaidPluginsSerializer, ParcelListSerializer, ParcelSerializer, PaymentOrderProducerSerializer, PaymentProducerSerializer, PaymentsChargersSerializer, PaymentsDriversSerializer, PayrollSerializer, PettyCashSerializer, PresentationSerializer, ProductSerializer, PropsSerializer, PurchaseOrderListSerializer, RequisitionListSerializer, RequisitionSerializer, SegalmexParcelSerializer, SegalmexReceptionSerializer, ShoppingListSerializer, SocietyListSerializer, SocietySerializer, UnitListSerializer, UserSerializer, DepartmentSerializer, BankSerializer,BankAccountSerializer, EmployeeSerializer, EmployeeListSerializer, ProducerSerializer, ProviderSerializer, CategorySerializer, BankAccountListSerializer, UploadImageSerializer, UnitSerializer, VarietySerializer, VehicleTypeSerializer, WarehouseListSerializer, WarehouseSerializer, TicketreviewListSerializer
+from .serializers import BankAccountsCustomerSerializer, BankAccountsEmployeeSerializer, BankAccountsProviderSerializer, BillOfLadingSerializer, BilledIncomeSerializer, BinnacleSerializer, ChargerSalarySerializer, CompanySerializer, CreditNoteListSerializer, CustomerSerializer, DepositControlSerializer, DieselSerializer, DoubleDaysSerializer, DriverSalarySerializer, ExtraHoursSerializer, FileProducerSerializer, FileQuotationSerializer, FileUnitSerializer, FuelDumpListSerializer, FuelDumpSerializer, FuelTypeSerializer, FuelingListSerializer, FuelingListSerializer, FuelingSerializer, InitialCashSerializer, LandRentSerializer, ListBankAccountsCustomerSerializer, ListBankAccountsEmployeeSerializer, ListBankAccountsProviderSerializer, ListBillOfLadingSerializer, ListBilledIncomeSerializer, ListChargerSalarySerializer, ListDepositControlSerializer, ListDoubleDaysSerializer, ListDriverSalarySerializer, ListExtraHoursSerializer, ListLandRentSerializer, ListLoansChargersSerializer, ListLoansDriversSerializer, ListLoansSerializer, ListPaymentOrderProducerSerializer, ListPaymentProducerSerializer, ListPaymentScheduleSerializer, ListPaymentsChargersSerializer, ListPaymentsDriversSerializer, ListPayrollSerializer, ListPettyCashSerializer, ListPropsSerializer, ListQuotationSerializer, ListSegalmexParcelSerializer, ListSegalmexReceptionSerializer, ListTotalDepositControlSerializer, LoansChargersSerializer, LoansDriversSerializer, LoansSerializer, LocationSerializer, MainProductSerializer, OutputListSerializer, OutputreviewListSerializer, PaidPluginsSerializer, ParcelListSerializer, ParcelSerializer, PaymentOrderProducerSerializer, PaymentProducerSerializer, PaymentsChargersSerializer, PaymentsDriversSerializer, PaymentsSerializer, PayrollSerializer, PettyCashSerializer, PresentationSerializer, ProductSerializer, PropsSerializer, PurchaseOrderListSerializer, RequisitionListSerializer, RequisitionSerializer, SegalmexParcelSerializer, SegalmexReceptionSerializer, ShoppingListSerializer, SocietyListSerializer, SocietySerializer, UnitListSerializer, UserSerializer, DepartmentSerializer, BankSerializer,BankAccountSerializer, EmployeeSerializer, EmployeeListSerializer, ProducerSerializer, ProviderSerializer, CategorySerializer, BankAccountListSerializer, UploadImageSerializer, UnitSerializer, VarietySerializer, VehicleTypeSerializer, WarehouseListSerializer, WarehouseSerializer, TicketreviewListSerializer
 #FORMS
 from .forms import EmployeeForm
 from django.http import HttpResponse, JsonResponse
@@ -2113,14 +2113,14 @@ def CreateOutput(request):
 		comment=data['comment']
 		)
 	new_output.save()
-
+	no = 1
 	for row in data["rows"]:
-		new_product = OutputProduct.objects.create(amount=row["amount"], unit=row["unit"], presentation_id=row["presentation"], product_id=row["product"], price=row["price"], subtotal = row["subtotal"], code=data["code"])
-		
+		new_product = OutputProduct.objects.create(no=no,amount=row["amount"], unit=row["unit"], presentation_id=row["presentation"], product_id=row["product"], price=row["price"], subtotal = row["subtotal"], code=data["code"])		
 		new_product.save()
 		
-		row_obj = OutputProduct.objects.filter(product_id=row["product"], code=data["code"]).get(product_id=row["product"])
+		row_obj = OutputProduct.objects.filter(no = no, code=data["code"]).get(product_id=row["product"])
 		new_output.products.add(row_obj)
+		no+=1
 
 	return Response({"message":"Registro agregado satisfactoriamente!","status":200})  
 
@@ -3431,6 +3431,14 @@ def DeleteLoans(request, pk):
 	loans = Loans.objects.get(id=pk)
 	loans.delete()
 	return Response('Registro eliminado satisfactoriamente!')
+
+@api_view(['POST'])
+def AddPaymentLoan(request):
+	serializer = PaymentsSerializer(data = request.data)
+	if serializer.is_valid():
+		serializer.save()
+		return Response({"message":"Registro agregado satisfactoriamente!","status":200})  
+	return Response({"message":"No se realizó el Registro!","errors":serializer.errors,"status":400})
 
 #*? PRESTAMOS
 @api_view(['POST'])

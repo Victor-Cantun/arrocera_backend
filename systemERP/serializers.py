@@ -1,6 +1,6 @@
 from dataclasses import fields
 from rest_framework import serializers
-from systemERP.models import BankAccountsCustomer, BankAccountsEmployee, BankAccountsProvider, BillOfLading, BilledIncome, Binnacle, Category, ChargerSalary, Company, CreditNote, Customer, Department, DepositControl, Diesel, DoubleDays, DriverSalary, Employee, ExtraHours, FileProducer, FileQuotation, FileUnit, FuelDump, FuelType, Fueling, Gasoline, InitialCash, LandRent, Loans, LoansChargers, LoansDrivers, Location, MainProduct, Output, OutputProduct, Outputreview, PaidPlugins, Parcel, PaymentOrderProducer, PaymentProducer, PaymentsChargers, PaymentsDrivers, Payroll, PettyCash, Presentation, Producer, Product, ProductCN, ProductPO, ProductQuotation, ProductRequisition, ProductShopping, ProductW, Props, Provider, PurchaseOrder, Quotation, Requisition, Rowoutputreview, Rowticketreview, SegalmexParcel, SegalmexReception, Shopping, Society, Ticketreview, Unit, User, Bank, BankAccount, UploadImage, Variety, VehicleType, Warehouse, Payroll
+from systemERP.models import BankAccountsCustomer, BankAccountsEmployee, BankAccountsProvider, BillOfLading, BilledIncome, Binnacle, Category, ChargerSalary, Company, CreditNote, Customer, Department, DepositControl, Diesel, DoubleDays, DriverSalary, Employee, ExtraHours, FileProducer, FileQuotation, FileUnit, FuelDump, FuelType, Fueling, Gasoline, InitialCash, LandRent, Loans, LoansChargers, LoansDrivers, Location, MainProduct, Output, OutputProduct, Outputreview, PaidPlugins, Parcel, PaymentOrderProducer, PaymentProducer, Payments, PaymentsChargers, PaymentsDrivers, Payroll, PettyCash, Presentation, Producer, Product, ProductCN, ProductPO, ProductQuotation, ProductRequisition, ProductShopping, ProductW, Props, Provider, PurchaseOrder, Quotation, Requisition, Rowoutputreview, Rowticketreview, SegalmexParcel, SegalmexReception, Shopping, Society, Ticketreview, Unit, User, Bank, BankAccount, UploadImage, Variety, VehicleType, Warehouse, Payroll
 
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
@@ -64,10 +64,10 @@ class EmployeeListSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         response = super().to_representation(instance)
-        response['department'] = instance.department.name if instance.department.name != None else '';
-        response['category'] = instance.category.name if instance.department.name != None else ''; 
+        response['department'] = instance.department.name if instance.department != None else '';
+        response['category'] = instance.category.name if instance.category != None else ''; 
         response['department_id'] = instance.department.id if instance.department != None else '';
-        response['category_id'] = instance.category.id if instance.department != None else '';
+        response['category_id'] = instance.category.id if instance.category != None else '';
         return response        
 
 class UploadImageSerializer(serializers.ModelSerializer):
@@ -702,6 +702,11 @@ class ListPropsSerializer(serializers.ModelSerializer):
 class LoansSerializer(serializers.ModelSerializer):
     class Meta:
         model = Loans
+        fields = '__all__'
+
+class PaymentsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payments
         fields = '__all__'
 
 class ListLoansSerializer(serializers.ModelSerializer):
