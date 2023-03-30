@@ -1000,8 +1000,8 @@ class SaleSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ListSalesSerializer(serializers.ModelSerializer):
-    product = MainProductSerializer(many=False, read_only=True)
-    presentation = MainPresentationSerializer(many=False, read_only=True)
+    product = ProductSerializer(many=False, read_only=True)
+    presentation = PresentationSerializer(many=False, read_only=True)
     #company = CompanySerializer(many=False, read_only=True)
     customer = CustomerSerializer(many=False, read_only=True)
     class Meta:

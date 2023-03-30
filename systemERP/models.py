@@ -1259,8 +1259,8 @@ class Sale(models.Model):
 	deadline=models.DateField(max_length=50, verbose_name = 'Fecha de entrega', null=True)
 	
 	customer=models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
-	product=models.ForeignKey(MainProduct, on_delete=models.CASCADE, null=True)
-	presentation=models.ForeignKey(MainPresentation, on_delete=models.CASCADE, null=True)
+	product=models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+	presentation=models.ForeignKey(Presentation, on_delete=models.CASCADE, null=True)
 	net_weight = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Peso neto', null=True)
 	unit_price = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Precio unitario', null=True)
 	amount = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Importe', null=True)
