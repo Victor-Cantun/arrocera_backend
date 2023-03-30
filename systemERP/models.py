@@ -271,8 +271,7 @@ class Employee(models.Model):
 	creation = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
-		fila = "Nombre: "+self.name+" "+self.surname+" "+self.second_surname
-		return fila
+		return self.name
 
 class VehicleType(models.Model):
 	id = models.AutoField(primary_key=True)
@@ -439,6 +438,16 @@ class MainProduct(models.Model):
 	def __str__(self):
 		fila="Producto: "+self.name
 		return fila
+	
+class MainPresentation(models.Model):
+	id = models.AutoField(primary_key=True)
+	name = models.CharField(max_length=200, verbose_name='Presentation', unique=True, default='')
+	user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+	creation = models.DateTimeField(auto_now=True)
+
+	def __str__(self):
+		fila="Presentación: "+self.name
+		return fila
 
 class Product(models.Model):
 	id = models.AutoField(primary_key=True)
@@ -562,7 +571,7 @@ class PurchaseOrder(models.Model):
 	auxiliary_sales = models.ForeignKey(Employee, verbose_name='Auxiliar de ventas', related_name = 'POauxiliary',  on_delete=models.CASCADE, null=True)
 	storekeeper = models.ForeignKey(Employee, verbose_name='Almacenista', related_name = 'POstorekeeper',  on_delete=models.CASCADE, null=True)
 	qa = models.ForeignKey(Employee, verbose_name='Control de calidad', related_name = 'POQA',  on_delete=models.CASCADE, null=True)
-	POproducts = models.ManyToManyField(ProductPO,blank=True)
+	products = models.ManyToManyField(ProductPO,blank=True)
 	user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 	creation = models.DateTimeField(auto_now=True)
 
@@ -673,7 +682,7 @@ class Outputreview(models.Model):
 	creation = models.DateTimeField(auto_now=True)
 
 class OutputProduct(models.Model):	
-	
+	id = models.AutoField(primary_key=True)
 	amount = models.IntegerField(verbose_name='Cantidad',null=True)
 	unit = models.CharField(max_length=50, verbose_name='Unidad',null=True)
 	presentation = models.ForeignKey(Presentation, on_delete = models.CASCADE, default='', null=True)
@@ -1004,6 +1013,7 @@ class Payroll(models.Model):
 	start_date = models.DateField(max_length=50, verbose_name = 'Fecha Incio', null=True)
 	end_date = models.DateField(max_length=50, verbose_name = 'Fecha Fnal', null=True)
 	employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
+	department = models.ForeignKey(Department, on_delete=models.CASCADE, null=True)
 	monday = models.IntegerField(null=True, verbose_name = 'Lunes')
 	tuesday = models.IntegerField(null=True, verbose_name = 'Martes')
 	wednesday = models.IntegerField(null=True, verbose_name = 'Miercoles')
@@ -1012,6 +1022,7 @@ class Payroll(models.Model):
 	saturday = models.IntegerField(null=True, verbose_name = 'Sabado')
 	sunday = models.IntegerField(null=True, verbose_name = 'Domingo')
 	worked_days = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Dias trabajados', null=True)
+	hours_worked = models.IntegerField(null=True, verbose_name = 'Horas trabajadas')
 	sr = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'sr', null=True)
 	payroll = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Nomina', null=True)
 	props = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'apoyos', null=True)
@@ -1052,10 +1063,10 @@ class Props(models.Model):
 class Loans(models.Model):
 	id=models.AutoField(primary_key=True)
 	date = models.DateField(max_length=50, verbose_name = 'Fecha', null=True)
-	employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True)
-	loan = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Prestamo', null=True)
+	employee = models.ForeignKey(Employee, on_delete=models.CASCADE, null=True, related_name="employee")
+	loan = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Prestamo', null=True, default=0)
 	weeks = models.IntegerField(null=True, verbose_name = 'Semanas')
-	payment = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Abonos', null=True)
+	payment = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Abonos', null=True, default=0)
 	status = models.CharField(max_length=500, verbose_name = 'Estado', null=True)
 	comment = models.CharField(max_length=500, verbose_name = 'Comentario', null=True)
 	user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='LoansUser')
@@ -1064,7 +1075,7 @@ class Loans(models.Model):
 class Payments(models.Model):
 	id=models.AutoField(primary_key=True)
 	loan = models.ForeignKey(Loans, on_delete=models.CASCADE, null=True, verbose_name = 'Prestamo')	
-	payment = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Abono', null=True)
+	payment = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Abono', null=True, default=0)
 
 class LoansChargers(models.Model):
 	id=models.AutoField(primary_key=True)
@@ -1225,3 +1236,32 @@ class PaidPlugins(models.Model):
 	code = models.CharField(max_length=20, verbose_name='Codigo',default='',blank=True, null=True)
 	user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
 	creation = models.DateTimeField(auto_now=True)	
+
+class Conciliation(models.Model):
+	id = models.AutoField(primary_key=True)
+	date=models.DateField(max_length=50, verbose_name = 'Fecha', null=True)
+	account = models.ForeignKey(BankAccount, on_delete=models.CASCADE, null=True)
+	reference=models.CharField(max_length=200,verbose_name='Referencia bancaria', null=True)
+	beneficiary=models.CharField(max_length=500, verbose_name = 'Beneficiario', null=True)
+	concept=models.CharField(max_length=200, verbose_name = 'Concepto', null=True)
+	deposit = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Deposito', null=True)
+	charge = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Cargo', null=True)
+	pending_charge = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Cargo Pendiente', null=True)
+	countable_balance = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Saldo Contable', null=True)
+	account_balance = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Saldo Bancario', null=True)
+	user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+	creation = models.DateTimeField(auto_now=True)	
+
+class Sale(models.Model):
+	id = models.AutoField(primary_key=True)
+	purchase_order = models.ForeignKey(PurchaseOrder, on_delete=models.CASCADE, null=True)
+	date=models.DateField(max_length=50, verbose_name = 'Fecha', null=True)
+	deadline=models.DateField(max_length=50, verbose_name = 'Fecha de entrega', null=True)
+	
+	customer=models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
+	product=models.ForeignKey(MainProduct, on_delete=models.CASCADE, null=True)
+	presentation=models.ForeignKey(MainPresentation, on_delete=models.CASCADE, null=True)
+	net_weight = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Peso neto', null=True)
+	unit_price = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Precio unitario', null=True)
+	amount = models.DecimalField(max_digits=19, decimal_places=2, verbose_name= 'Importe', null=True)
+	status = status = models.CharField(max_length=500, verbose_name = 'Estado', null=True)

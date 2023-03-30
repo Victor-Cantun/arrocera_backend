@@ -136,9 +136,11 @@ urlpatterns = [
     path('UpdatePhotoCustomer/<str:pk>',views.UpdatePhotoCustomer, name="UpdatePhotoCustomer"), 
 #*? ORDEN DE PEDIDO
     path('PurchaseOrders', views.PurchaseOrders, name="PurchaseOrders"),
+    path('ListPurchaseOrders', views.ListPurchaseOrders, name="ListPurchaseOrders"),
     path('CreatePurchaseOrder',views.CreatePurchaseOrder, name="CreatePurchaseOrder"),
     path('DeletePurchaseOrder/<str:pk>',views.DeletePurchaseOrder, name="DeletePurchaseOrder"),
-    path('DetailPurchaseOrder/<str:pk>',views.DetailPurchaseOrder, name="DetailPurchaseOrder"),      
+    path('DetailPurchaseOrder/<str:pk>',views.DetailPurchaseOrder, name="DetailPurchaseOrder"),
+    path('UpdatePurchaseOrder/<str:pk>',views.UpdatePurchaseOrder, name="UpdatePurchaseOrder"),      
 
 #*? NOTAS DE CREDITO   
     path('CreditNotes', views.CreditNotes, name="CreditNotes"),    
@@ -156,7 +158,11 @@ urlpatterns = [
     path('CreateMainProduct', views.CreateMainProduct, name="CreateMainProduct"),
     path('ListMainProduct',views.ListMainProduct, name="ListMainProduct"),
     path('DeleteMainProduct/<str:pk>', views.DeleteMainProduct, name="DeleteMainProduct"),
-    path('DetailMainProduct/<str:pk>', views.DetailMainProduct, name="DetailMainProduct"),    
+    path('DetailMainProduct/<str:pk>', views.DetailMainProduct, name="DetailMainProduct"),  
+
+#*? PRESENTATION
+    path('ListMainPresentation',views.ListMainPresentation, name="ListMainPresentation"),
+
 #*? PRODUCTOS
     path('ListProduct',views.ListProduct, name="ListProduct"),
     path('CreateProduct', views.CreateProduct, name="CreateProduct"),
@@ -299,6 +305,8 @@ urlpatterns = [
 #*? NOMINA
     path('ListPayroll',views.ListPayroll, name="ListPayroll"),
     path('CreatePayroll',views.CreatePayroll, name="CreatePayroll"),
+    path('CalculatePayroll',views.CalculatePayroll, name="CalculatePayroll"),
+
 #*? Horas Extra
     path('ListExtraHours',views.ListExtraHours, name="ListExtraHours"),
     path('CreateExtraHours',views.CreateExtraHours, name="CreateExtraHours"), 
@@ -358,6 +366,9 @@ urlpatterns = [
 #*? Crear Cuuenta de Banco de Proveedores
     path('CreateBankAccountsProvider',views.CreateBankAccountsProvider, name="CreateBankAccountsProvider"),
     path('ListBankAccountsProvider/<str:pk>',views.ListBankAccountsProvider, name="ListBankAccountsProvider"),    
+#*? VENTAS
+    path('CreateSale',views.CreateSale, name="CreateSale"),
+    path('ListSales',views.ListSales, name="ListSales"),
 #*? INGRESOS FACTURAS 
     path('CreateBilledIncome',views.CreateBilledIncome, name="CreateBilledIncome"),
     path('ListBilledIncome',views.ListBilledIncome, name="ListBilledIncome"),
@@ -367,6 +378,13 @@ urlpatterns = [
     path('ListDepositControl',views.ListDepositControl, name="ListDepositControl"),
 #*? Total de depositos
     path('ListTotalDepositControl',views.ListTotalDepositControl, name="ListTotalDepositControl"),
+#*? CONCILIACIONES
+    path('CreateConciliation',views.CreateConciliation, name="CreateConciliation"),
+    path('ListConciliation',views.ListConciliation, name="ListConciliation"),
+    path('PreviousLedgerBalance/<str:pk>',views.PreviousLedgerBalance, name="PreviousLedgerBalance"),
+    path('PreviousAccountBalance/<str:pk>',views.PreviousAccountBalance, name="PreviousAccountBalance"),
+    path('DeleteConciliation/<str:pk>',views.DeleteConciliation, name="DeleteConciliation"),
+    path('ListConciliationForMonth',views.ListConciliationForMonth, name="ListConciliationForMonth"),
 #*? COMPLEMENTOS DE PAGO
     path('CreatePaidPlugins',views.CreatePaidPlugins, name="CreatePaidPlugins")
 ]+static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

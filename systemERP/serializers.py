@@ -1,6 +1,6 @@
 from dataclasses import fields
 from rest_framework import serializers
-from systemERP.models import BankAccountsCustomer, BankAccountsEmployee, BankAccountsProvider, BillOfLading, BilledIncome, Binnacle, Category, ChargerSalary, Company, CreditNote, Customer, Department, DepositControl, Diesel, DoubleDays, DriverSalary, Employee, ExtraHours, FileProducer, FileQuotation, FileUnit, FuelDump, FuelType, Fueling, Gasoline, InitialCash, LandRent, Loans, LoansChargers, LoansDrivers, Location, MainProduct, Output, OutputProduct, Outputreview, PaidPlugins, Parcel, PaymentOrderProducer, PaymentProducer, Payments, PaymentsChargers, PaymentsDrivers, Payroll, PettyCash, Presentation, Producer, Product, ProductCN, ProductPO, ProductQuotation, ProductRequisition, ProductShopping, ProductW, Props, Provider, PurchaseOrder, Quotation, Requisition, Rowoutputreview, Rowticketreview, SegalmexParcel, SegalmexReception, Shopping, Society, Ticketreview, Unit, User, Bank, BankAccount, UploadImage, Variety, VehicleType, Warehouse, Payroll
+from systemERP.models import BankAccountsCustomer, BankAccountsEmployee, BankAccountsProvider, BillOfLading, BilledIncome, Binnacle, Category, ChargerSalary, Company, Conciliation, CreditNote, Customer, Department, DepositControl, Diesel, DoubleDays, DriverSalary, Employee, ExtraHours, FileProducer, FileQuotation, FileUnit, FuelDump, FuelType, Fueling, Gasoline, InitialCash, LandRent, Loans, LoansChargers, LoansDrivers, Location, MainPresentation, MainProduct, Output, OutputProduct, Outputreview, PaidPlugins, Parcel, PaymentOrderProducer, PaymentProducer, Payments, PaymentsChargers, PaymentsDrivers, Payroll, PettyCash, Presentation, Producer, Product, ProductCN, ProductPO, ProductQuotation, ProductRequisition, ProductShopping, ProductW, Props, Provider, PurchaseOrder, Quotation, Requisition, Rowoutputreview, Rowticketreview, Sale, SegalmexParcel, SegalmexReception, Shopping, Society, Ticketreview, Unit, User, Bank, BankAccount, UploadImage, Variety, VehicleType, Warehouse, Payroll
 
 class CompanySerializer(serializers.ModelSerializer):
     class Meta:
@@ -68,6 +68,7 @@ class EmployeeListSerializer(serializers.ModelSerializer):
         response['category'] = instance.category.name if instance.category != None else ''; 
         response['department_id'] = instance.department.id if instance.department != None else '';
         response['category_id'] = instance.category.id if instance.category != None else '';
+        response['nombre_completo']= instance.nombre_completo;
         return response        
 
 class UploadImageSerializer(serializers.ModelSerializer):
@@ -196,6 +197,11 @@ class MainProductSerializer(serializers.ModelSerializer):
         model = MainProduct
         fields = '__all__'
 
+class MainPresentationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MainPresentation
+        fields = '__all__'
+
 class PresentationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Presentation
@@ -226,7 +232,7 @@ class ProductsPOSerializer(serializers.ModelSerializer):
 
 class PurchaseOrderListSerializer(serializers.ModelSerializer):
 
-    POproducts = ProductsPOSerializer(many=True, read_only=True)
+    products = ProductsPOSerializer(many=True, read_only=True)
     business_name = CustomerSerializer(many=False, read_only=True)
     auxiliary_sales = EmployeeSerializer(many=False, read_only=True)
     storekeeper =  EmployeeSerializer(many=False, read_only=True)
@@ -240,12 +246,22 @@ class PurchaseOrderListSerializer(serializers.ModelSerializer):
 
         response = super().to_representation(instance)
         
-        response['business_name'] = instance.business_name.name if instance.business_name != None else '',
-        response['auxiliary_sales'] = instance.auxiliary_sales.name if instance.auxiliary_sales != None else '',
-        response['storekeeper'] = instance.storekeeper.name if instance.storekeeper != None else '',
-        response['qa'] = instance.qa.name if instance.qa != None else '',
+        response['business_name'] = instance.business_name.name if instance.business_name != None else '';
+        response['auxiliary_sales'] = instance.auxiliary_sales.name if instance.auxiliary_sales != None else '';
+        response['storekeeper'] = instance.storekeeper.name if instance.storekeeper != None else '';
+        response['qa'] = instance.qa.name if instance.qa != None else '';
+        response['id_business'] = instance.business_name.id if instance.business_name != None else '';    
+        response['id_auxiliar'] = instance.auxiliary_sales.id if instance.auxiliary_sales != None else '';
+        response['id_almacenista'] = instance.storekeeper.id if instance.storekeeper != None else '';
+        response['id_qa'] =instance.qa.id if instance.qa != None else '';
+
         
         return response
+    
+class ListPurchaseOrdersSerializers(serializers.ModelSerializer):
+    class Meta:
+        model = PurchaseOrder
+        fields = '__all__'
 
 
 class ProductsCNSerializer(serializers.ModelSerializer):
@@ -618,26 +634,38 @@ class PayrollSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ListPayrollSerializer(serializers.ModelSerializer):
-    employee = EmployeeSerializer(many=False, read_only=True)
+
     class Meta:
         model = Payroll
         fields = '__all__'
 
+
+class ListCalculatePayrollSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField()
+    nombre_completo = serializers.CharField()
+    department = serializers.CharField()
+    sr = serializers.DecimalField(max_digits=8, decimal_places=2)
+    TotalAbono = serializers.DecimalField(max_digits=8, decimal_places=2)
+    TotalHorasExtras = serializers.DecimalField(max_digits=8, decimal_places=2)
+    TotalApoyo = serializers.DecimalField(max_digits=8, decimal_places=2)
+    TotalDiasDobles = serializers.DecimalField(max_digits=8, decimal_places=2)
+    class Meta:
+        model = Employee
+        fields = ['id','nombre_completo','department','sr','TotalAbono','TotalHorasExtras','TotalApoyo','TotalDiasDobles']
+
+
     def to_representation(self, instance):
-        return {
-            'id':instance.id,
-            'start_date':instance.start_date,
-            'end_date':instance.end_date,
-            'employee':instance.employee.name+" "+instance.employee.surname if instance.employee != None else '',
-            'worked_days':instance.worked_days,
-            'sr':instance.sr,
-            'payroll':instance.payroll,
-            'props':instance.props,
-            'extra_hours':instance.extra_hours,
-            'double_days':instance.double_days,
-            'discounts_loan':instance.discounts_loan,
-            'total_pay':instance.total_pay
-        } 
+        response = super().to_representation(instance)
+        response['id']=response['id'];
+        response['nombre_completo']=response['nombre_completo'];
+        response['department']=response['department'];
+        response['sr'] = response['sr'] if response['sr'] != None else 0;
+        response['TotalApoyo'] = response['TotalApoyo'] if response['TotalApoyo'] != None else 0;
+        response['TotalHorasExtras'] = response['TotalHorasExtras'] if response['TotalHorasExtras'] != None else 0;
+        response['TotalDiasDobles'] = response['TotalDiasDobles'] if response['TotalDiasDobles'] != None else 0;
+        response['TotalAbono'] = response['TotalAbono'] if response['TotalAbono'] != None else 0;
+
+        return response
 
 class ExtraHoursSerializer(serializers.ModelSerializer):
     class Meta:
@@ -709,22 +737,38 @@ class PaymentsSerializer(serializers.ModelSerializer):
         model = Payments
         fields = '__all__'
 
+class EmployeeLoanSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Employee
+        fields = ('name',)
+
 class ListLoansSerializer(serializers.ModelSerializer):
-    employee = EmployeeSerializer(many=False, read_only=True)
+
+    id = serializers.IntegerField()
+    date = serializers.CharField()
+    employee = serializers.IntegerField()
+    nombre_completo = serializers.CharField()
+    loan = serializers.DecimalField(max_digits=8, decimal_places=2)
+    TotalPayment = serializers.DecimalField(max_digits=8, decimal_places=2)
+    TotalSaldo = serializers.DecimalField(max_digits=8, decimal_places=2)
     class Meta:
         model = Loans
-        fields = '__all__'
+        #fields = '__all__'
+        fields = ['id','date','employee','nombre_completo','loan','TotalPayment','TotalSaldo']
 
     def to_representation(self, instance):
-        return {
-            'id':instance.id,
-            'date':instance.date,
-            'employee':instance.employee.name+" "+instance.employee.surname if instance.employee != None else '',
-            'loan':instance.loan,
-            'weeks':instance.weeks,
-            'payment':instance.payment,
-            'comment':instance.comment
-        } 
+
+        response = super().to_representation(instance)
+        response['id'] = response['id'];
+        response['date'] = response['date'];
+        response['employee'] = response['employee'];
+        response['nombre_completo'] = response['nombre_completo'];
+        response['loan'] = response['loan'];
+        response['TotalPayment'] = response['TotalPayment'] if response['TotalPayment'] != None else 0;
+        response['TotalSaldo'] = response['TotalSaldo'] if response['TotalSaldo'] != None else 0;
+        
+        return response
+
 
 class LoansChargersSerializer(serializers.ModelSerializer):
     class Meta:
@@ -948,6 +992,31 @@ class ListBilledIncomeSerializer(serializers.ModelSerializer):
         
         return response
 
+class SaleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Sale
+        fields = '__all__'
+
+class ListSalesSerializer(serializers.ModelSerializer):
+    product = MainProductSerializer(many=False, read_only=True)
+    presentation = MainPresentationSerializer(many=False, read_only=True)
+    #company = CompanySerializer(many=False, read_only=True)
+    customer = CustomerSerializer(many=False, read_only=True)
+    class Meta:
+        model = Sale
+        fields = '__all__'
+    
+    def to_representation(self, instance):
+
+        response = super().to_representation(instance)
+        
+        response['product'] = instance.product.name if instance.product != None else '',
+        response['presentation'] = instance.presentation.name if instance.presentation != None else '',
+        response['customer'] = instance.customer.name if instance.customer != None else '',
+        
+        return response
+
+
 class DepositControlSerializer(serializers.ModelSerializer):
     class Meta:
         model = DepositControl
@@ -959,6 +1028,21 @@ class ListDepositControlSerializer(serializers.ModelSerializer):
     class Meta:
         model = DepositControl
         fields = '__all__'
+
+
+class ConciliationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Conciliation
+        fields = '__all__'
+
+class ListConciliationSerializer(serializers.ModelSerializer):
+    account = MainProductSerializer(many=False, read_only=True)
+    
+    class Meta:
+        model = Conciliation
+        fields = '__all__'
+
+
 
 class ListTotalDepositControlSerializer(serializers.ModelSerializer):
     account = BankAccountSerializer(many=False, read_only=True)

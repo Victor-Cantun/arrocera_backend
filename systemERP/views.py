@@ -4,13 +4,13 @@ from ipaddress import summarize_address_range
 from django.views.generic import ListView, View, TemplateView
 from urllib import request
 from django.shortcuts import render, redirect
-from .models import BankAccountsCustomer, BankAccountsEmployee, BankAccountsProvider, BillOfLading, BilledIncome, BillsPaidPlugins, ChargerSalary, Company, ConceptPayment, CreditNote, Customer, Department, DepositControl, DoubleDays, DriverSalary, ExtraHours, FileProducer, FileQuotation, FileUnit, FuelDump, FuelType, Fueling, Gasoline, InitialCash, LandRent, Loans, LoansChargers, LoansDrivers, Location, MainProduct, Output, OutputProduct, Outputreview, PaidPlugins, Parcel, PaymentOrderProducer, PaymentProducer, PaymentSchedule, PaymentsChargers, PaymentsDrivers, Payroll, PettyCash, Presentation, Producer, Product, ProductCN, ProductPO, ProductQuotation, ProductRequisition, ProductShopping, ProductW, Props, Provider, Category, Employee, PurchaseOrder, Quotation, Requisition, Rowoutputreview, SegalmexParcel, SegalmexReception, Shopping, Society, User, Bank, BankAccount, UploadImage, Unit, Variety, VehicleType, Warehouse, Ticketreview, Rowticketreview, Binnacle
+from .models import BankAccountsCustomer, BankAccountsEmployee, BankAccountsProvider, BillOfLading, BilledIncome, BillsPaidPlugins, ChargerSalary, Company, ConceptPayment, Conciliation, CreditNote, Customer, Department, DepositControl, DoubleDays, DriverSalary, ExtraHours, FileProducer, FileQuotation, FileUnit, FuelDump, FuelType, Fueling, Gasoline, InitialCash, LandRent, Loans, LoansChargers, LoansDrivers, Location, MainPresentation, MainProduct, Output, OutputProduct, Outputreview, PaidPlugins, Parcel, PaymentOrderProducer, PaymentProducer, PaymentSchedule, PaymentsChargers, PaymentsDrivers, Payroll, PettyCash, Presentation, Producer, Product, ProductCN, ProductPO, ProductQuotation, ProductRequisition, ProductShopping, ProductW, Props, Provider, Category, Employee, PurchaseOrder, Quotation, Requisition, Rowoutputreview, Sale, SegalmexParcel, SegalmexReception, Shopping, Society, User, Bank, BankAccount, UploadImage, Unit, Variety, VehicleType, Warehouse, Ticketreview, Rowticketreview, Binnacle
 #RestFramework
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import viewsets
-from .serializers import BankAccountsCustomerSerializer, BankAccountsEmployeeSerializer, BankAccountsProviderSerializer, BillOfLadingSerializer, BilledIncomeSerializer, BinnacleSerializer, ChargerSalarySerializer, CompanySerializer, CreditNoteListSerializer, CustomerSerializer, DepositControlSerializer, DieselSerializer, DoubleDaysSerializer, DriverSalarySerializer, ExtraHoursSerializer, FileProducerSerializer, FileQuotationSerializer, FileUnitSerializer, FuelDumpListSerializer, FuelDumpSerializer, FuelTypeSerializer, FuelingListSerializer, FuelingListSerializer, FuelingSerializer, InitialCashSerializer, LandRentSerializer, ListBankAccountsCustomerSerializer, ListBankAccountsEmployeeSerializer, ListBankAccountsProviderSerializer, ListBillOfLadingSerializer, ListBilledIncomeSerializer, ListChargerSalarySerializer, ListDepositControlSerializer, ListDoubleDaysSerializer, ListDriverSalarySerializer, ListExtraHoursSerializer, ListLandRentSerializer, ListLoansChargersSerializer, ListLoansDriversSerializer, ListLoansSerializer, ListPaymentOrderProducerSerializer, ListPaymentProducerSerializer, ListPaymentScheduleSerializer, ListPaymentsChargersSerializer, ListPaymentsDriversSerializer, ListPayrollSerializer, ListPettyCashSerializer, ListPropsSerializer, ListQuotationSerializer, ListSegalmexParcelSerializer, ListSegalmexReceptionSerializer, ListTotalDepositControlSerializer, LoansChargersSerializer, LoansDriversSerializer, LoansSerializer, LocationSerializer, MainProductSerializer, OutputListSerializer, OutputreviewListSerializer, PaidPluginsSerializer, ParcelListSerializer, ParcelSerializer, PaymentOrderProducerSerializer, PaymentProducerSerializer, PaymentsChargersSerializer, PaymentsDriversSerializer, PaymentsSerializer, PayrollSerializer, PettyCashSerializer, PresentationSerializer, ProductSerializer, PropsSerializer, PurchaseOrderListSerializer, RequisitionListSerializer, RequisitionSerializer, SegalmexParcelSerializer, SegalmexReceptionSerializer, ShoppingListSerializer, SocietyListSerializer, SocietySerializer, UnitListSerializer, UserSerializer, DepartmentSerializer, BankSerializer,BankAccountSerializer, EmployeeSerializer, EmployeeListSerializer, ProducerSerializer, ProviderSerializer, CategorySerializer, BankAccountListSerializer, UploadImageSerializer, UnitSerializer, VarietySerializer, VehicleTypeSerializer, WarehouseListSerializer, WarehouseSerializer, TicketreviewListSerializer
+from .serializers import BankAccountsCustomerSerializer, BankAccountsEmployeeSerializer, BankAccountsProviderSerializer, BillOfLadingSerializer, BilledIncomeSerializer, BinnacleSerializer, ChargerSalarySerializer, CompanySerializer, ConciliationSerializer, CreditNoteListSerializer, CustomerSerializer, DepositControlSerializer, DieselSerializer, DoubleDaysSerializer, DriverSalarySerializer, ExtraHoursSerializer, FileProducerSerializer, FileQuotationSerializer, FileUnitSerializer, FuelDumpListSerializer, FuelDumpSerializer, FuelTypeSerializer, FuelingListSerializer, FuelingListSerializer, FuelingSerializer, InitialCashSerializer, LandRentSerializer, ListBankAccountsCustomerSerializer, ListBankAccountsEmployeeSerializer, ListBankAccountsProviderSerializer, ListBillOfLadingSerializer, ListBilledIncomeSerializer, ListCalculatePayrollSerializer, ListChargerSalarySerializer, ListConciliationSerializer, ListDepositControlSerializer, ListDoubleDaysSerializer, ListDriverSalarySerializer, ListExtraHoursSerializer, ListLandRentSerializer, ListLoansChargersSerializer, ListLoansDriversSerializer, ListLoansSerializer, ListPaymentOrderProducerSerializer, ListPaymentProducerSerializer, ListPaymentScheduleSerializer, ListPaymentsChargersSerializer, ListPaymentsDriversSerializer, ListPayrollSerializer, ListPettyCashSerializer, ListPropsSerializer, ListPurchaseOrdersSerializers, ListQuotationSerializer, ListSalesSerializer, ListSegalmexParcelSerializer, ListSegalmexReceptionSerializer, ListTotalDepositControlSerializer, LoansChargersSerializer, LoansDriversSerializer, LoansSerializer, LocationSerializer, MainPresentationSerializer, MainProductSerializer, OutputListSerializer, OutputreviewListSerializer, PaidPluginsSerializer, ParcelListSerializer, ParcelSerializer, PaymentOrderProducerSerializer, PaymentProducerSerializer, PaymentsChargersSerializer, PaymentsDriversSerializer, PaymentsSerializer, PayrollSerializer, PettyCashSerializer, PresentationSerializer, ProductSerializer, PropsSerializer, PurchaseOrderListSerializer, RequisitionListSerializer, RequisitionSerializer, SaleSerializer, SegalmexParcelSerializer, SegalmexReceptionSerializer, ShoppingListSerializer, SocietyListSerializer, SocietySerializer, UnitListSerializer, UserSerializer, DepartmentSerializer, BankSerializer,BankAccountSerializer, EmployeeSerializer, EmployeeListSerializer, ProducerSerializer, ProviderSerializer, CategorySerializer, BankAccountListSerializer, UploadImageSerializer, UnitSerializer, VarietySerializer, VehicleTypeSerializer, WarehouseListSerializer, WarehouseSerializer, TicketreviewListSerializer
 #FORMS
 from .forms import EmployeeForm
 from django.http import HttpResponse, JsonResponse
@@ -19,7 +19,10 @@ import openpyxl
 from openpyxl import Workbook
 from openpyxl.drawing.image import Image
 from werkzeug.security import generate_password_hash, check_password_hash
-from django.db.models import Sum
+from django.db import models
+from django.db.models import Sum, F, Value, CharField, Avg, Subquery, OuterRef, Exists, Min
+from django.db.models.functions import Concat,Coalesce
+from django.db.models import Count
 # Create your views here.
 from io import BytesIO
 from xhtml2pdf import pisa
@@ -800,17 +803,17 @@ def Employees(request):
 		#return Response({"department->":department,"user->":user})
 		#*? administrador
 		if (department == 0) and (user == 0):
-			employee = Employee.objects.all()
+			employee = Employee.objects.all().annotate(nombre_completo=Concat('surname',Value(' '),'second_surname',Value(' '),'name', output_field=models.CharField())).order_by('surname')
 
 		if (department != 0) and (user == 0):
-			employee = Employee.objects.filter(department_id=department)
+			employee = Employee.objects.filter(department_id=department).annotate(nombre_completo=Concat('surname',Value(' '),'second_surname',Value(' '),'name', output_field=models.CharField())).order_by('surname')
 
 		#*? Empleado				
 		if (department == 0) and (user != 0):
-			employee = Employee.objects.filter(user_id=user)
+			employee = Employee.objects.filter(user_id=user).annotate(nombre_completo=Concat('surname',Value(' '),'second_surname',Value(' '),'name', output_field=models.CharField())).order_by('surname')
 
 		if (department != 0) and (user != 0):
-			employee = Employee.objects.filter(user_id=user).filter(department_id=department)			
+			employee = Employee.objects.filter(user_id=user).filter(department_id=department).annotate(nombre_completo=Concat('surname',Value(' '),'second_surname',Value(' '),'name', output_field=models.CharField())).order_by('surname')			
 			
 		serializer = EmployeeListSerializer(employee, many=True)
 		return Response(serializer.data)
@@ -820,14 +823,14 @@ def Employees(request):
 
 @api_view(['GET'])
 def ListEmployee(request):
-	employee = Employee.objects.all()
+	employee = Employee.objects.all().annotate(nombre_completo=Concat('surname',Value(' '),'second_surname',Value(' '),'name', output_field=models.CharField())).order_by('surname')
 	serializer = EmployeeListSerializer(employee, many=True)
 	return Response(serializer.data)
 
 @api_view(['GET'])
 def EmployeeListForUser(request, pk):
 	employee = Employee.objects.filter(user_id=pk)
-	serializer = EmployeeListSerializer(employee, many=True)
+	serializer = EmployeeListSerializer(employee, many=True).annotate(nombre_completo=Concat('surname',Value(' '),'second_surname',Value(' '),'name', output_field=models.CharField())).order_by('surname')
 	return Response(serializer.data)
 
 @api_view(['GET'])
@@ -1432,14 +1435,20 @@ def Customers(request):
 	if 'user' in request.data:
 		
 		user = int(request.data['user'])
+		company = int(request.data['company'])
 		#return Response({"department->":department,"user->":user})
 		#*? administrador
-		if  user == 0:
+		if  (user == 0) and (company==0):
 			rows = Customer.objects.all()
+		if (user == 0) and (company!=0):
+			rows = Customer.objects.filter(company_id = company)
 
 		#*? Empleado				
-		if user != 0:
+		if (user != 0) and (company == 0):
 			rows = Customer.objects.filter(user_id=user)
+		if (user != 0) and (company !=0):
+			rows = Customer.objects.filter(user_id=user).filter(company_id=company)
+
 
 		serializer = CustomerSerializer(rows, many=True)
 		return Response(serializer.data)
@@ -1607,6 +1616,12 @@ def PurchaseOrders(request):
 		
 	else:
 		return Response({"mensaje":"sin variables"})
+	
+@api_view(['GET'])
+def ListPurchaseOrders(request):
+	users = PurchaseOrder.objects.all()
+	serializer = ListPurchaseOrdersSerializers(users, many=True)
+	return Response(serializer.data)	
 
 @api_view(['POST'])
 def CreatePurchaseOrder(request):
@@ -1616,7 +1631,7 @@ def CreatePurchaseOrder(request):
 		purchase_order=data["purchase_order"],
 		date_delivery=data["date_delivery"],
 		business_name_id=data["business_name"],
-		order_number=data ["order_number"],
+		order_number=data["order_number"],
 		place_delivery=data["place_delivery"],
 		sale_condition = data["sale_condition"],
 		invoice = data["invoice"],
@@ -1624,8 +1639,8 @@ def CreatePurchaseOrder(request):
 		auxiliary_sales_id = data["auxiliary_sales"],
 		storekeeper_id = data["storekeeper"],
 		qa_id = data["qa"],
-		iva=data['iva'],
-		subtotal=data['subtotal'],
+		#iva=data['iva'],
+		#subtotal=data['subtotal'],
 		total=data['total'],
 		user_id=data['user']
 		)
@@ -1636,16 +1651,48 @@ def CreatePurchaseOrder(request):
 		new_product.save()
 		
 		product_obj = ProductPO.objects.filter(amount=product["amount"], unit=product["unit"], presentation_id=product["presentation"], product_id=product["product"], price=product["price"], subtotal = product["subtotal"], code=data["code"]).get(code=data["code"])
-		new_creditnote.POproducts.add(product_obj)
+		new_creditnote.products.add(product_obj)
 
 	return Response({"message":"Registro agregado satisfactoriamente!","status":200})  
+
+@api_view(['POST'])
+def UpdatePurchaseOrder(request,pk):
+	data = request.data
+	PurchaseOrder.objects.filter(id=pk).update(
+		date=data["date"], 
+		purchase_order=data["purchase_order"],
+		date_delivery=data["date_delivery"],
+		business_name_id=data["business_name"],
+		order_number=data["order_number"],
+		place_delivery=data["place_delivery"],
+		sale_condition = data["sale_condition"],
+		invoice = data["invoice"],
+		observation = data["observation"],
+		auxiliary_sales_id = data["auxiliary_sales"],
+		storekeeper_id = data["storekeeper"],
+		qa_id = data["qa"],
+		#iva=data['iva'],
+		#subtotal=data['subtotal'],
+		total=data['total'],
+		user_id=data['user']
+	)
+	return Response({"message":"Registro actualizado satisfactoriamente!","status":200})
+
+
 
 
 @api_view(['DELETE'])
 def DeletePurchaseOrder(request, pk):
-	rows = PurchaseOrder.objects.get(id=pk)
-	rows.delete()
-	return Response('Registro eliminado satisfactoriamente!')
+	orden = PurchaseOrder.objects.get(id=pk)
+	items = orden.products.all()
+	for item in items:
+		producto = ProductPO.objects.get(id=item.id)
+		producto.delete()
+	orden.delete()
+	return Response('Registro eliminado satisfactoriamente')
+		#return Response({"filas":rows.products})
+	#rows.delete()
+	#return Response('Registro eliminado satisfactoriamente!')
 
 @api_view(['GET'])
 def DetailPurchaseOrder(request, pk):
@@ -1682,8 +1729,6 @@ def CreditNotes(request):
 		
 	else:
 		return Response({"mensaje":"sin variables"})
-
-
 
 @api_view(['GET'])
 def CreditNoteList(request):
@@ -1927,6 +1972,12 @@ def CreateMainProduct(request):
 def ListMainProduct(request):
 	product = MainProduct.objects.all()
 	serializer = MainProductSerializer(product, many = True)
+	return Response(serializer.data)
+
+@api_view(['GET'])
+def ListMainPresentation(request):
+	product = MainPresentation.objects.all()
+	serializer = MainPresentationSerializer(product, many = True)
 	return Response(serializer.data)
 
 @api_view(['DELETE'])
@@ -3320,11 +3371,39 @@ def UpdateChargerSalary(request, pk):
 #*? NOMINA
 @api_view(['POST'])
 def CreatePayroll(request):
-	serializer = PayrollSerializer(data = request.data)
+	data = request.data
+	for item in data['rows']:
+		nomina = Payroll.objects.create(
+			start_date = data['start_date'],
+			end_date = data['end_date'],
+			employee_id = item['employee'],
+			department_id = item['department'],
+			monday = item['monday'],
+			tuesday = item['tuesday'],
+			wednesday = item['wednesday'],
+			thursday = item['thursday'],
+			friday = item['friday'],
+			saturday = item['saturday'],
+			sunday = item['sunday'],
+			worked_days = item['TotalDias'],
+			hours_worked = item['TotalHoras'],
+			sr = item['sr'],
+			payroll = item['nomina'],
+			props = item['apoyos'],
+			extra_hours = item['horas_extras'],
+			double_days = item['dias_dobles'],
+			discounts_loan = item['descuento'],
+			total_pay = item['total'],
+			user_id = data['user']
+		)
+		nomina .save()
+	return Response({"message":"Registro agregado satisfactoriamente!","status":200})  
+
+	'''serializer = PayrollSerializer(data = request.data)
 	if serializer.is_valid():
 		serializer.save()
 		return Response({"message":"Registro agregado satisfactoriamente!","status":200})  
-	return Response({"message":"No se realizó el Registro!","errors":serializer.errors,"status":400})
+	return Response({"message":"No se realizó el Registro!","errors":serializer.errors,"status":400})'''
 
 @api_view(['POST'])
 def ListPayroll(request):
@@ -3332,9 +3411,31 @@ def ListPayroll(request):
 	fecha1 = data['start_date']
 	fecha2 = data['end_date']
 	
-	charger = Payroll.objects.filter(start_date__range=[fecha1, fecha2]).filter(end_date__range=[fecha1, fecha2])
-	serializer = ListPayrollSerializer(charger, many=True)
+	nombre = Department.objects.filter(id = OuterRef('department')).values('name')
+	nomina = Payroll.objects.annotate(departamento = Subquery(nombre)).filter(start_date__range=[fecha1, fecha2]).annotate(TotalNomina = Sum('payroll')).annotate(TotalApoyos=Sum('props')).annotate(TotalHorasExtras = Sum('extra_hours')).annotate(TotalDiasDobles = Sum('double_days')).annotate(TotalDescuentos = Sum('discounts_loan')).annotate(TotalPagos = Sum('total_pay')).values('departamento','TotalNomina','TotalApoyos','TotalHorasExtras','TotalDiasDobles','TotalDescuentos','TotalPagos').order_by('departamento')
+	#serializer = ListPayrollSerializer(nomina, many=True)
+	#return Response(serializer.data)
+	return Response(nomina)
+
+@api_view(['POST'])
+def CalculatePayroll(request):
+	data = request.data
+	fecha1 = data['start_date']
+	fecha2 = data['end_date']
+	
+	apoyos = Props.objects.filter(employee_id=OuterRef('pk'),date__range=[fecha1, fecha2]).annotate(TotalProps=Sum('amount')).values('TotalProps')
+	horas_extras = ExtraHours.objects.filter(employee_id=OuterRef('pk'),date__range=[fecha1, fecha2]).annotate(TotalExtrahours=Sum('hours')).values('TotalExtrahours')
+	prestamo = Loans.objects.filter(employee_id=OuterRef('pk'),status='PENDIENTE',date__range=[fecha1, fecha2]).annotate(TotalAbono=Sum('payment')).values('TotalAbono')
+	dias_dobles = DoubleDays.objects.filter(employee_id=OuterRef('pk'),date__range=[fecha1, fecha2]).annotate(TotalDoubledays=Count('employee_id')).values('TotalDoubledays')
+	nomina = Employee.objects.all().annotate(
+		nombre_completo=Concat('surname',Value(' '),'second_surname',Value(' '),'name', output_field = models.CharField())
+		).annotate(TotalAbono = Subquery(prestamo)).annotate(TotalHorasExtras = Subquery(horas_extras)).annotate(TotalApoyo = Subquery(apoyos)).annotate(TotalDiasDobles = Subquery(dias_dobles)).values('id','nombre_completo','department','sr','TotalAbono','TotalHorasExtras','TotalApoyo','TotalDiasDobles')
+	
+	serializer = ListCalculatePayrollSerializer(nomina, many=True)
 	return Response(serializer.data)
+
+	#return Response(nomina)
+
 #*? HORAS EXTRAS
 @api_view(['POST'])
 def CreateExtraHours(request):
@@ -3350,9 +3451,11 @@ def ListExtraHours(request):
 	fecha1 = data['start_date']
 	fecha2 = data['end_date']
 	
-	extrahours = ExtraHours.objects.filter(date__range=[fecha1, fecha2])
-	serializer = ListExtraHoursSerializer(extrahours, many=True)
-	return Response(serializer.data)	
+	#extrahours = ExtraHours.objects.filter(date__range=[fecha1, fecha2])
+	#serializer = ListExtraHoursSerializer(extrahours, many=True)
+	#return Response(serializer.data)	
+	extrahours = ExtraHours.objects.filter(date__range=[fecha1, fecha2]).annotate(nombre_completo=Concat('employee__name',Value(' '),'employee__surname',Value(' '),'employee__second_surname', output_field=models.CharField())).values('employee','nombre_completo').annotate(total=Count('employee'))
+	return Response (extrahours)
 
 @api_view(['DELETE'])
 def DeleteExtraHours(request, pk):
@@ -3374,9 +3477,10 @@ def ListDoubleDays(request):
 	fecha1 = data['start_date']
 	fecha2 = data['end_date']
 	
-	doubledays = DoubleDays.objects.filter(date__range=[fecha1, fecha2])
-	serializer = ListDoubleDaysSerializer(doubledays, many=True)
-	return Response(serializer.data)
+	doubledays = DoubleDays.objects.filter(date__range=[fecha1, fecha2]).annotate(nombre_completo=Concat('employee__name',Value(' '),'employee__surname',Value(' '),'employee__second_surname', output_field=models.CharField())).values('employee','nombre_completo').annotate(total=Count('employee'))
+	#serializer = ListDoubleDaysSerializer(doubledays, many=True)
+	#return Response(serializer.data)
+	return Response (doubledays)
 
 @api_view(['DELETE'])
 def DeleteDoubleDays(request, pk):
@@ -3421,10 +3525,11 @@ def ListLoans(request):
 	data = request.data
 	fecha1 = data['start_date']
 	fecha2 = data['end_date']
-	
-	loans = Loans.objects.filter(date__range=[fecha1, fecha2])
+	#loans = Loans.objects.all()
+	loans = Loans.objects.filter(date__range=[fecha1, fecha2]).values('id','date','employee','loan' ).annotate(TotalPayment=Sum('payments__payment')).annotate(TotalSaldo=F('loan')-F('TotalPayment')).annotate(nombre_completo=Concat('employee__name',Value(' '),'employee__surname',Value(' '),'employee__second_surname', output_field=models.CharField()))
 	serializer = ListLoansSerializer(loans, many=True)
 	return Response(serializer.data)
+	#return Response (loans)
 
 @api_view(['DELETE'])
 def DeleteLoans(request, pk):
@@ -3437,7 +3542,10 @@ def AddPaymentLoan(request):
 	serializer = PaymentsSerializer(data = request.data)
 	if serializer.is_valid():
 		serializer.save()
+		ActualizarStatus = Loans.objects.filter(id=request.data['loan']).update(status=request.data['status'])
+		#ActualizarStatus.save()
 		return Response({"message":"Registro agregado satisfactoriamente!","status":200})  
+
 	return Response({"message":"No se realizó el Registro!","errors":serializer.errors,"status":400})
 
 #*? PRESTAMOS
@@ -3765,6 +3873,44 @@ def ListBills(request):
 	serializer = ListBilledIncomeSerializer(list, many=True)
 	return Response(serializer.data)	
 
+#*? VENTAS
+
+@api_view(['POST'])
+def CreateSale(request):
+	serializer = SaleSerializer(data = request.data)
+	if serializer.is_valid():
+		serializer.save()
+		return Response({"message":"Registro agregado satisfactoriamente!","status":200})  
+	return Response({"message":"No se realizó el Registro!","errors":serializer.errors,"status":400})
+
+@api_view(['POST'])
+def ListSales(request):
+	if ('start_date' in  request.data) and ('end_date' in request.data) and ('customer' in request.data) and ('user' in request.data):
+		
+		fecha1 = request.data['start_date']
+		fecha2 = request.data['end_date']
+		customer = int(request.data['customer'])
+		user = int(request.data['user'])
+		#return Response({"department->":department,"user->":user})
+		#*? administrador
+		if (customer == 0) and (user == 0):
+			rows = Sale.objects.filter(date__range=[fecha1, fecha2])
+
+		if (customer != 0) and (user == 0):
+			rows = Sale.objects.filter(customer_id=customer).filter(date__range=[fecha1, fecha2])
+
+		#*? Empleado				
+		if (customer == 0) and (user != 0):
+			rows = Sale.objects.filter(user_id=user).filter(date__range=[fecha1, fecha2])
+			
+		if (customer != 0) and (user != 0):
+			rows = Sale.objects.filter(user_id=user).filter(customer_id=customer).filter(date__range=[fecha1, fecha2])
+		
+		serializer = ListSalesSerializer(rows, many=True)
+		return Response(serializer.data)
+		
+	else:
+		return Response({"mensaje":"sin variables"})	
 #*? CONTROL DE DEPOSITOS
 
 @api_view(['POST'])
@@ -3784,6 +3930,70 @@ def ListDepositControl(request):
 	list = DepositControl.objects.filter(date__range=[fecha1, fecha2]).filter(account_id = account)
 	serializer = ListDepositControlSerializer(list, many=True)
 	return Response(serializer.data)	
+
+#*? CONCILIACION
+
+@api_view(['POST'])
+def CreateConciliation(request):
+	serializer = ConciliationSerializer(data = request.data)
+	if serializer.is_valid():
+		serializer.save()
+		return Response({"message":"Registro agregado satisfactoriamente!","status":200})  
+	return Response({"message":"No se realizó el Registro!","errors":serializer.errors,"status":400})
+
+@api_view(['POST'])
+def ListConciliation(request):
+	data = request.data
+	fecha1 = data['start_date']
+	fecha2 = data['end_date']
+	account = data['account']
+	list = Conciliation.objects.filter(date__range=[fecha1, fecha2]).filter(account_id = account)
+	serializer = ListConciliationSerializer(list, many=True)
+	return Response(serializer.data)
+
+@api_view(['POST'])
+def ListConciliationForMonth(request):
+	data = request.data
+	fecha1 = data['start_date']
+	fecha2 = data['end_date']
+	
+	nombre = BankAccount.objects.filter(id = OuterRef('account')).values('company')
+	#saldo_inicial = Conciliation.objects.filter(date__range=[fecha1, fecha2]).values('countable_balance').order_by('id').first()
+	list = Conciliation.objects.filter(date__range=[fecha1, fecha2]).annotate(RazonSocial = Subquery(nombre)).annotate(Ingresos = Sum('deposit')).annotate(Egresos=Sum('charge')).values('account','RazonSocial','Ingresos','Egresos').order_by('account')
+	
+	#list = Conciliation.objects.filter(date__range=[fecha1, fecha2]).annotate(SaldoInicial = Min('id')).values('SaldoInicial')
+
+	return Response(list)
+
+@api_view(['DELETE'])
+def DeleteConciliation(request, pk):
+	row = Conciliation.objects.get(id=pk)
+	row.delete()
+	return Response('Registro eliminado satisfactoriamente!')
+
+@api_view(['GET'])
+def PreviousLedgerBalance(request, pk):
+	data = request.data
+	account = pk
+	try:
+		ultimo_saldo = Conciliation.objects.filter(account_id = account).latest('id').countable_balance
+		return Response(ultimo_saldo)
+	except Conciliation.DoesNotExist:
+		return Response(0)
+	#return Response(account)
+
+@api_view(['GET'])
+def PreviousAccountBalance(request, pk):
+	data = request.data
+	account = pk
+	try:
+		ultimo_saldo = Conciliation.objects.filter(account_id = account).latest('id').account_balance
+		return Response(ultimo_saldo)
+	except Conciliation.DoesNotExist:
+		return Response(0)
+	#return Response(account)
+
+
 
 @api_view(['POST'])
 def ListTotalDepositControl(request):
