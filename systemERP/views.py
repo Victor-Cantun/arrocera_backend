@@ -829,8 +829,8 @@ def ListEmployee(request):
 
 @api_view(['GET'])
 def EmployeeListForUser(request, pk):
-	employee = Employee.objects.filter(user_id=pk)
-	serializer = EmployeeListSerializer(employee, many=True).annotate(nombre_completo=Concat('surname',Value(' '),'second_surname',Value(' '),'name', output_field=models.CharField())).order_by('surname')
+	employee = Employee.objects.filter(user_id=pk).annotate(nombre_completo=Concat('surname',Value(' '),'second_surname',Value(' '),'name', output_field=models.CharField())).order_by('surname')
+	serializer = EmployeeListSerializer(employee, many=True)
 	return Response(serializer.data)
 
 @api_view(['GET'])

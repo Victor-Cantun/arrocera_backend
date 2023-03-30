@@ -57,6 +57,7 @@ class EmployeeListSerializer(serializers.ModelSerializer):
     department = DepartmentSerializer(many=False, read_only=True)
     category= CategorySerializer(many=False, read_only=True)
     bank= BankSerializer(many=False, read_only=True)
+    
 
     class Meta:
         model = Employee
@@ -68,8 +69,9 @@ class EmployeeListSerializer(serializers.ModelSerializer):
         response['category'] = instance.category.name if instance.category != None else ''; 
         response['department_id'] = instance.department.id if instance.department != None else '';
         response['category_id'] = instance.category.id if instance.category != None else '';
-        response['nombre_completo']= instance.nombre_completo;
+        
         return response        
+ 
 
 class UploadImageSerializer(serializers.ModelSerializer):
     class Meta:
