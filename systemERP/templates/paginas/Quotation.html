@@ -1,0 +1,129 @@
+<style type="text/css">
+  @page {
+    size: letter portrait;
+    margin: 2cm;
+  }
+  .demo {
+    border: 1px solid #c0c0c0;
+    border-collapse: collapse;
+    padding: 5px;
+  }
+  .demo th {
+    border: 1px solid #c0c0c0;
+    padding: 5px;
+    background: #f0f0f0;
+  }
+  .demo td {
+    border: 1px solid #c0c0c0;
+    padding: 3px;
+  }
+  .encabezado {
+    border: 0;
+    border-collapse: colapse;
+    padding: 5px;
+  }
+  body {
+    font-size: 12px;
+  }
+  footerContent {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+  }
+</style>
+<head>
+  <title>Cotización</title>
+</head>
+<body>
+  <table class="encabezado" id="headerContent">
+    <tr>
+      <td rowspan="2" width="10%" align="center">
+        <img src="https://django.arroztollocan.com/files/imagenes/logo_empresa.png" width="80px" height="100px" />
+      </td>
+      <td width="90%" align="center">
+        <h1>CAMPESINOS PRODUCTORES CAMPECHANOS<br />SPR DE RL DE CV</h1>
+      </td>
+    </tr>
+    <tr>
+      <td align="center"><h1></h1></td>
+    </tr>
+  </table>
+
+  <table style="width: 100%; margin-bottom: 20px">
+    <tr>
+      <td align="center"><strong>COTIZACIÓN</strong></td>
+    </tr>
+  </table>
+  <table style="width: 100%; margin-bottom: 20px">
+    <tr>
+      <td style="width: 50%"><strong>Cliente:</strong>{{ orden.customer.name }}</td>
+      <td style="width: 50%"><strong>Fecha:</strong>{{ orden.date }}</td>
+    </tr>
+    <tr>
+      <td style="width: 50%"><strong>Atención a:</strong>{{ orden.attention }}</td>
+      <td style="width: 50%"><strong>Folio:</strong>{{ orden.invoice }}</td>
+    </tr>
+    <tr>
+      <td style="width: 50%"><strong>Correo:</strong>{{ orden.email }}</td>
+      <td style="width: 50%"><strong>Periodo:</strong>{{ orden.source }}</td>
+    </tr>
+  </table>
+  <table style="width: 100%; margin-bottom: 20px">
+    <tr>
+      <td>{{orden.introduction}}</td>
+    </tr>
+  </table>
+
+  <table style="margin-bottom: 50px; font-size: 10px" class="demo">
+    <tr>
+      <td><strong>CANTIDAD</strong></td>
+      <td><strong>PRODUCTO</strong></td>
+      <td><strong>PRESENTACIÓN</strong></td>
+      <td><strong>PRECIO UNITARIO</strong></td>
+      <td><strong>IMPORTE</strong></td>
+    </tr>
+    {% for item in orden.products.all %}
+    <tr>
+      <td>{{ item.amount }} {{ item.unit }}</td>
+      <td>{{ item.product.name }}</td>
+      <td>{{ item.presentation.name }}</td>
+      <td>{{ item.price }}</td>
+      <td>{{ item.subtotal }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <table style="margin-bottom: 20px">
+    <tr>
+      <td>{{ orden.comment }}</td>
+    </tr>
+  </table>
+
+  <table style="position: fixed; bottom: 0px; margin-top: 50px" id="footerContent">
+    <tr>
+      <td style="height: 200px" align="center"><strong>PERSONA DE CONTACTO:</strong></td>
+      <td style="height: 200px" align="center"><strong>ATTENTAMENTE:</strong></td>
+    </tr>
+    <tr>
+      <td align="center">
+        ________________________<br />
+        {{ orden.generator.name }} {{ orden.generator.surname }} {{ orden.generator.second_surname }}
+      </td>
+      <td align="center">
+        ________________________<br />
+        {{ orden.authorizer.name }} {{ orden.authorizer.surname }} {{ orden.authorizer.second_surname }}
+      </td>
+    </tr>
+  </table>
+  <br />
+  <table style="width: 100%">
+    <tr>
+      <td align="center">
+        <strong
+          >Privada de la 31 No. 123 Int. D, Colonia Concordia, Escárcega, Campeche C.P. 24350<br />Teléfonos: 982-824-0626 y 824-0519. e-mail:
+          campesinos@arroztollocan.com.mx</strong
+        >
+      </td>
+    </tr>
+  </table>
+</body>
