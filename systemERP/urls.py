@@ -504,6 +504,7 @@ urlpatterns = [
     # *? Locatidades
     path("ListLocation", views.ListLocation, name="ListLocation"),
     # *? Variedades de arroz
+    path("CreateVariety", views.CreateVariety, name="CreateVariety"),
     path("ListVariety", views.ListVariety, name="ListVariety"),
     # *? ORDEN DE PAGO DE PROVEEDORES
     path(
@@ -564,6 +565,10 @@ urlpatterns = [
         name="UpdatePaymentProducer",
     ),
     # *? Salario de choferes
+    path("ListPlates", views.ListPlates, name="ListPlates"),
+    path("CreatePlate", views.CreatePlate, name="CreatePlate"),
+    path("ListDrivers", views.ListDrivers, name="ListDrivers"),
+    path("CreateDriver", views.CreateDriver, name="CreateDriver"),
     path("ListDriverSalary", views.ListDriverSalary, name="ListDriverSalary"),
     path("CreateDriverSalary", views.CreateDriverSalary, name="CreateDriverSalary"),
     path(
@@ -804,5 +809,12 @@ urlpatterns = [
     ),
     path(
         "DetailPaidPlugins/<str:pk>", views.DetailPaidPlugins, name="DetailPaidPlugins"
+    ),
+    path("ConvertToLetter", views.ConvertToLetter, name="ConvertToLetter"),
+    path("UpdatePassword", views.UpdatePassword, name="UpdatePassword"),
+    path(
+        "UpdatePhotoUser/<str:pk>",
+        views.UpdatePhotoUser,
+        name="UpdatePhotoUser",
     ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -18,6 +18,7 @@ from systemERP.models import (
     DepositControl,
     Diesel,
     DoubleDays,
+    Driver,
     DriverSalary,
     Employee,
     ExtraHours,
@@ -51,6 +52,7 @@ from systemERP.models import (
     PaymentsDrivers,
     Payroll,
     PettyCash,
+    Plate,
     Presentation,
     Producer,
     Product,
@@ -757,10 +759,22 @@ class VarietySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class DriverSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Driver
+        fields = "__all__"
+
+
+class PlateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Plate
+        fields = "__all__"
+
+
 class ListSegalmexReceptionSerializer(serializers.ModelSerializer):
     producer = ProducerSerializer(many=False, read_only=True)
-    driver = EmployeeSerializer(many=False, read_only=True)
-    plate = UnitSerializer(many=False, read_only=True)
+    driver = DriverSerializer(many=False, read_only=True)
+    plate = PlateSerializer(many=False, read_only=True)
     variety = VarietySerializer(many=False, read_only=True)
     receive = EmployeeSerializer(many=False, read_only=True)
 
@@ -775,9 +789,9 @@ class ListSegalmexReceptionSerializer(serializers.ModelSerializer):
             instance.producer.name if instance.producer != None else ""
         )
         response["driver"] = instance.driver.name if instance.driver != None else ""
-        response["brand"] = instance.plate.brand if instance.plate != None else ""
-        response["model"] = instance.plate.model if instance.plate != None else ""
-        response["plate"] = instance.plate.plate_no if instance.plate != None else ""
+        # response["brand"] = instance.plate.brand if instance.plate != None else ""
+        # response["model"] = instance.plate.model if instance.plate != None else ""
+        response["plate"] = instance.plate.plate if instance.plate != None else ""
         response["variety"] = instance.variety.name if instance.variety != None else ""
         response["receive"] = instance.receive.name if instance.receive != None else ""
 
@@ -822,6 +836,18 @@ class ListPaymentProducerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PaymentProducer
+        fields = "__all__"
+
+
+class PlateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Plate
+        fields = "__all__"
+
+
+class DriverSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Driver
         fields = "__all__"
 
 

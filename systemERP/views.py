@@ -21,6 +21,7 @@ from .models import (
     Department,
     DepositControl,
     DoubleDays,
+    Driver,
     DriverSalary,
     ExtraHours,
     FileProducer,
@@ -53,6 +54,7 @@ from .models import (
     PaymentsDrivers,
     Payroll,
     PettyCash,
+    Plate,
     Presentation,
     Producer,
     Product,
@@ -95,6 +97,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import generics
 from rest_framework import viewsets
+from num2words import num2words
 from .serializers import (
     BankAccountsCustomerSerializer,
     BankAccountsEmployeeSerializer,
@@ -111,6 +114,7 @@ from .serializers import (
     DieselSerializer,
     DoubleDaysSerializer,
     DriverSalarySerializer,
+    DriverSerializer,
     ExtraHoursSerializer,
     FilePaidPluginsSerializer,
     FileProducerSerializer,
@@ -176,6 +180,7 @@ from .serializers import (
     PaymentsSerializer,
     PayrollSerializer,
     PettyCashSerializer,
+    PlateSerializer,
     PresentationSerializer,
     ProductSerializer,
     PropsSerializer,
@@ -373,6 +378,38 @@ def UpdateUser(request, pk):
             "errors": serializer.errors,
             "status": 400,
         }
+    )
+
+
+@api_view(["POST"])
+def UpdatePassword(request):
+    if (
+        ("email" in request.data)
+        and ("old_password" in request.data)
+        and ("password" in request.data)
+    ):
+        email = request.data["email"]
+        old_password = request.data["old_password"]
+        new_password = generate_password_hash(request.data["password"])
+        user = User.objects.filter(email=email).first()
+        if check_password_hash(user.password, old_password):
+            User.objects.filter(email=email).update(password=new_password)
+            return Response(
+                {
+                    "message": "Coontraseña actualizada satisfactoriamente!",
+                    "status": 200,
+                }
+            )
+        return Response({"message": "Contraseña incorrecta!", "status": 400})
+
+@api_view(["POST"])
+def UpdatePhotoUser(request, pk):
+    data = request.data
+    employee = User.objects.get(id=pk)
+    employee.photo = data["imagen"]
+    employee.save()
+    return Response(
+        {"message": "Registro actualizado satisfactoriamente!", "status": 200}
     )
 
 
@@ -4618,6 +4655,23 @@ def ListLocation(request):
     return Response(serializer.data)
 
 
+@api_view(["POST"])
+def CreateVariety(request):
+    serializer = VarietySerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(
+            {"message": "Registro agregado satisfactoriamente!", "status": 200}
+        )
+    return Response(
+        {
+            "message": "No se realizó el Registro!",
+            "errors": serializer.errors,
+            "status": 400,
+        }
+    )
+
+
 @api_view(["GET"])
 def ListVariety(request):
     variety = Variety.objects.all()
@@ -4887,6 +4941,39 @@ def UpdatePaymentProducer(request, pk):
 
 
 # *? SALARIO DE CHOFERES
+
+
+@api_view(["GET"])
+def ListPlates(request):
+    row = Plate.objects.all()
+    serializer = PlateSerializer(row, many=True)
+    return Response(serializer.data)
+
+
+@api_view(["POST"])
+def CreatePlate(request):
+    serializer = PlateSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(
+            {"message": "Registro agregado satisfactoriamente!", "status": 200}
+        )
+    return Response(
+        {
+            "message": "No se realizó el Registro!",
+            "errors": serializer.errors,
+            "status": 400,
+        }
+    )
+
+
+@api_view(["GET"])
+def ListDrivers(request):
+    row = Driver.objects.all()
+    serializer = DriverSerializer(row, many=True)
+    return Response(serializer.data)
+
+
 @api_view(["POST"])
 def ListDriverSalary(request):
     if (
@@ -4927,6 +5014,23 @@ def ListDriverSalary(request):
 
     else:
         return Response({"mensaje": "sin variables"})
+
+
+@api_view(["POST"])
+def CreateDriver(request):
+    serializer = DriverSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(
+            {"message": "Registro agregado satisfactoriamente!", "status": 200}
+        )
+    return Response(
+        {
+            "message": "No se realizó el Registro!",
+            "errors": serializer.errors,
+            "status": 400,
+        }
+    )
 
 
 @api_view(["POST"])
@@ -5927,6 +6031,7 @@ def CreateBilledIncome(request):
         net_weight=data["net_weight"],
         total=data["total"],
         user_id=data["user"],
+        status=data["status"],
     )
     nueva_factura.save()
 
@@ -5982,6 +6087,7 @@ def UpdateBilledIncome(request, pk):
         net_weight=data["net_weight"],
         total=data["total"],
         user_id=data["user"],
+        status=data["status"],
     )
     for product in data["rows"]:
         new_product = ProductBI.objects.filter(id=product["id"]).update(
@@ -6517,3 +6623,42 @@ def DeletePaidPlugins(request, pk):
         producto.delete()
     row.delete()
     return Response("Registro eliminado satisfactoriamente!")
+
+
+@api_view(["POST"])
+def ConvertToLetter(request):
+    if "balance" in request.data:
+        cantidad = float(request.data["balance"])
+        # cantidad = 15000.50
+        # cantidad_entero = int(cantidad)
+        # cantidad_decimal = int(round((cantidad - cantidad_entero) * 100))
+        # cantidad_texto = f"{num2words(cantidad_entero, lang='es')} punto {num2words(cantidad_decimal, lang='es')}"
+        # return Response(cantidad_decimal)
+        # Redondeamos la cantidad a dos decimales
+        cantidad = round(cantidad, 2)
+
+        # Convertimos la parte entera a texto
+        parte_entera = num2words(int(cantidad), lang="es").capitalize()
+
+        # Obtenemos los decimales como una cadena de texto
+        decimales = str(cantidad).split(".")[1]
+
+        # Convertimos los decimales a texto
+        parte_decimal = num2words(int(decimales), lang="es").capitalize()
+
+        # Creamos la representación en texto de la cantidad
+        if decimales == "00":
+            cantidad_en_texto = f"{parte_entera} "
+        else:
+            cantidad_en_texto = f"{parte_entera} punto {parte_decimal}"
+
+        # return cantidad_en_texto
+
+        # datos = {"texto": cantidad_en_texto}
+
+        # Convertir el diccionario a formato JSON
+        # json_texto = json.dumps(datos)
+
+        # print(json_texto)
+        return Response({"message": cantidad_en_texto, "status": 200})
+        # return Response(json_texto)

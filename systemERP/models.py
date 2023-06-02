@@ -114,6 +114,12 @@ class User(models.Model):
     edit = models.BooleanField(null=True, verbose_name="Editar", default=False)
     delete = models.BooleanField(null=True, verbose_name="Eliminar", default=False)
     export = models.BooleanField(null=True, verbose_name="Exportar", default=False)
+    photo = models.ImageField(
+        upload_to="employees/",
+        verbose_name="Foto de perfil",
+        null=True,
+        default="users/NoPhoto.png",
+    )
 
 
 class Company(models.Model):
@@ -1176,6 +1182,9 @@ class BilledIncome(models.Model):
     total = models.DecimalField(
         max_digits=19, decimal_places=2, verbose_name="total", null=True
     )
+    status = models.CharField(
+        max_length=50, verbose_name="Status", default="", blank=True, null=True
+    )
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     creation = models.DateTimeField(auto_now=True)
 
@@ -1876,299 +1885,6 @@ class Variety(models.Model):
     creation = models.DateTimeField(auto_now=True)
 
 
-class SegalmexReception(models.Model):
-    id = models.AutoField(primary_key=True)
-    company = models.ForeignKey(
-        Company,
-        on_delete=models.CASCADE,
-        verbose_name="Compañia",
-        null=True,
-        default="",
-    )
-    period = models.CharField(max_length=100, verbose_name="Periodo", null=True)
-    year = models.IntegerField(verbose_name="Año", null=True)
-    checkin_date = models.DateField(
-        max_length=50, verbose_name="Fecha de ingreso", null=True
-    )
-    checkin_time = models.TimeField(
-        max_length=50, verbose_name="Hora de ingreso", null=True
-    )
-    checkout_date = models.DateField(
-        max_length=50, verbose_name="Fecha de salida", null=True
-    )
-    checkout_time = models.TimeField(
-        max_length=50, verbose_name="Hora de salida", null=True
-    )
-    ticket = models.IntegerField(verbose_name="No. de Boleta", unique=True)
-    producer = models.ForeignKey(
-        Producer, on_delete=models.CASCADE, verbose_name="Productor", null=True
-    )
-    location = models.CharField(max_length=200, verbose_name="Localidad", null=True)
-    driver = models.ForeignKey(
-        Employee, on_delete=models.CASCADE, related_name="Chofer", null=True
-    )
-    plate = models.ForeignKey(
-        Unit, on_delete=models.CASCADE, verbose_name="Unidad", null=True
-    )
-    lot = models.IntegerField(null=True, verbose_name="Lote")
-    observation = models.CharField(
-        max_length=500, verbose_name="Observacion", null=True
-    )
-    contract = models.CharField(max_length=100, verbose_name="contrato", null=True)
-    variety = models.ForeignKey(
-        Variety, on_delete=models.CASCADE, verbose_name="variedad", null=True
-    )
-    municipality = models.CharField(max_length=100, verbose_name="municipio", null=True)
-    action = models.CharField(max_length=50, verbose_name="accion", null=True)
-    gross_weight = models.DecimalField(
-        max_digits=19, decimal_places=2, verbose_name="Peso bruto", null=True
-    )
-    tare_weight = models.DecimalField(
-        max_digits=19, decimal_places=2, verbose_name="Peso tara", null=True
-    )
-    field_weight = models.DecimalField(
-        max_digits=19, decimal_places=2, verbose_name="Peso campo", null=True
-    )
-    h_d = models.DecimalField(
-        verbose_name="humedad y dictaminado",
-        max_digits=19,
-        decimal_places=2,
-        null=True,
-        default=0,
-    )
-    h_t = models.DecimalField(
-        verbose_name="humedad y tolerancia",
-        max_digits=19,
-        decimal_places=2,
-        null=True,
-        default=0,
-    )
-    h_da = models.DecimalField(
-        verbose_name="humedad y deduccion aplicable",
-        max_digits=19,
-        decimal_places=2,
-        null=True,
-        default=0,
-    )
-    i_d = models.DecimalField(
-        verbose_name="impurezas y dictaminado",
-        max_digits=19,
-        decimal_places=2,
-        null=True,
-        default=0,
-    )
-    i_t = models.DecimalField(
-        verbose_name="impurezas y tolerancia",
-        max_digits=19,
-        decimal_places=2,
-        null=True,
-        default=0,
-    )
-    i_da = models.DecimalField(
-        verbose_name="impurezas y deduccion aplicable",
-        max_digits=19,
-        decimal_places=2,
-        null=True,
-        default=0,
-    )
-    gq_d = models.DecimalField(
-        verbose_name="grano quebrado y dictaminado",
-        max_digits=19,
-        decimal_places=2,
-        null=True,
-        default=0,
-    )
-    gq_t = models.DecimalField(
-        verbose_name="grano quebrado y tolerancia",
-        max_digits=19,
-        decimal_places=2,
-        null=True,
-        default=0,
-    )
-    gq_da = models.DecimalField(
-        verbose_name="grano quebrado y deduccion aplicable",
-        max_digits=19,
-        decimal_places=2,
-        null=True,
-        default=0,
-    )
-    gv_d = models.DecimalField(
-        verbose_name="grano verde y dictaminado",
-        max_digits=19,
-        decimal_places=2,
-        null=True,
-        default=0,
-    )
-    gv_t = models.DecimalField(
-        verbose_name="grano verde y tolerancia",
-        max_digits=19,
-        decimal_places=2,
-        null=True,
-        default=0,
-    )
-    gv_da = models.DecimalField(
-        verbose_name="grano verde y deduccion aplicable",
-        max_digits=19,
-        decimal_places=2,
-        null=True,
-        default=0,
-    )
-    gm_d = models.DecimalField(
-        verbose_name="grano manchado y dictaminado",
-        max_digits=19,
-        decimal_places=2,
-        null=True,
-        default=0,
-    )
-    gm_t = models.DecimalField(
-        verbose_name="grano manchado y tolerancia",
-        max_digits=19,
-        decimal_places=2,
-        null=True,
-        default=0,
-    )
-    gm_da = models.DecimalField(
-        verbose_name="grano manchado y deduccion aplicable",
-        max_digits=19,
-        decimal_places=2,
-        null=True,
-        default=0,
-    )
-    ge_d = models.DecimalField(
-        verbose_name="grano estrellado y dictaminado",
-        max_digits=19,
-        decimal_places=2,
-        null=True,
-        default=0,
-    )
-    ge_t = models.DecimalField(
-        verbose_name="grano estrellado y tolerancia",
-        max_digits=19,
-        decimal_places=2,
-        null=True,
-        default=0,
-    )
-    ge_da = models.DecimalField(
-        verbose_name="grano estrellado y deduccion aplicable",
-        max_digits=19,
-        decimal_places=2,
-        null=True,
-        default=0,
-    )
-    cr_d = models.DecimalField(
-        verbose_name="cuticula roja y dictaminado",
-        max_digits=19,
-        decimal_places=2,
-        null=True,
-        default=0,
-    )
-    cr_t = models.DecimalField(
-        verbose_name="cuticula roja y tolerancia",
-        max_digits=19,
-        decimal_places=2,
-        null=True,
-        default=0,
-    )
-    cr_da = models.DecimalField(
-        verbose_name="cuticula roja y deduccion aplicable",
-        max_digits=19,
-        decimal_places=2,
-        null=True,
-        default=0,
-    )
-    discount = models.DecimalField(
-        max_digits=19, decimal_places=2, verbose_name="Descuento", null=True
-    )
-    discounted_weight = models.DecimalField(
-        max_digits=19, decimal_places=2, verbose_name="Peso con descuento", null=True
-    )
-    net_analyzed = models.DecimalField(
-        max_digits=19, decimal_places=2, verbose_name="Neto analizado", null=True
-    )
-    balance = models.DecimalField(
-        max_digits=19, decimal_places=2, verbose_name="Saldo a liquidar", null=True
-    )
-    balance_letters = models.CharField(
-        max_length=500, verbose_name="Comentario", null=True
-    )
-    price = models.DecimalField(
-        max_digits=19, decimal_places=2, verbose_name="Precio", null=True
-    )
-    freight = models.DecimalField(
-        max_digits=19, decimal_places=2, verbose_name="Flete", null=True
-    )
-    total = models.DecimalField(
-        max_digits=19, decimal_places=2, verbose_name="Total", null=True
-    )
-    receive = models.ForeignKey(
-        Employee, on_delete=models.CASCADE, related_name="Recibio", null=True
-    )
-    comment = models.CharField(max_length=500, verbose_name="Comentario", null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    creation = models.DateTimeField(auto_now=True)
-
-
-class PaymentOrderProducer(models.Model):
-    id = models.AutoField(primary_key=True)
-    date = models.DateField(max_length=50, verbose_name="Fecha", null=True)
-    description = models.CharField(
-        max_length=500, verbose_name="Descripcion de pago", null=True
-    )
-    producer = models.ForeignKey(
-        Producer, on_delete=models.CASCADE, verbose_name="Productor", null=True
-    )
-    ticket = models.ForeignKey(
-        SegalmexReception,
-        on_delete=models.CASCADE,
-        verbose_name="No. Boleta",
-        null=True,
-    )
-    amount = models.DecimalField(
-        max_digits=19, decimal_places=2, verbose_name="Total", null=True
-    )
-    comment = models.CharField(max_length=500, verbose_name="Comentario", null=True)
-    generate_order = models.ForeignKey(
-        Employee,
-        on_delete=models.CASCADE,
-        related_name="GeneraOrdenPago_proveedor",
-        null=True,
-    )
-    authorize_order = models.ForeignKey(
-        Employee,
-        on_delete=models.CASCADE,
-        related_name="AutorizaOrdenPago_proveedor",
-        null=True,
-    )
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    creation = models.DateTimeField(auto_now=True)
-
-
-class PaymentProducer(models.Model):
-    id = models.AutoField(primary_key=True)
-    date = models.DateField(max_length=50, verbose_name="Fecha", null=True)
-    pay_order = models.ForeignKey(
-        PaymentOrderProducer,
-        on_delete=models.CASCADE,
-        verbose_name="Orden de Pago",
-        null=True,
-    )
-    description = models.CharField(
-        max_length=500, verbose_name="Descripcion de pago", null=True
-    )
-    payment_method = models.CharField(
-        max_length=50, verbose_name="Metodo de pago", null=True
-    )
-    amount = models.DecimalField(
-        max_digits=19, decimal_places=2, verbose_name="Total", null=True
-    )
-    bank_account = models.ForeignKey(
-        BankAccount, on_delete=models.CASCADE, verbose_name="Cuenta de banco", null=True
-    )
-    comment = models.CharField(max_length=500, verbose_name="Comentario", null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    creation = models.DateTimeField(auto_now=True)
-
-
 class InitialCash(models.Model):
     id = models.AutoField(primary_key=True)
     cash = models.DecimalField(
@@ -2192,13 +1908,16 @@ class PettyCash(models.Model):
     creation = models.DateTimeField(auto_now=True)
 
 
+class Plate(models.Model):
+    id = models.AutoField(primary_key=True)
+    plate = models.CharField(max_length=100, verbose_name="Placa")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    creation = models.DateTimeField(auto_now=True)
+
+
 class Driver(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, verbose_name="Nombre")
-    surname = models.CharField(max_length=100, verbose_name="Apellido Paterno")
-    second_surname = models.CharField(
-        max_length=100, verbose_name="Apellido Materno", null=True
-    )
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     creation = models.DateTimeField(auto_now=True)
 
@@ -2206,10 +1925,6 @@ class Driver(models.Model):
 class Charger(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, verbose_name="Nombre")
-    surname = models.CharField(max_length=100, verbose_name="Apellido Paterno")
-    second_surname = models.CharField(
-        max_length=100, verbose_name="Apellido Materno", null=True
-    )
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     creation = models.DateTimeField(auto_now=True)
 
@@ -2689,5 +2404,334 @@ class Income(models.Model):
     amount = models.DecimalField(
         max_digits=19, decimal_places=2, verbose_name="Importe", null=True
     )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    creation = models.DateTimeField(auto_now=True)
+
+
+class SegalmexReception(models.Model):
+    id = models.AutoField(primary_key=True)
+    company = models.ForeignKey(
+        Company,
+        on_delete=models.CASCADE,
+        verbose_name="Compañia",
+        null=True,
+        default="",
+    )
+    period = models.CharField(
+        max_length=100, verbose_name="Periodo", null=True, default=""
+    )
+    year = models.IntegerField(verbose_name="Año", null=True)
+    checkin_date = models.DateField(
+        max_length=50, verbose_name="Fecha de ingreso", null=True, default=""
+    )
+    checkin_time = models.TimeField(
+        max_length=50, verbose_name="Hora de ingreso", null=True, default=""
+    )
+    checkout_date = models.DateField(
+        max_length=50, verbose_name="Fecha de salida", null=True, default=""
+    )
+    checkout_time = models.TimeField(
+        max_length=50, verbose_name="Hora de salida", null=True, default=""
+    )
+    ticket = models.IntegerField(verbose_name="No. de Boleta", null=True, default="")
+    producer = models.ForeignKey(
+        Producer,
+        on_delete=models.CASCADE,
+        verbose_name="Productor",
+        null=True,
+        default="",
+    )
+    location = models.CharField(
+        max_length=200, verbose_name="Localidad", null=True, default=""
+    )
+    driver = models.ForeignKey(
+        Employee, on_delete=models.CASCADE, related_name="Chofer", null=True, default=""
+    )
+    plate = models.ForeignKey(
+        Plate, on_delete=models.CASCADE, verbose_name="Unidad", null=True, default=""
+    )
+    lot = models.CharField(max_length=100, verbose_name="Lote", null=True, default="")
+    observation = models.CharField(
+        max_length=500, verbose_name="Observacion", null=True, default=""
+    )
+    contract = models.CharField(
+        max_length=100, verbose_name="contrato", null=True, default=""
+    )
+    variety = models.ForeignKey(
+        Variety,
+        on_delete=models.CASCADE,
+        verbose_name="variedad",
+        null=True,
+        default="",
+    )
+    municipality = models.CharField(
+        max_length=100, verbose_name="municipio", null=True, default=""
+    )
+    action = models.CharField(
+        max_length=50, verbose_name="accion", null=True, default=""
+    )
+    gross_weight = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name="Peso bruto", null=True, default=0
+    )
+    tare_weight = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name="Peso tara", null=True, default=0
+    )
+    field_weight = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name="Peso campo", null=True, default=0
+    )
+    h_d = models.DecimalField(
+        verbose_name="humedad y dictaminado",
+        max_digits=19,
+        decimal_places=2,
+        null=True,
+        default=0,
+    )
+    h_t = models.DecimalField(
+        verbose_name="humedad y tolerancia",
+        max_digits=19,
+        decimal_places=2,
+        null=True,
+        default=0,
+    )
+    h_da = models.DecimalField(
+        verbose_name="humedad y deduccion aplicable",
+        max_digits=19,
+        decimal_places=2,
+        null=True,
+        default=0,
+    )
+    i_d = models.DecimalField(
+        verbose_name="impurezas y dictaminado",
+        max_digits=19,
+        decimal_places=2,
+        null=True,
+        default=0,
+    )
+    i_t = models.DecimalField(
+        verbose_name="impurezas y tolerancia",
+        max_digits=19,
+        decimal_places=2,
+        null=True,
+        default=0,
+    )
+    i_da = models.DecimalField(
+        verbose_name="impurezas y deduccion aplicable",
+        max_digits=19,
+        decimal_places=2,
+        null=True,
+        default=0,
+    )
+    gq_d = models.DecimalField(
+        verbose_name="grano quebrado y dictaminado",
+        max_digits=19,
+        decimal_places=2,
+        null=True,
+        default=0,
+    )
+    gq_t = models.DecimalField(
+        verbose_name="grano quebrado y tolerancia",
+        max_digits=19,
+        decimal_places=2,
+        null=True,
+        default=0,
+    )
+    gq_da = models.DecimalField(
+        verbose_name="grano quebrado y deduccion aplicable",
+        max_digits=19,
+        decimal_places=2,
+        null=True,
+        default=0,
+    )
+    gv_d = models.DecimalField(
+        verbose_name="grano verde y dictaminado",
+        max_digits=19,
+        decimal_places=2,
+        null=True,
+        default=0,
+    )
+    gv_t = models.DecimalField(
+        verbose_name="grano verde y tolerancia",
+        max_digits=19,
+        decimal_places=2,
+        null=True,
+        default=0,
+    )
+    gv_da = models.DecimalField(
+        verbose_name="grano verde y deduccion aplicable",
+        max_digits=19,
+        decimal_places=2,
+        null=True,
+        default=0,
+    )
+    gm_d = models.DecimalField(
+        verbose_name="grano manchado y dictaminado",
+        max_digits=19,
+        decimal_places=2,
+        null=True,
+        default=0,
+    )
+    gm_t = models.DecimalField(
+        verbose_name="grano manchado y tolerancia",
+        max_digits=19,
+        decimal_places=2,
+        null=True,
+        default=0,
+    )
+    gm_da = models.DecimalField(
+        verbose_name="grano manchado y deduccion aplicable",
+        max_digits=19,
+        decimal_places=2,
+        null=True,
+        default=0,
+    )
+    ge_d = models.DecimalField(
+        verbose_name="grano estrellado y dictaminado",
+        max_digits=19,
+        decimal_places=2,
+        null=True,
+        default=0,
+    )
+    ge_t = models.DecimalField(
+        verbose_name="grano estrellado y tolerancia",
+        max_digits=19,
+        decimal_places=2,
+        null=True,
+        default=0,
+    )
+    ge_da = models.DecimalField(
+        verbose_name="grano estrellado y deduccion aplicable",
+        max_digits=19,
+        decimal_places=2,
+        null=True,
+        default=0,
+    )
+    cr_d = models.DecimalField(
+        verbose_name="cuticula roja y dictaminado",
+        max_digits=19,
+        decimal_places=2,
+        null=True,
+        default=0,
+    )
+    cr_t = models.DecimalField(
+        verbose_name="cuticula roja y tolerancia",
+        max_digits=19,
+        decimal_places=2,
+        null=True,
+        default=0,
+    )
+    cr_da = models.DecimalField(
+        verbose_name="cuticula roja y deduccion aplicable",
+        max_digits=19,
+        decimal_places=2,
+        null=True,
+        default=0,
+    )
+    discount = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name="Descuento", null=True, default=0
+    )
+    discounted_weight = models.DecimalField(
+        max_digits=19,
+        decimal_places=2,
+        verbose_name="Peso con descuento",
+        null=True,
+        default=0,
+    )
+    net_analyzed = models.DecimalField(
+        max_digits=19,
+        decimal_places=2,
+        verbose_name="Neto analizado",
+        null=True,
+        default=0,
+    )
+    balance = models.DecimalField(
+        max_digits=19,
+        decimal_places=2,
+        verbose_name="Saldo a liquidar",
+        null=True,
+        default=0,
+    )
+    balance_letters = models.CharField(
+        max_length=500, verbose_name="Comentario", null=True, default=0
+    )
+    price = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name="Precio", null=True, default=0
+    )
+    freight = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name="Flete", null=True, default=0
+    )
+    total = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name="Total", null=True, default=0
+    )
+    receive = models.ForeignKey(
+        Employee,
+        on_delete=models.CASCADE,
+        related_name="Recibio",
+        null=True,
+        default="",
+    )
+    comment = models.CharField(
+        max_length=500, verbose_name="Comentario", null=True, default=""
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    creation = models.DateTimeField(auto_now=True)
+
+
+class PaymentOrderProducer(models.Model):
+    id = models.AutoField(primary_key=True)
+    date = models.DateField(max_length=50, verbose_name="Fecha", null=True)
+    description = models.CharField(
+        max_length=500, verbose_name="Descripcion de pago", null=True
+    )
+    producer = models.ForeignKey(
+        Producer, on_delete=models.CASCADE, verbose_name="Productor", null=True
+    )
+    ticket = models.ForeignKey(
+        SegalmexReception,
+        on_delete=models.CASCADE,
+        verbose_name="No. Boleta",
+        null=True,
+    )
+    amount = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name="Total", null=True
+    )
+    comment = models.CharField(max_length=500, verbose_name="Comentario", null=True)
+    generate_order = models.ForeignKey(
+        Employee,
+        on_delete=models.CASCADE,
+        related_name="GeneraOrdenPago_proveedor",
+        null=True,
+    )
+    authorize_order = models.ForeignKey(
+        Employee,
+        on_delete=models.CASCADE,
+        related_name="AutorizaOrdenPago_proveedor",
+        null=True,
+    )
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    creation = models.DateTimeField(auto_now=True)
+
+
+class PaymentProducer(models.Model):
+    id = models.AutoField(primary_key=True)
+    date = models.DateField(max_length=50, verbose_name="Fecha", null=True)
+    pay_order = models.ForeignKey(
+        PaymentOrderProducer,
+        on_delete=models.CASCADE,
+        verbose_name="Orden de Pago",
+        null=True,
+    )
+    description = models.CharField(
+        max_length=500, verbose_name="Descripcion de pago", null=True
+    )
+    payment_method = models.CharField(
+        max_length=50, verbose_name="Metodo de pago", null=True
+    )
+    amount = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name="Total", null=True
+    )
+    bank_account = models.ForeignKey(
+        BankAccount, on_delete=models.CASCADE, verbose_name="Cuenta de banco", null=True
+    )
+    comment = models.CharField(max_length=500, verbose_name="Comentario", null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     creation = models.DateTimeField(auto_now=True)
