@@ -3,6 +3,8 @@ from . import views
 from django.conf import settings
 from django.contrib.staticfiles.urls import static
 
+# from django.conf.urls import static
+
 urlpatterns = [
     path("home", views.home, name="home"),
     # *? USUARIOS

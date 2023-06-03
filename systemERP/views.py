@@ -402,6 +402,7 @@ def UpdatePassword(request):
             )
         return Response({"message": "Contraseña incorrecta!", "status": 400})
 
+
 @api_view(["POST"])
 def UpdatePhotoUser(request, pk):
     data = request.data
@@ -3303,7 +3304,7 @@ def CreateOutput(request):
     data = request.data
     new_output = Output.objects.create(
         user_id=data["user"],
-        # company_id=data['company'],
+        company_id=data["company"],
         date=data["date"],
         invoice=data["invoice"],
         customer_id=data["customer"],
@@ -3348,6 +3349,7 @@ def UpdateOutput(request, pk):
     data = request.data
     Output.objects.filter(id=pk).update(
         date=data["date"],
+        company_id=data["company"],
         invoice=data["invoice"],
         customer_id=data["customer"],
         destiny=data["destiny"],
