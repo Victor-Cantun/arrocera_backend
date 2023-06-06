@@ -1091,7 +1091,13 @@ class PurchaseOrder(models.Model):
         max_length=50, verbose_name="Fecha de entrega", null=True
     )
     business_name = models.ForeignKey(Customer, on_delete=models.CASCADE, null=True)
-    order_number = models.IntegerField(verbose_name="Orden de pedido", null=True)
+    order_number = models.CharField(
+        max_length=100,
+        verbose_name="Orden de pedido del cliente",
+        null=True,
+        blank=True,
+        default="",
+    )
     place_delivery = models.CharField(
         max_length=100,
         verbose_name="Lugar de entrega",

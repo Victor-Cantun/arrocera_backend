@@ -2460,17 +2460,23 @@ def PurchaseOrders(request):
         # return Response({"department->":department,"user->":user})
         # *? administrador
         if (customer == 0) and (user == 0):
-            rows = PurchaseOrder.objects.filter(date__range=[fecha1, fecha2])
+            rows = PurchaseOrder.objects.filter(date__range=[fecha1, fecha2]).order_by(
+                "purchase_order"
+            )
 
         if (customer != 0) and (user == 0):
-            rows = PurchaseOrder.objects.filter(business_name_id=customer).filter(
-                date__range=[fecha1, fecha2]
+            rows = (
+                PurchaseOrder.objects.filter(business_name_id=customer)
+                .filter(date__range=[fecha1, fecha2])
+                .order_by("purchase_order")
             )
 
         # *? Empleado
         if (customer == 0) and (user != 0):
-            rows = PurchaseOrder.objects.filter(user_id=user).filter(
-                date__range=[fecha1, fecha2]
+            rows = (
+                PurchaseOrder.objects.filter(user_id=user)
+                .filter(date__range=[fecha1, fecha2])
+                .order_by("purchase_order")
             )
 
         if (customer != 0) and (user != 0):
@@ -2478,7 +2484,7 @@ def PurchaseOrders(request):
                 PurchaseOrder.objects.filter(user_id=user)
                 .filter(business_name_id=customer)
                 .filter(date__range=[fecha1, fecha2])
-            )
+            ).order_by("purchase_order")
 
         serializer = PurchaseOrderListSerializer(rows, many=True)
         return Response(serializer.data)
@@ -5995,17 +6001,23 @@ def ListBilledIncome(request):
         # return Response({"department->":department,"user->":user})
         # *? administrador
         if (customer == 0) and (user == 0):
-            rows = BilledIncome.objects.filter(date__range=[fecha1, fecha2])
+            rows = BilledIncome.objects.filter(date__range=[fecha1, fecha2]).order_by(
+                "invoice"
+            )
 
         if (customer != 0) and (user == 0):
-            rows = BilledIncome.objects.filter(customer_id=customer).filter(
-                date__range=[fecha1, fecha2]
+            rows = (
+                BilledIncome.objects.filter(customer_id=customer)
+                .filter(date__range=[fecha1, fecha2])
+                .order_by("invoice")
             )
 
         # *? Empleado
         if (customer == 0) and (user != 0):
-            rows = BilledIncome.objects.filter(user_id=user).filter(
-                date__range=[fecha1, fecha2]
+            rows = (
+                BilledIncome.objects.filter(user_id=user)
+                .filter(date__range=[fecha1, fecha2])
+                .order_by("invoice")
             )
 
         if (customer != 0) and (user != 0):
@@ -6013,7 +6025,7 @@ def ListBilledIncome(request):
                 BilledIncome.objects.filter(user_id=user)
                 .filter(customer_id=customer)
                 .filter(date__range=[fecha1, fecha2])
-            )
+            ).order_by("invoice")
 
         serializer = ListBilledIncomeSerializer(rows, many=True)
         return Response(serializer.data)
