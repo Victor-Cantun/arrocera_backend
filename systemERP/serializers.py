@@ -63,6 +63,7 @@ from systemERP.models import (
     ProductRequisition,
     ProductShopping,
     ProductW,
+    Production,
     Props,
     Provider,
     PurchaseOrder,
@@ -74,6 +75,7 @@ from systemERP.models import (
     SegalmexParcel,
     SegalmexReception,
     Shopping,
+    Silo,
     Society,
     Ticketreview,
     Unit,
@@ -575,7 +577,12 @@ class OutputListSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         response = super().to_representation(instance)
-        # response['company'] = instance.company.name if instance.company != None else '',
+        response["company"] = (
+            instance.company.name if instance.company != None else "",
+        )
+        response["id_company"] = (
+            instance.company.id if instance.company != None else "",
+        )
         response["customer"] = (
             instance.customer.name if instance.customer != None else ""
         )
@@ -704,6 +711,57 @@ class ShoppingListSerializer(serializers.ModelSerializer):
         model = Shopping
         fields = "__all__"
 
+    def to_representation(self, instance):
+        response = super().to_representation(instance)
+
+        response["requisition"] = (
+            instance.requisition.folio if instance.requisition != None else ""
+        )
+        response["provider"] = (
+            instance.provider.name if instance.provider != None else ""
+        )
+        response["department"] = (
+            instance.department.name if instance.department != None else ""
+        )
+        response["requisition_id"] = (
+            instance.requisition.id if instance.requisition != None else ""
+        )
+        response["provider_id"] = (
+            instance.provider.id if instance.provider != None else ""
+        )
+        response["department_id"] = (
+            instance.department.id if instance.department != None else ""
+        )
+        response["applicant"] = (
+            instance.applicant.name
+            + " "
+            + instance.applicant.surname
+            + " "
+            + instance.applicant.second_surname
+            if instance.applicant != None
+            else ""
+        )
+        response["verify"] = (
+            instance.verify.name
+            + " "
+            + instance.verify.surname
+            + " "
+            + instance.verify.second_surname
+            if instance.verify != None
+            else ""
+        )
+        response["authorizes"] = (
+            instance.authorizes.name
+            + " "
+            + instance.authorizes.surname
+            + " "
+            + instance.authorizes.second_surname
+            if instance.authorizes != None
+            else ""
+        )
+
+        return response
+
 
 class SocietySerializer(serializers.ModelSerializer):
     class Meta:
@@ -756,6 +814,12 @@ class LocationSerializer(serializers.ModelSerializer):
 class VarietySerializer(serializers.ModelSerializer):
     class Meta:
         model = Variety
+        fields = "__all__"
+
+
+class SiloSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Silo
         fields = "__all__"
 
 
@@ -1617,3 +1681,9 @@ class ListIncomeSerializer(serializers.ModelSerializer):
         )
 
         return response
+
+
+class ProductionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Production
+        fields = "__all__"

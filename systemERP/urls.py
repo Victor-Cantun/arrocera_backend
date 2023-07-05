@@ -508,6 +508,9 @@ urlpatterns = [
     # *? Variedades de arroz
     path("CreateVariety", views.CreateVariety, name="CreateVariety"),
     path("ListVariety", views.ListVariety, name="ListVariety"),
+    # *? SILOS
+    path("CreateSilo", views.CreateSilo, name="CreateSilo"),
+    path("ListSilos", views.ListSilos, name="ListSilos"),
     # *? ORDEN DE PAGO DE PROVEEDORES
     path(
         "SearchTicketReception",
@@ -819,4 +822,7 @@ urlpatterns = [
         views.UpdatePhotoUser,
         name="UpdatePhotoUser",
     ),
+    #*? PROODUCCIÓN
+    path("CreateProduction", views.CreateProduction, name="CreateProduction"),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -77,6 +77,7 @@ from .models import (
     SegalmexParcel,
     SegalmexReception,
     Shopping,
+    Silo,
     Society,
     SocietyProducers,
     User,
@@ -183,6 +184,7 @@ from .serializers import (
     PlateSerializer,
     PresentationSerializer,
     ProductSerializer,
+    ProductionSerializer,
     PropsSerializer,
     PurchaseOrderListSerializer,
     RequisitionListSerializer,
@@ -191,6 +193,7 @@ from .serializers import (
     SegalmexParcelSerializer,
     SegalmexReceptionSerializer,
     ShoppingListSerializer,
+    SiloSerializer,
     SocietyListSerializer,
     SocietySerializer,
     UnitListSerializer,
@@ -1036,6 +1039,7 @@ class ReportProducersXLSX(TemplateView):
         ws["O6"] = "No. Interior"
         ws["P6"] = "No. Exterior"
         ws["Q6"] = "Representante legal"
+        ws["R6"] = "Observación"
 
         cont = 7
 
@@ -1055,6 +1059,7 @@ class ReportProducersXLSX(TemplateView):
             ws.cell(row=cont, column=15).value = producer.int_no
             ws.cell(row=cont, column=16).value = producer.ext_no
             ws.cell(row=cont, column=17).value = producer.representative
+            ws.cell(row=cont, column=18).value = producer.observation
 
             cont += 1
 
@@ -4239,6 +4244,7 @@ def CreateShopping(request):
         requisition_id=data["requisition"],
         department_id=data["department"],
         payment_type=data["payment_type"],
+        reason=data["reason"],
         iva=data["iva"],
         subtotal=data["subtotal"],
         total=data["total"],
@@ -4684,6 +4690,30 @@ def CreateVariety(request):
 def ListVariety(request):
     variety = Variety.objects.all()
     serializer = VarietySerializer(variety, many=True)
+    return Response(serializer.data)
+
+
+@api_view(["POST"])
+def CreateSilo(request):
+    serializer = SiloSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(
+            {"message": "Registro agregado satisfactoriamente!", "status": 200}
+        )
+    return Response(
+        {
+            "message": "No se realizó el Registro!",
+            "errors": serializer.errors,
+            "status": 400,
+        }
+    )
+
+
+@api_view(["GET"])
+def ListSilos(request):
+    silo = Silo.objects.all()
+    serializer = SiloSerializer(silo, many=True)
     return Response(serializer.data)
 
 
@@ -6676,3 +6706,20 @@ def ConvertToLetter(request):
         # print(json_texto)
         return Response({"message": cantidad_en_texto, "status": 200})
         # return Response(json_texto)
+
+
+@api_view(["POST"])
+def CreateProduction(request):
+    serializer = ProductionSerializer(data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(
+            {"message": "Registro agregado satisfactoriamente!", "status": 200}
+        )
+    return Response(
+        {
+            "message": "No se realizó el Registro!",
+            "errors": serializer.errors,
+            "status": 400,
+        }
+    )

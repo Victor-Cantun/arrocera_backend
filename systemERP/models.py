@@ -220,6 +220,9 @@ class Producer(models.Model):
     representative = models.CharField(
         max_length=100, verbose_name="Representante legal", null=True
     )
+    observation = models.CharField(
+        max_length=200, verbose_name="Observación", null=True
+    )
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     creation = models.DateTimeField(auto_now=True)
 
@@ -1691,6 +1694,9 @@ class Shopping(models.Model):
     department = models.ForeignKey(
         Department, verbose_name="Departamento", on_delete=models.CASCADE, null=True
     )
+    reason = models.CharField(
+        max_length=500, verbose_name="Reason", default="", blank=True, null=True
+    )
     payment_type = models.CharField(
         max_length=50, verbose_name="Forma de pago", null=True, choices=payment_type
     )
@@ -1887,6 +1893,13 @@ class Location(models.Model):
 class Variety(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200, verbose_name="Variedad", null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    creation = models.DateTimeField(auto_now=True)
+
+
+class Silo(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=200, verbose_name="Silo", null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     creation = models.DateTimeField(auto_now=True)
 
@@ -2739,5 +2752,100 @@ class PaymentProducer(models.Model):
         BankAccount, on_delete=models.CASCADE, verbose_name="Cuenta de banco", null=True
     )
     comment = models.CharField(max_length=500, verbose_name="Comentario", null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    creation = models.DateTimeField(auto_now=True)
+
+
+class Production(models.Model):
+    id = models.AutoField(primary_key=True)
+    date = models.DateField(max_length=50, verbose_name="Fecha", null=True)
+    variety = models.ForeignKey(
+        Variety, on_delete=models.CASCADE, verbose_name="Variedad", null=True
+    )
+    silo = models.ForeignKey(
+        Silo, on_delete=models.CASCADE, verbose_name="Silo", null=True
+    )
+    turn = models.CharField(max_length=500, verbose_name="Turno", null=True)
+    miller = models.ForeignKey(
+        Employee,
+        on_delete=models.CASCADE,
+        verbose_name="Molinero",
+        null=True,
+        related_name="molinero",
+    )
+    storer = models.ForeignKey(
+        Employee,
+        on_delete=models.CASCADE,
+        verbose_name="Almacenista",
+        null=True,
+        related_name="almacenista",
+    )
+    gr_5 = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name="Granel_5", null=True, default=0
+    )
+    gr_10 = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name="Granel_10", null=True, default=0
+    )
+    gr_15 = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name="Granel_15", null=True, default=0
+    )
+    gr_20 = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name="Granel_20", null=True, default=0
+    )
+    gr_25 = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name="Granel_25", null=True, default=0
+    )
+    env_5 = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name="Envasado_5", null=True, default=0
+    )
+    env_15 = models.DecimalField(
+        max_digits=19,
+        decimal_places=2,
+        verbose_name="Envasado_15",
+        null=True,
+        default=0,
+    )
+    env_20 = models.DecimalField(
+        max_digits=19,
+        decimal_places=2,
+        verbose_name="Envasado_20",
+        null=True,
+        default=0,
+    )
+    env_25 = models.DecimalField(
+        max_digits=19,
+        decimal_places=2,
+        verbose_name="Envasado_25",
+        null=True,
+        default=0,
+    )
+    rejection_5 = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name="Rechazo_5", null=True, default=0
+    )
+    stained_5 = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name="Manchado_5", null=True, default=0
+    )
+    half_grain = models.DecimalField(
+        max_digits=19,
+        decimal_places=2,
+        verbose_name="Medio grano",
+        null=True,
+        default=0,
+    )
+    granule = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name="Granillo", null=True, default=0
+    )
+    polished = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name="Pulido", null=True, default=0
+    )
+    selgron = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name="Selgron", null=True, default=0
+    )
+    peel = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name="Cascara", null=True, default=0
+    )
+    total = models.DecimalField(
+        max_digits=19, decimal_places=2, verbose_name="Total", null=True, default=0
+    )
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     creation = models.DateTimeField(auto_now=True)
