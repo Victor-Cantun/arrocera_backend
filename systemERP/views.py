@@ -1027,19 +1027,21 @@ class ReportProducersXLSX(TemplateView):
         ws["C6"] = "ID"
         ws["D6"] = "Nombre"
         ws["E6"] = "RFC"
-        ws["F6"] = "Teléfono"
-        ws["G6"] = "Correo electrónico"
-        ws["H6"] = "Código Postal"
-        ws["I6"] = "Pais"
-        ws["J6"] = "Estado"
-        ws["K6"] = "Ciudad"
-        ws["L6"] = "Localidad"
-        ws["M6"] = "Colonia"
-        ws["N6"] = "Calle"
-        ws["O6"] = "No. Interior"
+        ws["F6"] = "CURP"
+        ws["G6"] = "Predio asignado"
+        ws["H6"] = "Teléfono"
+        ws["I6"] = "Correo electrónico"
+        ws["J6"] = "Código Postal"
+        ws["K6"] = "Pais"
+        ws["L6"] = "Estado"
+        ws["M6"] = "Ciudad"
+        ws["N6"] = "Localidad"
+        ws["O6"] = "Colonia"
+        ws["P6"] = "Calle"
+        ws["Q6"] = "No. Interior"
         ws["P6"] = "No. Exterior"
-        ws["Q6"] = "Representante legal"
-        ws["R6"] = "Observación"
+        ws["R6"] = "Representante legal"
+        ws["S6"] = "Observación"
 
         cont = 7
 
@@ -1047,19 +1049,21 @@ class ReportProducersXLSX(TemplateView):
             ws.cell(row=cont, column=3).value = producer.id
             ws.cell(row=cont, column=4).value = producer.name
             ws.cell(row=cont, column=5).value = producer.rfc
-            ws.cell(row=cont, column=6).value = producer.phone
-            ws.cell(row=cont, column=7).value = producer.email
-            ws.cell(row=cont, column=8).value = producer.postal_code
-            ws.cell(row=cont, column=9).value = producer.country
-            ws.cell(row=cont, column=10).value = producer.state
-            ws.cell(row=cont, column=11).value = producer.city
-            ws.cell(row=cont, column=12).value = producer.location
-            ws.cell(row=cont, column=13).value = producer.suburb
-            ws.cell(row=cont, column=14).value = producer.street
-            ws.cell(row=cont, column=15).value = producer.int_no
-            ws.cell(row=cont, column=16).value = producer.ext_no
-            ws.cell(row=cont, column=17).value = producer.representative
-            ws.cell(row=cont, column=18).value = producer.observation
+            ws.cell(row=cont, column=6).value = producer.curp
+            ws.cell(row=cont, column=7).value = producer.assigned_property
+            ws.cell(row=cont, column=8).value = producer.phone
+            ws.cell(row=cont, column=9).value = producer.email
+            ws.cell(row=cont, column=10).value = producer.postal_code
+            ws.cell(row=cont, column=11).value = producer.country
+            ws.cell(row=cont, column=12).value = producer.state
+            ws.cell(row=cont, column=13).value = producer.city
+            ws.cell(row=cont, column=14).value = producer.location
+            ws.cell(row=cont, column=15).value = producer.suburb
+            ws.cell(row=cont, column=16).value = producer.street
+            ws.cell(row=cont, column=17).value = producer.int_no
+            ws.cell(row=cont, column=18).value = producer.ext_no
+            ws.cell(row=cont, column=19).value = producer.representative
+            ws.cell(row=cont, column=20).value = producer.observation
 
             cont += 1
 

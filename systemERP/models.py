@@ -206,8 +206,12 @@ class Producer(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=150, verbose_name="Proveedor", unique=True)
     rfc = models.CharField(max_length=50, verbose_name="RFC", null=True)
+    curp = models.CharField(max_length=50, verbose_name="CURP", null=True)
     phone = models.BigIntegerField(verbose_name="Teléfono", null=True)
     email = models.EmailField(verbose_name="Correo Electrónico", null=True)
+    assigned_property = models.CharField(
+        max_length=200, verbose_name="Predio asignado", null=True
+    )
     postal_code = models.IntegerField(verbose_name="Codigo postal", null=True)
     country = models.CharField(max_length=100, verbose_name="Pais", null=True)
     state = models.CharField(max_length=100, verbose_name="Estado", null=True)

@@ -1,26 +1,26 @@
-<style type="text/css">  
+<style type="text/css">
   @page {
     size: letter landscape;
     margin: 2cm;
-  } 
+  }
   .demo {
-    border:1px solid #C0C0C0;
-    border-collapse:collapse;
-    padding:5px;
+    border: 1px solid #c0c0c0;
+    border-collapse: collapse;
+    padding: 5px;
   }
   .demo th {
-    border:1px solid #C0C0C0;
-    padding:5px;
-    background:#F0F0F0;
+    border: 1px solid #c0c0c0;
+    padding: 5px;
+    background: #f0f0f0;
   }
   .demo td {
-    border:1px solid #C0C0C0;
-    padding:3px;
+    border: 1px solid #c0c0c0;
+    padding: 3px;
   }
-  .encabezado{
-    border:0;
-    border-collapse:colapse;
-    padding:5px;
+  .encabezado {
+    border: 0;
+    border-collapse: colapse;
+    padding: 5px;
   }
 </style>
 <head>
@@ -28,26 +28,31 @@
 </head>
 <table class="encabezado">
   <tr>
-    <td rowspan="2" width="10%" align="center"><img src="https://django.arroztollocan.com/files/imagenes/logo_empresa.png" width="80px" height="100px" /></td>
-    <td  width="90%" align="center"><h1>CAMPESINOS PRODUCTORES CAMPECHANOS<br>SPR DE RL DE CV</h1></td>
+    <td rowspan="2" width="10%" align="center">
+      <img src="https://django.arroztollocan.com/files/imagenes/logo_empresa.png" width="80px" height="100px" />
+    </td>
+    <td width="90%" align="center">
+      <h1>CAMPESINOS PRODUCTORES CAMPECHANOS<br />SPR DE RL DE CV</h1>
+    </td>
   </tr>
   <tr>
     <td align="center"><h1></h1></td>
-  </tr>  
+  </tr>
 </table>
 <table class="demo">
   <thead>
     <tr>
-      <th colspan="5"><h1>Lista de Productores</h1></th>
+      <th colspan="7"><h1>Lista de Productores</h1></th>
     </tr>
     <tr>
-      <th style="width:2%">ID</th>
-      <th>Nombre</th>    
+      <th style="width: 2%">ID</th>
+      <th>Nombre</th>
       <th>RFC</th>
+      <th>CURP</th>
+      <th>Predioo asignado</th>
       <th>Teléfono</th>
       <th>Correo electrónico</th>
-      
-    </tr>  
+    </tr>
   </thead>
   <tbody>
     {% for item in producers %}
@@ -55,11 +60,11 @@
       <td>{{ item.id }}</td>
       <td>{{ item.name }}</td>
       <td>{{ item.rfc }}</td>
+      <td>{{ item.curp }}</td>
+      <td>{{ item.assigned_property }}</td>
       <td>{{ item.phone }}</td>
       <td>{{ item.email }}</td>
-      
     </tr>
     {% endfor %}
   </tbody>
 </table>
-    
